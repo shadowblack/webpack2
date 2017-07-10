@@ -9,3 +9,6 @@ Demostracion usando WebPack2
 
 # instalar micro servidor
 * npm install webpack-dev-server --save-dev
+
+# instalar dependencias para los css
+* npm install style-loader css-loader --save-dev
