@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "pack": "webpack ./js/play.js ./dist/bundle.js",
+    "pack": "webpack-dev-server --entry ./js/play.js --output-filename ./dist/bundle.js",
     "pack:prod": "webpack ./js/play.js ./dist/bundle.js -p"
   },
   "author": "lmarin",
