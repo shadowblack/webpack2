@@ -1,4 +1,4 @@
 // entry
 import '../css/base.css';
 import './lib.js';
-alert("hola mundo");
+alert("hola mundos");

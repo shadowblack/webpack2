@@ -6,12 +6,13 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "pack": "webpack-dev-server",
-    "pack:prod": "webpack ./js/play.js ./dist/bundle.js -p"
+    "pack:prod": "webpack -p"
   },
   "author": "lmarin",
   "license": "ISC",
   "devDependencies": {
     "css-loader": "^0.28.4",
+    "html-webpack-plugin": "^2.29.0",
     "style-loader": "^0.18.2",
     "webpack": "^3.1.0",
     "webpack-dev-server": "^2.5.1"

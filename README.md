@@ -1,4 +1,4 @@
-# webpack2
+# Webpack2
 Demostracion usando WebPack2
 
 # Comandos usados para iniciar el proyecto desde 0
@@ -7,8 +7,11 @@ Demostracion usando WebPack2
 * npm run pack
 * npm run pack:prod
 
-# instalar micro servidor
+# Instalar micro servidor
 * npm install webpack-dev-server --save-dev
 
-# instalar dependencias para los css
+# Instalar dependencias para los css
 * npm install style-loader css-loader --save-dev
+
+# Generar plantilla html
+* npm install html-webpack-plugin --save-dev
