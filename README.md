@@ -1,7 +1,7 @@
 # webpack2
 Demostracion usando WebPack2
 
-# Comandos usados
+# Comandos usados para iniciar el proyecto desde 0
 * npm init
 * npm install webpack --save-dev
 * npm run pack
