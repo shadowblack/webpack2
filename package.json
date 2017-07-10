@@ -1,0 +1,17 @@
+{
+  "name": "landing",
+  "version": "1.0.0",
+  "description": "Administrador de Landing connectium",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "pack": "webpack ./js/play.js ./dist/bundle.js",
+    "pack:prod": "webpack ./js/play.js ./dist/bundle.js -p"
+  },
+  "author": "lmarin",
+  "license": "ISC",
+  "devDependencies": {
+    "webpack": "^3.1.0",
+    "webpack-dev-server": "^2.5.1"
+  }
+}
