@@ -1,4 +1,6 @@
 // entry
 import '../css/base.css';
 import './lib.js';
-alert("hola mundos");
+
+//var yell = require('./js/lib.js');
+//yell('world');

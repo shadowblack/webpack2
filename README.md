@@ -15,3 +15,4 @@ Demostracion usando WebPack2
 
 # Generar plantilla html
 * npm install html-webpack-plugin --save-dev
+* npm i extract-text-webpack-plugin-webpack-2 --save-dev
