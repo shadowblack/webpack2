@@ -1,10 +1,28 @@
 const path = require('path');
+const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
+//const ExtractTextPlugin = require("extract-text-webpack-plugin");
+
+var entryHtmlPlugins = Object.values(["landing","index"]).map(function(entryName) {
+    return new HtmlWebpackPlugin({
+        filename: "../app/"+entryName + '.html',
+        template: "./templates/"+entryName + '.ejs',
+        links:[
+            './node_modules/materialize-css/dist/css/materialize.min.css'
+        ],
+        /*minify: {
+            collapseWhitespace: 'true'
+        }*/
+        //chunks: [entryName]
+    })
+});
+
 const config = {
     entry : {
-        "styles" : ['./src/css/base.css'],
-        "main" : './src/js/play.js'
+        "main" : [
+            './src/css/base.css',
+            './src/js/play.js'
+        ],
     },
     output: {
         path: path.resolve(__dirname,'dist'),
@@ -12,18 +30,15 @@ const config = {
         publicPath: "/dist"
     },
     plugins: [
-
-        new HtmlWebpackPlugin({
-            filename: '../index.html',
-            template: './templates/plantilla.ejs',
-            links:['./dist/styles.bundle.js'],
-            minify: {
-                collapseWhitespace: 'true'
-            }
-        }),
-
-        new ExtractTextPlugin("[name].css")
-    ],
+        //new ExtractTextPlugin("[name].css"),
+        new webpack.ProvidePlugin({
+            $: 'jquery',
+            jQuery: 'jquery',
+            'window.$' : 'jquery',
+            'window.jQuery' : 'jquery',
+            materialize:'materialize-css'
+        })
+    ].concat(entryHtmlPlugins),
     module: {
         rules: [
             // This is required
@@ -38,11 +53,21 @@ const config = {
                         options: {
                             minimize: true
                         }
+                    },
+                    {
+                        loader : 'resolve-url-loader'
+                    },
+                    {
+                        loader : 'sass-loader?sourceMap'
                     }
                 ]
             }
+        ],
+        loaders: [
+            { test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader:"url?limit=10000&mimetype=application/font-woff" },
+            { test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "file" }
         ]
     }
-}
+};
 
 module.exports = config;
