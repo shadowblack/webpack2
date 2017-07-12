@@ -3,32 +3,39 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 //const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
-var entryHtmlPlugins = Object.values(["landing","index"]).map(function(entryName) {
+var entryHtmlPlugins = Object.values(["index","landing"]).map(function(entryName) {
     return new HtmlWebpackPlugin({
         filename: "../app/"+entryName + '.html',
         template: "./templates/"+entryName + '.ejs',
         links:[
-            './node_modules/materialize-css/dist/css/materialize.min.css'
+            '../node_modules/materialize-css/dist/css/materialize.min.css'
         ],
         /*minify: {
             collapseWhitespace: 'true'
         }*/
         //chunks: [entryName]
+        inject: 'body'
     })
 });
 
 const config = {
+    //entry: './main.ts',
     entry : {
         "main" : [
             './src/css/base.css',
-            './src/js/play.js'
+            './src/js/play.js',
+            './src/js/hola.ts',
         ],
+    },
+    resolve: {
+        extensions: ['.webpack.js', '.web.js', '.ts', '.js']
     },
     output: {
         path: path.resolve(__dirname,'dist'),
         filename: "[name].bundle.js",
         publicPath: "/dist"
     },
+
     plugins: [
         //new ExtractTextPlugin("[name].css"),
         new webpack.ProvidePlugin({
@@ -42,6 +49,9 @@ const config = {
     module: {
         rules: [
             // This is required
+            {
+                 test: /\.ts$/, loader: 'ts-loader'
+            },
             {
                 test: /\.css$/,
                 use: [
@@ -63,10 +73,6 @@ const config = {
                 ]
             }
         ],
-        loaders: [
-            { test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader:"url?limit=10000&mimetype=application/font-woff" },
-            { test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "file" }
-        ]
     }
 };
 

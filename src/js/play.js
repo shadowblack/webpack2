@@ -5,6 +5,7 @@ import 'materialize-css';
 /*import 'materialize-css/dist/js/materialize.min';*/
 import '../css/base.css';
 import './lib.js';
+//import './hola.ts';
 
 
 
