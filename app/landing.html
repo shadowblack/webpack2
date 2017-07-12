@@ -6,13 +6,72 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
-    <link rel="stylesheet" href="../node_modules/materialize-css/dist/css/materialize.min.css">
+    <link rel="stylesheet" href="../node_modules/materialize-css/dist/css/materialize.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 </head>
 <body>
 
-<div class="card-panel">
-    <span class="blue-text text-darken-2">ssss is a card panel with dark blue text</span>
-</div>
+
+
+    <div class="row">
+        <div class="col s12 teal darken-4 ">
+            <nav>
+                <div class="nav-wrapper teal darken-4">
+                    <a href="#" class="brand-logo color-text-landing"> Configurar Landing</a>
+                </div>
+            </nav>
+        </div>
+
+        <div class="col s4 teal lighten-5">
+            <ul class="collapsible" data-collapsible="accordion">
+                <li>
+                    <div class="collapsible-header"><i class="small material-icons">assessment</i>Lienzo</div>
+                    <div class="collapsible-body">
+
+                        <div class="row">
+                            <div class="card-panel truncate">
+                                <form action="#">
+                                    <p>
+                                        <input type="checkbox" class="filled-in" id="filled-in-box" checked="checked" />
+                                        <label for="filled-in-box">Color de fondo</label>
+
+                                    <div class="input-field ">
+                                        <div class="select-wrapper"><span class="caret">▼</span><input type="text" class="select-dropdown" readonly="true" data-activates="select-options-d314e9a7-c04f-2752-115a-2a41b4dbc888" value="Choose your option"><ul id="select-options-d314e9a7-c04f-2752-115a-2a41b4dbc888" class="dropdown-content select-dropdown" style="width: 520.203px; position: absolute; top: 0px; left: 0px; display: none; opacity: 1;"><li class="disabled"><span>Choose your option</span></li><li class=""><span>Option 1</span></li><li class=""><span>Option 2</span></li><li class=""><span>Option 3</span></li></ul><select class="initialized">
+                                                <option value="" disabled="" selected="">Choose your option</option>
+                                                <option value="1">Option 1</option>
+                                                <option value="2">Option 2</option>
+                                                <option value="3">Option 3</option>
+                                            </select></div>
+                                        <label>Materialize Select</label>
+                                    </div>
+
+                                    </p>
+                                </form>
+                            </div>
+                        </div>
+
+                    </div>
+                </li>
+                <li>
+                    <div class="collapsible-header"><i class="material-icons">place</i>Second</div>
+                    <div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+                </li>
+                <li>
+                    <div class="collapsible-header"><i class="material-icons">whatshot</i>Third</div>
+                    <div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+                </li>
+            </ul>
+        </div>
+
+        <div class="col s8 teal teal lighten-4" >
+            <div class="container">
+                <div class="row">
+                    hola
+                </div>
+            </div>
+        </div>
+    </div>
+
 
 <script type="text/javascript" src="/dist/main.bundle.js"></script></body>
 </html>

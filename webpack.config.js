@@ -8,7 +8,7 @@ var entryHtmlPlugins = Object.values(["index","landing"]).map(function(entryName
         filename: "../app/"+entryName + '.html',
         template: "./templates/"+entryName + '.ejs',
         links:[
-            '../node_modules/materialize-css/dist/css/materialize.min.css'
+            '../node_modules/materialize-css/dist/css/materialize.css'
         ],
         /*minify: {
             collapseWhitespace: 'true'
@@ -24,7 +24,7 @@ const config = {
         "main" : [
             './src/css/base.css',
             './src/js/play.js',
-            './src/js/hola.ts',
+            './src/js/init.ts',
         ],
     },
     resolve: {
