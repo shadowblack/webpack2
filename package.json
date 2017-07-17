@@ -13,6 +13,9 @@
   "devDependencies": {
     "css-entry-webpack-plugin": "^1.0.0-beta.4",
     "css-loader": "^0.28.4",
+    "ejs": "^2.5.6",
+    "ejs-html-loader": "^3.0.0",
+    "ejs-render-loader": "^1.0.0",
     "extract-text-webpack-plugin": "^3.0.0",
     "file-loader": "^0.11.2",
     "html-webpack-plugin": "^2.29.0",
@@ -28,6 +31,7 @@
     "webpack-dev-server": "^2.5.1"
   },
   "dependencies": {
+    "dragula": "^3.7.2",
     "jquery": "^3.2.1",
     "materialize-css": "^0.99.0"
   }

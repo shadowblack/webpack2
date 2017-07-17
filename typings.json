@@ -1,5 +1,8 @@
 {
   "globalDependencies": {
     "jquery": "registry:dt/jquery#1.10.0+20170310222111"
+  },
+  "dependencies": {
+    "dragula": "registry:npm/dragula#3.6.8+20160410191048"
   }
 }

@@ -3,13 +3,14 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 //const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
-var entryHtmlPlugins = Object.values(["index","landing"]).map(function(entryName) {
+var entryHtmlPlugins = Object.values(["landing"]).map(function(entryName) {
     return new HtmlWebpackPlugin({
         filename: "../app/"+entryName + '.html',
         template: "./templates/"+entryName + '.ejs',
         links:[
-            '../node_modules/materialize-css/dist/css/materialize.css'
+            '../node_modules/materialize-css/dist/css/materialize.css',
         ],
+        inject: 'body',
         /*minify: {
             collapseWhitespace: 'true'
         }*/
@@ -48,6 +49,7 @@ const config = {
     ].concat(entryHtmlPlugins),
     module: {
         rules: [
+
             // This is required
             {
                  test: /\.ts$/, loader: 'ts-loader'
@@ -71,9 +73,35 @@ const config = {
                         loader : 'sass-loader?sourceMap'
                     }
                 ]
-            }
+            },
+            /*{
+
+            test: /\.ejs$/,
+            loader: 'ejs-html?title=The%20Big%20Gatsby&production'
+
+            }*/
+           /* {
+                test: /\.ejs$/,
+                loader: 'ejs-html-loader',
+                options: {
+                    title: "The Ant: An Introduction"
+                }
+            },*/
+           /* {
+                test: /\.ejs$/,
+                loader: 'ejs-html-loader',
+            },*/
+            /*{
+                test: /\.ejs$/,
+                use: 'ejs-loader?variable=data'
+            }*/
         ],
-    }
+    },
+    /*ejsHtml: {
+        title: 'For Whom the Bell Rings',
+        baseUrl: './src/js',
+        delimiter: '?'
+    }*/
 };
 
 module.exports = config;

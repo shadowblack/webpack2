@@ -8,12 +8,11 @@
     <title>Document</title>
     <link rel="stylesheet" href="<%= htmlWebpackPlugin.options.links %>">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
 </head>
 <body>
 
-
-
-    <div class="row">
+<div class="row">
         <div class="col s12 teal darken-4 ">
             <nav>
                 <div class="nav-wrapper teal darken-4">
@@ -22,8 +21,22 @@
             </nav>
         </div>
 
-        <div class="col s4 teal lighten-5">
+        <div class="col s3 teal lighten-5">
             <ul class="collapsible" data-collapsible="accordion">
+                <li>
+                    <div class="collapsible-header"><i class="small material-icons">assessment</i>Bloque</div>
+                    <div class="collapsible-body">
+
+                        <div class="row">
+                            <div class="card-panel truncate" >
+                                <div class="row" id="block">
+                                    &nbsp; asdsaf
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </li>
                 <li>
                     <div class="collapsible-header"><i class="small material-icons">assessment</i>Lienzo</div>
                     <div class="collapsible-body">
@@ -31,19 +44,21 @@
                         <div class="row">
                             <div class="card-panel truncate">
                                 <form action="#">
-                                    <p>
-                                        <input type="checkbox" class="filled-in" id="filled-in-box" checked="checked" />
-                                        <label for="filled-in-box">Color de fondo</label>
-
-                                    <div class="input-field ">
-                                        <div class="select-wrapper"><span class="caret">▼</span><input type="text" class="select-dropdown" readonly="true" data-activates="select-options-d314e9a7-c04f-2752-115a-2a41b4dbc888" value="Choose your option"><ul id="select-options-d314e9a7-c04f-2752-115a-2a41b4dbc888" class="dropdown-content select-dropdown" style="width: 520.203px; position: absolute; top: 0px; left: 0px; display: none; opacity: 1;"><li class="disabled"><span>Choose your option</span></li><li class=""><span>Option 1</span></li><li class=""><span>Option 2</span></li><li class=""><span>Option 3</span></li></ul><select class="initialized">
-                                                <option value="" disabled="" selected="">Choose your option</option>
+                                    <div class="row ">
+                                        <div class="col s12 20">
+                                            <input type="checkbox" class="filled-in" id="filled-in-box" checked="checked" />
+                                            <label for="filled-in-box">Color de fondo</label>
+                                        </div>
+                                        <div class="col s12 20">
+                                            <select >
+                                                <option value="" disabled selected>Insertar Imagen</option>
                                                 <option value="1">Option 1</option>
                                                 <option value="2">Option 2</option>
                                                 <option value="3">Option 3</option>
-                                            </select></div>
-                                        <label>Materialize Select</label>
+                                            </select>
+                                        </div>
                                     </div>
+                                    <p>
 
                                     </p>
                                 </form>
@@ -63,10 +78,18 @@
             </ul>
         </div>
 
-        <div class="col s8 teal teal lighten-4" >
-            <div class="container">
+        <div class="col s6 teal teal lighten-4 height-content" >
+            <div class="container" id="content-center">
+                <div class="row" style="border: 1px solid black;">
+                    hola1
+                </div>
+            </div>
+        </div>
+
+        <div class="col s3 teal teal lighten-3 height-content" id="content-right">
+            <div class="container" >
                 <div class="row">
-                    hola
+                    hola2
                 </div>
             </div>
         </div>
