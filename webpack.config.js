@@ -44,12 +44,22 @@ const config = {
             jQuery: 'jquery',
             'window.$' : 'jquery',
             'window.jQuery' : 'jquery',
-            materialize:'materialize-css'
+            materialize:'materialize-css',
         })
     ].concat(entryHtmlPlugins),
     module: {
         rules: [
 
+            {
+                test: /\.(jpe?g|png|gif)$/i,
+                loader:"file-loader",
+                query:{
+                    name:'[name].[ext]',
+                    outputPath:'images/'
+                    //the images will be emmited to public/assets/images/ folder
+                    //the images will be put in the DOM <style> tag as eg. background: url(assets/images/image.png);
+                }
+            },
             // This is required
             {
                  test: /\.ts$/, loader: 'ts-loader'

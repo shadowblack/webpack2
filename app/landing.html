@@ -25,14 +25,27 @@
             <ul class="collapsible" data-collapsible="accordion" leftSection>
                 <li>
                     <div class="collapsible-header"><i class="small material-icons">assessment</i>Bloque</div>
-                    <div class="collapsible-body">
+                    <div class="collapsible-body" id="block-left">
 
                         <div class="row">
-                            <div class="card-panel truncate container_content" id="block" >
-                                <div class="row" type="Block">
-                                    <div class="col s12"></div>
+                            <div class="card-panel truncate container_content" id="block">
+                                <div class="row text insertable" type="Block" >
+
                                 </div>
                             </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="card-panel truncate container_content">
+                                <div class="row" insertable id="block-column">
+                                    <div class="col s12 text" type="Block">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row center">
+                            <a class="waves-effect waves-light btn-large teal lighten-3" reset>Reiniciar</a>
                         </div>
 
                     </div>
@@ -79,8 +92,8 @@
         </div>
 
         <div class="col s6 teal teal lighten-4 height-content" >
-            <div class="container" style="min-height: 400px" id="content-center">
-                <div class="row" style="border: 1px solid black;">
+            <div class="container " style="min-height: 400px" id="content-center">
+                <div class="row" >
                     hola1
                 </div>
             </div>
@@ -92,32 +105,7 @@
                 <!--<div class="row">
                     hola2
                 </div>-->
-                <form action="#">
-                    <p>
-                        <input type="checkbox" id="test5" />
-                        <label for="test5">Red</label>
-                    </p>
-                    <p>
-                        <input type="checkbox" id="test6" checked="checked" />
-                        <label for="test6">Yellow</label>
-                    </p>
-                    <p>
-                        <input type="checkbox" class="filled-in" id="filled-in-box" checked="checked" />
-                        <label for="filled-in-box">Filled in</label>
-                    </p>
-                    <p>
-                        <input type="checkbox" id="indeterminate-checkbox" />
-                        <label for="indeterminate-checkbox">Indeterminate Style</label>
-                    </p>
-                    <p>
-                        <input type="checkbox" id="test7" checked="checked" disabled="disabled" />
-                        <label for="test7">Green</label>
-                    </p>
-                    <p>
-                        <input type="checkbox" id="test8" disabled="disabled" />
-                        <label for="test8">Brown</label>
-                    </p>
-                </form>
+
             </div>
         </div>
     </div>

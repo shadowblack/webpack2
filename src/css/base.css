@@ -274,3 +274,13 @@ button:hover {
 .container-basic{
     margin-top: 10px;
 }
+
+.row .col.text{
+    min-height: 50px;
+    border: 1px solid black;
+}
+
+.row.text{
+    min-height: 50px;
+    border: 1px solid black;
+}
