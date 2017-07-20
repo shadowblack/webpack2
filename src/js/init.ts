@@ -1,7 +1,7 @@
 // import 'jquery';
 //import 'jquery';
 import * as $ from "jquery";
-import 'jquery-ui';
+/*import 'jquery-ui';*/
 // importando estilos
 import 'dragula/dist/dragula.css';
 class SweetSweetClasss {
