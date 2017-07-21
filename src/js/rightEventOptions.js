@@ -7,6 +7,8 @@ module.exports = function () {
     };
 
     var imagen = function($this_element){
+
+
         var _html = elementForm().inputFile('file-image','Imagen','image');
         _html += elementForm().button('drop','Borrar','all');
         var dom = init().append(_html);
@@ -23,10 +25,13 @@ module.exports = function () {
                 reader.readAsDataURL(input.files[0]);
             }
         }
-
         // file
         dom.find("#file-image").change(function(){
             readURL(this);
+        });
+        // borrar
+        dom.find("#drop").click(function(){
+            $this_element.remove();
         });
 
     };
@@ -56,8 +61,23 @@ module.exports = function () {
             options.push({value : i, text : i, attributes:""})
         }
 
-        // creacion de las columnas
         _html += elementForm().select('columns_block','Reticulas','block',options);
+
+        // aliniacion
+        options = [
+            {
+                value   : "left",
+                text    : "left",
+                attributes : ""
+            },
+            {
+                value   : "right",
+                text    : "right",
+                attributes : ""
+            }
+        ];
+
+        _html += elementForm().select('columns_aligns','Aliniacion','block',options);
 
         // creacion de los bordes
         /*var options = [
@@ -98,6 +118,13 @@ module.exports = function () {
         // borrar
         dom.find("#drop").click(function(){
             $this_element.remove();
+        });
+        // align
+        dom.find("#columns_aligns").change(function(){
+            $this_element.removeClass("left");
+            $this_element.removeClass("right");
+
+            $this_element.addClass($(this).val());
         });
 
         // eventos del numero de bloques

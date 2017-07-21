@@ -3,11 +3,11 @@ module.exports = function () {
 
     var inputRange = function(id, title, group){
         var html = '<div class="row white card" group="'+group+'">'+
-                        '<label>'+title+'</label>'+
-                        '<p class="range-field">'+
-                            '<input type="range" id="'+id+'" min="0" max="100" value="0" />'+
-                        '</p>'+
-                    '</div>';
+            '<label>'+title+'</label>'+
+            '<p class="range-field">'+
+            '<input type="range" id="'+id+'" min="0" max="100" value="0" />'+
+            '</p>'+
+            '</div>';
         return html;
     };
 

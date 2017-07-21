@@ -77,39 +77,13 @@ AppPlay = (function($,window){
     };
 
     var startDragula = function(){
-        var dark = dragula([document.getElementById('block'), document.getElementById('content-center')], configDarcula());
-        var block_column = dragula([document.getElementById('block-column'), document.getElementById('content-center')], configDarcula());
-        var imagen = dragula([document.getElementById('imagen'), document.getElementById('content-center')], configDarcula());
+        var dark = dragula([document.getElementById('block'),document.getElementById('block-column'),document.getElementById('imagen'), document.getElementById('content-center')], configDarcula());
+       // var block_column = dragula([document.getElementById('block-column'), document.getElementById('content-center')], configDarcula());
+        //var imagen = dragula([document.getElementById('imagen'), document.getElementById('content-center')], configDarcula());
 
         dark.on('drop',function(el){
             elementClick($(el));
         });
-        block_column.on('drop',function(el){
-            elementClick($(el));
-        });
-        imagen.on('drop',function(el){
-            elementClick($(el));
-        });
-
-       /* $( "#content-center" ).sortable({
-            revert: true
-        }).disableSelection();*/
-
-       /* $( "#block" ).draggable({
-            connectToSortable: "#content-center,#content-center [insertable]",
-            helper: "clone",
-            revert: "invalid",
-            addClasses: false,
-            stop: function(event, ui){
-                var content = $("#content-center [style]");
-                setTimeout(function(){
-                    console.log(content);
-                    elementClick(content);
-                    content.removeAttr("style");
-                },600);
-            }
-        });*/
-
     };
 
     var refreshDOM = function(){
@@ -122,12 +96,23 @@ AppPlay = (function($,window){
             console.log($this_element.html());
             var event = rightEventOptions();
             var type = $this_element.attr("type");
-            var _function = eval("event." + type);
 
-            // estableciendo criterios para el contenido centrado
-            _function($this_element);
+            try{
+                var _function = eval("event." + type);
+                // estableciendo criterios para el contenido centrado
+                _function($this_element);
 
-            refreshDOM();
+                $this_element.unbind("click");
+                $this_element.click(function(e){
+                    _function($this_element);
+                   return false;
+                });
+
+                refreshDOM();
+            } catch (e){
+                console.log("no function");
+            }
+
         };
 
         $this_element.unbind("click");
