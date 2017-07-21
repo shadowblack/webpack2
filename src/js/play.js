@@ -1,16 +1,14 @@
 // entry
-/*import 'jquery';*/
 import 'materialize-css';
 import '../css/base.css';
 import './lib.js';
 import 'dragula/dist/dragula.css';
-/*import('webpack-jquery-ui');*/
-import 'webpack-jquery-ui';
 
+//import('webpack-jquery-ui');
+import 'webpack-jquery-ui';
+/*import 'jquery';*/
 
 var rightEventOptions = require ('./rightEventOptions');
-
-
 
 
 //import 'html-webpack-plugin'
@@ -48,7 +46,7 @@ AppPlay = (function($,window){
             isContainer: function (el) {
                 //console.log($(el).hasClass("insertable")/*.parents("#content-center").hasClass("container")*/);
 
-                console.log($(el));
+              //  console.log($(el));
 
                 if (!$(el).hasClass("insertable")){
                     return false;
@@ -60,8 +58,9 @@ AppPlay = (function($,window){
             },
             accepts: function (el, target, source, sibling) {
                 var html = $(el);
-                return (/*html.parents("ul:eq(0)").is("[leftSection]") ||*/ !$(target).parents("ul:eq(0)").is("[leftSection]"));
-                //return true; // elements can be dropped in any of the `containers` by default
+                console.log($(el).parents("[leftSection]").length > 0);
+                return (/*!($(el).parents("[leftSection]").length > 0) ||*/ !($(target).parents("[leftSection]").length > 0));
+                //return false; // elements can be dropped in any of the `containers` by default
             },
             invalid: function (el, handle) {
                 return false; // don't prevent any drags from initiating by default
@@ -80,6 +79,7 @@ AppPlay = (function($,window){
     var startDragula = function(){
         var dark = dragula([document.getElementById('block'), document.getElementById('content-center')], configDarcula());
         var block_column = dragula([document.getElementById('block-column'), document.getElementById('content-center')], configDarcula());
+        var imagen = dragula([document.getElementById('imagen'), document.getElementById('content-center')], configDarcula());
 
         dark.on('drop',function(el){
             elementClick($(el));
@@ -87,12 +87,15 @@ AppPlay = (function($,window){
         block_column.on('drop',function(el){
             elementClick($(el));
         });
+        imagen.on('drop',function(el){
+            elementClick($(el));
+        });
 
-        /*$( "#content-center" ).sortable({
+       /* $( "#content-center" ).sortable({
             revert: true
-        }).disableSelection();
+        }).disableSelection();*/
 
-        $( "#block" ).draggable({
+       /* $( "#block" ).draggable({
             connectToSortable: "#content-center,#content-center [insertable]",
             helper: "clone",
             revert: "invalid",
@@ -113,16 +116,27 @@ AppPlay = (function($,window){
         var content_dom = $(document);
     };
 
-    var elementClick = function($obj){
+    var elementClick = function($this_element){
 
-        var event = rightEventOptions();
-        var type = $obj.attr("type");
-        var _function = eval("event."+type);
+        var click = function() {
+            console.log($this_element.html());
+            var event = rightEventOptions();
+            var type = $this_element.attr("type");
+            var _function = eval("event." + type);
 
-        // estableciendo criterios para el contenido centrado
-        _function("content-center");
+            // estableciendo criterios para el contenido centrado
+            _function($this_element);
 
-        refreshDOM();
+            refreshDOM();
+        };
+
+        $this_element.unbind("click");
+        $this_element.click(function(){
+            click();
+        });
+
+        click();
+
     };
 
     return {

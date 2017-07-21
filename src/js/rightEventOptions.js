@@ -6,8 +6,42 @@ module.exports = function () {
             .find("div.container:eq(0)").empty();
     };
 
-    var block = function(element_column){
-        var _html = elementForm().checkbox('color_block','color','block');
+    var imagen = function($this_element){
+        var _html = elementForm().inputFile('file-image','Imagen','image');
+        _html += elementForm().button('drop','Borrar','all');
+        var dom = init().append(_html);
+
+        function readURL(input) {
+
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $this_element.find("img").attr("src",e.target.result);
+                };
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        // file
+        dom.find("#file-image").change(function(){
+            readURL(this);
+        });
+
+    };
+
+    var none = function($this_element){
+        var _html = elementForm().button('drop','Borrar','all');
+        var dom = init().append(_html);
+        dom.unbind("click");
+        dom.find("#drop").click(function(){
+            $this_element.remove();
+        });
+    };
+
+    var block = function($this_element){
+        //var _html = elementForm().checkbox('color_block','color','block');
         var _html = "";
 
         var options = [
@@ -23,10 +57,10 @@ module.exports = function () {
         }
 
         // creacion de las columnas
-        _html += elementForm().select('columns_block','Columnas','block',options);
+        _html += elementForm().select('columns_block','Reticulas','block',options);
 
         // creacion de los bordes
-        var options = [
+        /*var options = [
             {
                 value   : "0",
                 text    : "Sin bordes",
@@ -38,13 +72,38 @@ module.exports = function () {
             options.push({value : i, text : i, attributes:""})
         }
 
-        _html += elementForm().select('border_block','Borde','block',options);
+        _html += elementForm().select('border_block','Borde','block',options);*/
+
+        var params = JSON.parse($this_element.attr("params"));
+
+        _html += elementForm().inputColor('block-color','Color','block');
+
+        _html += elementForm().inputRange('block-range','Rango','block');
+
+        _html += elementForm().button('drop','Borrar','all');
 
         var dom = init().append(_html);
+        dom.unbind("click");
+        dom.unbind("change");
+
+        // slider
+        dom.find("#block-range").change(function(){
+            var value = $(this).val();
+            $this_element.css({"opacity":(value === "0" ? 0 : value / 100)});
+        });
+        // color
+        dom.find("#block-color").change(function(){
+            $this_element.css({"background-color":$(this).val()});
+        });
+        // borrar
+        dom.find("#drop").click(function(){
+            $this_element.remove();
+        });
+
         // eventos del numero de bloques
         dom.find("#columns_block").change(function(){
-            console.log("#"+element_column);
-            var block = $("#"+element_column).find("div[type = 'Block'] > div");
+            console.log("#"+$this_element.html());
+            var block = ($this_element);
 
             block.removeClass("s1");
             block.removeClass("s2");
@@ -61,11 +120,15 @@ module.exports = function () {
 
             console.log($(this).val());
 
+            params.c = $(this).val();
             block.addClass("s"+$(this).val());
-        });
+            block.attr("params",JSON.stringify(params));
+        }).val(params.c);
     };
 
     return {
-        Block : block
+        Block   : block,
+        None    : none,
+        Imagen  : imagen
     }
 };

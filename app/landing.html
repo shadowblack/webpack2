@@ -28,17 +28,20 @@
                     <div class="collapsible-body" id="block-left">
 
                         <div class="row">
+                            <label>Fila</label>
                             <div class="card-panel truncate container_content" id="block">
-                                <div class="row text insertable" type="Block" >
+                                <div class="row text insertable" type="None" >
 
                                 </div>
                             </div>
                         </div>
 
                         <div class="row">
+                            <label>Columna</label>
                             <div class="card-panel truncate container_content">
-                                <div class="row" insertable id="block-column">
-                                    <div class="col s12 text" type="Block">
+
+                                <div class="row"  id="block-column">
+                                    <div class="col s12 text insertable" type="Block" params='{"c":"12"}'>
                                     </div>
                                 </div>
                             </div>
@@ -54,27 +57,13 @@
                     <div class="collapsible-header"><i class="small material-icons">assessment</i>Lienzo</div>
                     <div class="collapsible-body">
 
-                        <div class="row">
-                            <div class="card-panel truncate">
-                                <form action="#">
-                                    <div class="row ">
-                                        <div class="col s12 20">
-                                            <input type="checkbox" class="filled-in" id="filled-in-box" checked="checked" />
-                                            <label for="filled-in-box">Color de fondo</label>
-                                        </div>
-                                        <div class="col s12 20">
-                                            <select >
-                                                <option value="" disabled selected>Insertar Imagen</option>
-                                                <option value="1">Option 1</option>
-                                                <option value="2">Option 2</option>
-                                                <option value="3">Option 3</option>
-                                            </select>
-                                        </div>
+                        <div class="row" id="imagen">
+                            <div class="col s12 m12" type="Imagen" params='{"color":"12","src":"","opacity":""}'>
+                                <div class="card">
+                                    <div class="card-image" >
+                                        <img src="images/sample-1.jpg" >
                                     </div>
-                                    <p>
-
-                                    </p>
-                                </form>
+                                </div>
                             </div>
                         </div>
 

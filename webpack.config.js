@@ -3,7 +3,7 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 //const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
-var entryHtmlPlugins = Object.values(["landing"]).map(function(entryName) {
+/*var entryHtmlPlugins = Object.values(["landing"]).map(function(entryName) {
     return new HtmlWebpackPlugin({
         filename: "../app/"+entryName + '.html',
         template: "./templates/"+entryName + '.ejs',
@@ -11,13 +11,13 @@ var entryHtmlPlugins = Object.values(["landing"]).map(function(entryName) {
             '../node_modules/materialize-css/dist/css/materialize.css',
         ],
         inject: 'body',
-        /*minify: {
+        /!*minify: {
             collapseWhitespace: 'true'
-        }*/
+        }*!/
         //chunks: [entryName]
         inject: 'body'
     })
-});
+});*/
 
 const config = {
     //entry: './main.ts',
@@ -45,8 +45,16 @@ const config = {
             'window.$' : 'jquery',
             'window.jQuery' : 'jquery',
             materialize:'materialize-css',
+        }),
+         new HtmlWebpackPlugin({
+            filename: "../app/landing.html",
+            template: "./templates/landing.ejs",
+            links:[
+                '../node_modules/materialize-css/dist/css/materialize.css',
+            ],
+            inject: 'body',
         })
-    ].concat(entryHtmlPlugins),
+    ],//.concat(entryHtmlPlugins),
     module: {
         rules: [
 
