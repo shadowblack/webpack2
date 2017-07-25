@@ -49,6 +49,13 @@ module.exports = function () {
         //var _html = elementForm().checkbox('color_block','color','block');
         var _html = "";
 
+        var params = JSON.parse($this_element.attr("params"));
+
+        var options = [];
+        if (params.align === undefined){
+
+        }
+
         var options = [
             {
                 value   : "1",
@@ -77,7 +84,28 @@ module.exports = function () {
             }
         ];
 
-        _html += elementForm().select('columns_aligns','Aliniacion','block',options);
+        _html += elementForm().select('columns_aligns','Alineacion','block',options);
+
+        // aliniacion
+        options = [
+            {
+                value   : "left-align",
+                text    : "left-align",
+                attributes : "left-align"
+            },
+            {
+                value   : "right-align",
+                text    : "right-align",
+                attributes : ""
+            },
+            {
+                value   : "center-align",
+                text    : "center-align",
+                attributes : ""
+            }
+        ];
+
+        _html += elementForm().select('text_aligns','Alineacion de Texto','block',options);
 
         // creacion de los bordes
         /*var options = [
@@ -94,11 +122,12 @@ module.exports = function () {
 
         _html += elementForm().select('border_block','Borde','block',options);*/
 
-        var params = JSON.parse($this_element.attr("params"));
 
-        _html += elementForm().inputColor('block-color','Color','block');
+        _html += elementForm().inputColor('block-color','Color de Fondo','block');
 
-        _html += elementForm().inputRange('block-range','Rango','block');
+        _html += elementForm().inputRange('block-range','Opacidad','block');
+
+        _html += elementForm().inputText('block-height','Altura, ej. 10px, 2%, 1em','block');
 
         _html += elementForm().button('drop','Borrar','all');
 
@@ -108,13 +137,17 @@ module.exports = function () {
 
         // slider
         dom.find("#block-range").change(function(){
-            var value = $(this).val();
-            $this_element.css({"opacity":(value === "0" ? 0 : value / 100)});
-        });
+            var value = ($(this).val()==="0" ? 0 : $(this).val() / 100);
+            $this_element.css({"opacity":value});
+            params.opacity = $(this).val();
+            $this_element.attr("params",JSON.stringify(params));
+        }).val(params.opacity);
         // color
         dom.find("#block-color").change(function(){
             $this_element.css({"background-color":$(this).val()});
-        });
+            params.backgroundColor = $(this).val();
+            $this_element.attr("params",JSON.stringify(params))
+        }).val(params.backgroundColor);
         // borrar
         dom.find("#drop").click(function(){
             $this_element.remove();
@@ -123,12 +156,30 @@ module.exports = function () {
         dom.find("#columns_aligns").change(function(){
             $this_element.removeClass("left");
             $this_element.removeClass("right");
-
             $this_element.addClass($(this).val());
-        });
+            params.align = $(this).val();
+            $this_element.attr("params",JSON.stringify(params));
+        }).val(params.align);
+        // align text
+        dom.find("#text_aligns").change(function(){
+            $this_element.removeClass("left-align");
+            $this_element.removeClass("right-align");
+            $this_element.removeClass("center-align");
+            $this_element.addClass($(this).val());
+            params.textAlign = $(this).val();
+            $this_element.attr("params",JSON.stringify(params));
+        }).val(params.textAlign);
+
+        // altura
+        dom.find("#block-height").keyup(function(){
+            params.height = $(this).val();
+            $this_element.attr("params",JSON.stringify(params));
+            $this_element.css("height",params.height);
+        }).val(params.height);
 
         // eventos del numero de bloques
         dom.find("#columns_block").change(function(){
+
             console.log("#"+$this_element.html());
             var block = ($this_element);
 
@@ -145,17 +196,46 @@ module.exports = function () {
             block.removeClass("s11");
             block.removeClass("s12");
 
-            console.log($(this).val());
-
             params.c = $(this).val();
             block.addClass("s"+$(this).val());
             block.attr("params",JSON.stringify(params));
         }).val(params.c);
     };
 
+    var button = function($this_element){
+        console.log($this_element.html());
+        var params = JSON.parse($this_element.attr("params"));
+
+        // background color
+        var _html = elementForm().inputColor('buttonColor','Color de Fondo','button');
+        _html += elementForm().inputColor('buttonTextColor','Color de Texto','button');
+        _html += elementForm().button('drop','Borrar','button');
+        var dom = init().append(_html);
+
+        // background color
+        dom.find("#buttonColor").change(function(){
+            $this_element.css({"background-color":$(this).val()});
+            params.backgroundColor = $(this).val();
+            $this_element.attr("params",JSON.stringify(params))
+        }).val(params.backgroundColor);
+
+        // color de texto
+        dom.find("#buttonTextColor").change(function(){
+            $this_element.css({"color":$(this).val()});
+            params.color = $(this).val();
+            $this_element.attr("params",JSON.stringify(params))
+        }).val(params.color);
+
+        // borrar
+        dom.find("#drop").click(function(){
+            $this_element.remove();
+        });
+    };
+
     return {
         Block   : block,
         None    : none,
-        Imagen  : imagen
+        Imagen  : imagen,
+        Button  : button,
     }
 };

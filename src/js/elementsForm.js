@@ -5,7 +5,7 @@ module.exports = function () {
         var html = '<div class="row white card" group="'+group+'">'+
             '<label>'+title+'</label>'+
             '<p class="range-field">'+
-            '<input type="range" id="'+id+'" min="0" max="100" value="0" />'+
+            '<input type="range" id="'+id+'" min="0" max="100" value="100" />'+
             '</p>'+
             '</div>';
         return html;
@@ -28,7 +28,7 @@ module.exports = function () {
 
     var inputText =function(id, title, group){
         var html = '<div class="row white card" group="'+group+'">'+
-                        '<div class="input-field col s6">'+
+                        '<div class="input-field col s12">'+
                             '<input placeholder="'+title+'" id="'+id+'" type="text" class="validate">'+
                         '</div>'+
                     '</div>';
@@ -37,6 +37,7 @@ module.exports = function () {
 
     var inputColor =function(id, title, group){
         var html = '<div class="row white card" group="'+group+'">'+
+                        '<label>'+title+'</label>'+
                         '<div class="input-field col s12">'+
                             '<input placeholder="'+title+'" id="'+id+'" type="color" class="validate">'+
                         '</div>'+

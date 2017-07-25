@@ -77,7 +77,7 @@ AppPlay = (function($,window){
     };
 
     var startDragula = function(){
-        var dark = dragula([document.getElementById('block'),document.getElementById('block-column'),document.getElementById('imagen'), document.getElementById('content-center')], configDarcula());
+        var dark = dragula([document.getElementById('block'),document.getElementById('button'),document.getElementById('block-column'),document.getElementById('imagen'), document.getElementById('content-center')], configDarcula());
        // var block_column = dragula([document.getElementById('block-column'), document.getElementById('content-center')], configDarcula());
         //var imagen = dragula([document.getElementById('imagen'), document.getElementById('content-center')], configDarcula());
 
