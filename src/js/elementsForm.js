@@ -26,10 +26,11 @@ module.exports = function () {
         return html;
     };
 
-    var inputText =function(id, title, group){
+    var inputText =function(id, title, group,active){
         var html = '<div class="row white card" group="'+group+'">'+
                         '<div class="input-field col s12">'+
-                            '<input placeholder="'+title+'" id="'+id+'" type="text" class="validate">'+
+                            '<label for="'+id+'" class="'+(active === true ? 'active' : '')+'">'+title+'</label>' +
+                            '<input id="'+id+'" type="text" class="validate valid">'+
                         '</div>'+
                     '</div>';
         return html;
@@ -52,10 +53,10 @@ module.exports = function () {
         return html;
     };
 
-    var checkbox = function(id, title, group){
+    var checkbox = function(id, title, group, checked){
         var html =  '<div class="row white card" group="'+group+'">' +
                         '<p>'+
-                            '<input  type="checkbox"  id="'+ id +'"  />'+
+                            '<input  type="checkbox"  id="'+ id +'" '+(checked === true ? 'checked="checked"' : "")+' />'+
                             '<label for="'+ id +'">'+title+'</label>'+
                         '</p>'+
                     '</div>'

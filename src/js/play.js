@@ -5,7 +5,7 @@ import './lib.js';
 import 'dragula/dist/dragula.css';
 
 //import('webpack-jquery-ui');
-import 'webpack-jquery-ui';
+//import 'webpack-jquery-ui';
 /*import 'jquery';*/
 
 var rightEventOptions = require ('./rightEventOptions');
@@ -77,7 +77,7 @@ AppPlay = (function($,window){
     };
 
     var startDragula = function(){
-        var dark = dragula([document.getElementById('block'),document.getElementById('button'),document.getElementById('block-column'),document.getElementById('imagen'), document.getElementById('content-center')], configDarcula());
+        var dark = dragula([document.getElementById('block'),document.getElementById('text'),document.getElementById('button'),document.getElementById('block-column'),document.getElementById('imagen'), document.getElementById('content-center')], configDarcula());
        // var block_column = dragula([document.getElementById('block-column'), document.getElementById('content-center')], configDarcula());
         //var imagen = dragula([document.getElementById('imagen'), document.getElementById('content-center')], configDarcula());
 
