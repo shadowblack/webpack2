@@ -373,9 +373,14 @@ module.exports = function () {
         options.push({value : "Verdana", text : "Verdana", attributes:""});
         options.push({value : "Roboto", text : "Roboto", attributes:""});
         _html += elementForm().select('buttonFontFamily','Estilo','button',options);
+        _html += elementForm().checkbox('bold','Bold','text');
+        _html += elementForm().checkbox('italic','Italic','text');
+        _html += elementForm().checkbox('subra','Subrayate','text');
         _html += elementForm().inputText('marginLeft','Margin Left, ej. 10px, 2%, 1em','text');
         _html += elementForm().inputText('marginRight','Margin Right, ej. 10px, 2%, 1em','text');
         _html += elementForm().checkbox('link','Hipervinculo','text');
+        _html += elementForm().inputColor('buttonTextColorLink','Color de Link','text');
+        _html += elementForm().inputText('linkHiper','Hipervinculo','text',true);
         _html += elementForm().button('drop','Borrar','button');
         var dom = init().append(_html);
 
@@ -429,15 +434,110 @@ module.exports = function () {
             $this_element.attr("params",JSON.stringify(params));
             $this_element.css("margin-right",params.link);
             if (params.link === true){
-                $this_element.wrap("<a></a>");
+                $this_element.wrap("<a href='"+params.url+"'></a>")
+                    .css({"color":params.colorLink});
             } else {
                 $this_element.unwrap();
             }
-        }).val(params.link);
+        }).attr("checked",params.link);
+
+        // bold
+        dom.find("#bold").click(function(){
+            params.bold = $(this).is(":checked");
+            $this_element.attr("params",JSON.stringify(params));
+            if (params.bold === true){
+                $this_element.css("font-weight","bold");
+            } else {
+                $this_element.css("font-weight","normal");
+            }
+        }).attr("checked",params.bold);
+
+        // italic
+        dom.find("#italic").click(function(){
+            params.italic = $(this).is(":checked");
+            $this_element.attr("params",JSON.stringify(params));
+            if (params.italic === true){
+                $this_element.css("font-style","italic");
+            } else {
+                $this_element.css("font-style","normal");
+            }
+        }).attr("checked",params.italic);
+
+        // italic
+        dom.find("#subra").click(function(){
+            params.subra = $(this).is(":checked");
+            $this_element.attr("params",JSON.stringify(params));
+            if (params.subra === true){
+                $this_element.css("text-decoration","underline");
+            } else {
+                $this_element.css("text-decoration","initial");
+            }
+        }).attr("checked",params.subra);
+
+        // color de link
+        dom.find("#buttonTextColorLink").change(function(){
+            $this_element.parent().css({"color":$(this).val()});
+            params.colorLink = $(this).val();
+            $this_element.parent().attr("params",JSON.stringify(params))
+        }).val(params.colorLink);
+
+        // hipervinculo
+        dom.find("#linkHiper").keyup(function(){
+            params.url = $(this).val();
+            $this_element.attr("params",JSON.stringify(params));
+            $this_element.parent().attr("src",params.url);
+        }).val(params.url);
 
         // borrar
         dom.find("#drop").click(function(){
             $this_element.remove();
+        });
+    };
+
+    var video = function($this_element){
+        var params = JSON.parse($this_element.attr("params"));
+
+        var _html = "";
+        _html += elementForm().inputText('linkHiper','Hipervinculo','video',true);
+        _html += elementForm().checkbox('autoplay','Autoplay','video');
+        _html += elementForm().checkbox('loop','Loop','video');
+        _html += elementForm().button('drop','Borrar','video');
+
+        var dom = init().append(_html);
+
+        // hipervinculo
+        dom.find("#linkHiper").keyup(function(){
+            params.url = $(this).val();
+            $this_element.attr("params",JSON.stringify(params));
+            $this_element.find("source").attr("src",params.url);
+            $this_element[0].load();
+        }).val(params.url);
+
+        // autoload
+        dom.find("#autoplay").click(function(){
+            params.autoplay = $(this).is(":checked");
+            $this_element.attr("params",JSON.stringify(params));
+            if (params.autoplay === true){
+                $this_element.attr("autoload","autoload");
+            } else {
+                $this_element.removeAttr("autoload");
+            }
+        }).attr("checked",params.autoplay);
+
+        // loop
+        dom.find("#loop").click(function(){
+            params.loop = $(this).is(":checked");
+            $this_element.attr("params",JSON.stringify(params));
+            if (params.loop === true){
+                $this_element.attr("loop","loop");
+            } else {
+                $this_element.removeAttr("loop");
+            }
+        }).attr("checked",params.loop);
+
+        // borrar
+        dom.find("#drop").click(function(){
+            $this_element.remove()
         });
     };
 
@@ -447,5 +547,6 @@ module.exports = function () {
         Imagen  : imagen,
         Button  : button,
         Text    : text,
+        Video   : video
     }
 };

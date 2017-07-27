@@ -5,8 +5,8 @@ body{
 .color-text-landing{
     color:#ffffff;
 }
-.content-center{
-    height: 200px;
+#content-center{
+    min-height: 1600px
 }
 
 .content-right{
@@ -14,7 +14,7 @@ body{
 }
 .height-content{
 
-    min-height: 600px !important;
+    min-height: 1600px !important;
 }
 
 .tagline {
