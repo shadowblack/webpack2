@@ -51,7 +51,7 @@ module.exports = function () {
 
         var params = JSON.parse($this_element.attr("params"));
 
-        var _html = elementForm().inputText('blockCaption','Etiqueta','block',true);
+        /*var _html = elementForm().inputText('blockCaption','Etiqueta','block',true);*/
 
         var options = [
             {
@@ -199,12 +199,12 @@ module.exports = function () {
             block.attr("params",JSON.stringify(params));
         }).val(params.c);
 
-        // width
+        /*// width
         dom.find("#blockCaption").keyup(function(){
             params.width = $(this).val();
             $this_element.attr("params",JSON.stringify(params));
             $this_element.css({"width":params.width});
-        }).val(params.width);
+        }).val(params.width);*/
     };
 
     var button = function($this_element){

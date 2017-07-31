@@ -28,31 +28,52 @@
                     <div class="collapsible-body" id="block-left">
 
                         <div class="row">
-                            <label>Fila</label>
+                            <div class="input-field col s12">
+                                <select id="type_block">
+                                    <option value="0" disabled selected>Tipo de bloque</option>
+                                    <option value="1">Lienzo</option>
+                                    <option value="2">Bloque Top</option>
+                                    <option value="3">Bloque Boton CTA</option>
+                                    <option value="4">Bloque Text</option>
+                                    <option value="5">Bloque de Imagen</option>
+                                </select>
+                            </div>
+                            <div class="card-panel">
+                                <span class="blue-text text-darken-2" to="type_block">Cantidad de <strong>bloque top</strong>: <span>0</span></span>
+                            </div>
+                        </div>
+
+                        <div class="row display" style="display: none">
+                            <label>Fila de Lienzo</label>
                             <div class="card-panel truncate container_content" id="block">
-                                <div class="row text insertable" type="None" >
+                                <div class="row text insertable" type="None" category="">
 
                                 </div>
                             </div>
                         </div>
 
-                        <div class="row">
+                       <!-- <div class="row center display" style="display: none">
+                            <a class="waves-effect waves-light btn-large teal lighten-3" reset>Reiniciar</a>
+                        </div>-->
+
+                    </div>
+                </li>
+                <li>
+                    <div class="collapsible-header"><i class="small material-icons">assessment</i>Columna</div>
+                    <div class="collapsible-body">
+                        <div class="row display" style="">
                             <label>Columna</label>
                             <div class="card-panel truncate container_content">
 
-                                <div class="row"  id="block-column">
+                                <div class="row" id="block-column">
                                     <div class="col s12 text insertable" type="Block" params='{"c":"12","opacity":"100","align":"left","height":"","textAlign":"left-align"}'>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
-                        <div class="row center">
-                            <a class="waves-effect waves-light btn-large teal lighten-3" reset>Reiniciar</a>
-                        </div>
-
                     </div>
                 </li>
+
                 <li>
                     <div class="collapsible-header"><i class="small material-icons">assessment</i>Lienzo</div>
                     <div class="collapsible-body">

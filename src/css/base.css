@@ -8,6 +8,9 @@ body{
 #content-center{
     min-height: 1600px
 }
+.row.original{
+    background: none;
+}
 
 .content-right{
     height: 200px;

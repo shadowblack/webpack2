@@ -24,6 +24,8 @@ AppPlay = (function($,window){
 
     var init = function(){
         startDragula();
+        category();
+        initialize();
 
         var block_left = $("#block-left");
         left.block = block_left.html();
@@ -38,14 +40,38 @@ AppPlay = (function($,window){
 
         };
         block_left.find("[reset]").click(function(){reset()});
+    };
 
+    var initialize = function(){
+        $("#content-center").find("type").each(function(e){
+            elementClick( $(this) );
+        });
+    };
+
+    var category = function(){
+
+        $("#type_block").trigger("change");
+        $("#type_block").change(function(){
+              var value = $( this ).val();
+              $("#block > div").attr("category",value);
+              categoryFormat(value);
+              if (value === "0"){
+                  $(".display").hide();
+              } else {
+                  $(".display").show();
+              }
+        });
+    };
+    var categoryFormat = function(type){
+        $("#type_block").val(type);
+        $("#type_block").material_select();
+        $("[to='type_block']").find("span").text($("#content-center div[category='"+type+"']").length);
+        $("[to='type_block']").find("strong").text($("#type_block").find("option:selected").text());
     };
 
     var configDarcula = function(){
         return {
             isContainer: function (el) {
-                //console.log($(el).hasClass("insertable")/*.parents("#content-center").hasClass("container")*/);
-
               //  console.log($(el));
 
                 if (!$(el).hasClass("insertable")){
@@ -78,8 +104,6 @@ AppPlay = (function($,window){
 
     var startDragula = function(){
         var dark = dragula([document.getElementById('block'),document.getElementById('video'),document.getElementById('text'),document.getElementById('button'),document.getElementById('block-column'),document.getElementById('imagen'), document.getElementById('content-center')], configDarcula());
-       // var block_column = dragula([document.getElementById('block-column'), document.getElementById('content-center')], configDarcula());
-        //var imagen = dragula([document.getElementById('imagen'), document.getElementById('content-center')], configDarcula());
 
         dark.on('drop',function(el){
             elementClick($(el));
@@ -93,17 +117,23 @@ AppPlay = (function($,window){
     var elementClick = function($this_element){
 
         var click = function() {
+            categoryFormat($("#type_block").val());
+
             console.log($this_element.html());
+
             var event = rightEventOptions();
             var type = $this_element.attr("type");
 
-            try{
+            try {
                 var _function = eval("event." + type);
                 // estableciendo criterios para el contenido centrado
                 _function($this_element);
 
                 $this_element.unbind("click");
                 $this_element.click(function(e){
+                    if (type === "None")
+                        categoryFormat($this_element.attr("category"));
+
                     _function($this_element);
                    return false;
                 });
