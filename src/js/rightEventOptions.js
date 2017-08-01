@@ -1,5 +1,6 @@
 module.exports = function () {
-    var elementForm = require('./elementsForm');
+    var elementForm = require('./elementsForm'),
+    makeHTML = require('./makeHTML');
 
     var init = function(){
         return $("#content-right")
@@ -7,7 +8,6 @@ module.exports = function () {
     };
 
     var imagen = function($this_element){
-
 
         var _html = elementForm().inputFile('file-image','Imagen','image');
         _html += elementForm().button('drop','Borrar','all');
@@ -135,6 +135,7 @@ module.exports = function () {
             $this_element.css({"opacity":value});
             params.opacity = $(this).val();
             $this_element.attr("params",JSON.stringify(params));
+            makeHTML().run();
         }).val(params.opacity);
 
         // color
@@ -378,6 +379,9 @@ module.exports = function () {
         _html += elementForm().checkbox('subra','Subrayate','text');
         _html += elementForm().inputText('marginLeft','Margin Left, ej. 10px, 2%, 1em','text');
         _html += elementForm().inputText('marginRight','Margin Right, ej. 10px, 2%, 1em','text');
+        _html += elementForm().inputText('marginTop','Margin Top, ej. 10px, 2%, 1em','text');
+        _html += elementForm().inputText('marginBottom','Margin Buttom, ej. 10px, 2%, 1em','text');
+        _html += elementForm().inputText('textSize','Text Size, ej. 10px, 2%, 1em','text');
         _html += elementForm().checkbox('link','Hipervinculo','text');
         _html += elementForm().inputColor('buttonTextColorLink','Color de Link','text');
         _html += elementForm().inputText('linkHiper','Hipervinculo','text',true);
@@ -428,6 +432,20 @@ module.exports = function () {
             $this_element.css("margin-right",params.marginRight);
         }).val(params.marginRight);
 
+        // margin top
+        dom.find("#marginTop").keyup(function(){
+            params.marginTop = $(this).val();
+            $this_element.attr("params",JSON.stringify(params));
+            $this_element.css("margin-top",params.marginTop);
+        }).val(params.marginTop);
+
+        // margin buttom
+        dom.find("#marginBottom").keyup(function(){
+            params.marginBottom = $(this).val();
+            $this_element.attr("params",JSON.stringify(params));
+            $this_element.css("margin-bottom",params.marginBottom);
+        }).val(params.marginBottom);
+
         // link
         dom.find("#link").click(function(){
             params.link = $(this).is(":checked");
@@ -473,6 +491,13 @@ module.exports = function () {
                 $this_element.css("text-decoration","initial");
             }
         }).attr("checked",params.subra);
+
+        // text size
+        dom.find("#textSize").keyup(function(){
+            params.textSize = $(this).val();
+            $this_element.attr("params",JSON.stringify(params));
+            $this_element.css({"font-size":params.textSize});
+        }).val(params.textSize);
 
         // color de link
         dom.find("#buttonTextColorLink").change(function(){
@@ -541,12 +566,91 @@ module.exports = function () {
         });
     };
 
+    var rrss = function($this_element){
+        var params = JSON.parse($this_element.attr("params"));
+
+        var _html = "";
+        var icons = [];
+        icons.push({value : "icon-twitter", text : "twitter", attributes:""});
+        icons.push({value : "icon-instagram", text : "instagram", attributes:""});
+        icons.push({value : "icon-facebook", text : "facebook", attributes:""});
+        icons.push({value : "icon-dislike2", text : "dislike2", attributes:""});
+        icons.push({value : "icon-like2", text : "like2", attributes:""});
+        icons.push({value : "icon-dislike-outline", text : "outline", attributes:""});
+
+        _html += elementForm().select('icon','Iconos','rrss',icons);
+        _html += elementForm().inputText('textSize','Text Size, ej. 10px, 2%, 1em','rrss');
+        _html += elementForm().inputColor('textColor','Color de Texto','rrss');
+        _html += elementForm().checkbox('link','Hipervinculo','rrss');
+        _html += elementForm().inputText('linkHiper','Link','rrss',true);
+        _html += elementForm().inputColor('buttonTextColorLink','Color de Link','text');
+        _html += elementForm().button('drop','Borrar','rrss');
+
+        var dom = init().append(_html);
+
+        // color de texto
+        dom.find("#textColor").change(function(){
+            $this_element.css({"color":$(this).val()});
+            params.color = $(this).val();
+            $this_element.attr("params",JSON.stringify(params))
+        }).val(params.color);
+
+        // text size
+        dom.find("#textSize").keyup(function(){
+            params.textSize = $(this).val();
+            $this_element.attr("params",JSON.stringify(params));
+            $this_element.css({"font-size":params.textSize});
+        }).val(params.textSize);
+
+        // text transformacion
+        dom.find("#icon").change(function(){
+            $.each(icons,function(i,icon){
+                $this_element.removeClass(icon.value);
+            });
+            params.icon = $(this).val();
+            $this_element.addClass(params.icon);
+            $this_element.attr("params",JSON.stringify(params));
+        }).val(params.icon);
+
+        // link
+        dom.find("#link").click(function(){
+            params.link = $(this).is(":checked");
+            $this_element.attr("params",JSON.stringify(params));
+            $this_element.css("margin-right",params.link);
+            if (params.link === true){
+                $this_element.wrap("<a href='"+params.url+"'></a>")
+                    .css({"color":params.colorLink});
+            } else {
+                $this_element.unwrap();
+            }
+        }).attr("checked",params.link);
+
+        // hipervinculo
+        dom.find("#linkHiper").keyup(function(){
+            params.url = $(this).val();
+            $this_element.attr("params",JSON.stringify(params));
+            $this_element.parent().attr("href",params.url);
+        }).val(params.url);
+
+        // color de link
+        dom.find("#buttonTextColorLink").change(function(){
+            $this_element.parent().css({"color":$(this).val()});
+            params.colorLink = $(this).val();
+            $this_element.parent().attr("params",JSON.stringify(params))
+        }).val(params.colorLink);
+
+        dom.find("#drop").click(function(){
+            $this_element.remove()
+        });
+    };
+
     return {
         Block   : block,
         None    : none,
         Imagen  : imagen,
         Button  : button,
         Text    : text,
-        Video   : video
+        Video   : video,
+        Rrss    : rrss
     }
 };

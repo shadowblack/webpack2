@@ -1,4 +1,3 @@
-
 body{
 
 }
@@ -281,10 +280,15 @@ button:hover {
 
 .row .col.text{
     min-height: 50px;
+    height:auto;
     border: 1px solid black;
 }
 
 .row.text{
     min-height: 50px;
     border: 1px solid black;
+}
+
+#content-center div[type="Text"]{
+    border: 1px solid #999999;
 }

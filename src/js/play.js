@@ -103,7 +103,16 @@ AppPlay = (function($,window){
     };
 
     var startDragula = function(){
-        var dark = dragula([document.getElementById('block'),document.getElementById('video'),document.getElementById('text'),document.getElementById('button'),document.getElementById('block-column'),document.getElementById('imagen'), document.getElementById('content-center')], configDarcula());
+        var dark = dragula([
+            document.getElementById('block'),
+            document.getElementById('video'),
+            document.getElementById('text'),
+            document.getElementById('button'),
+            document.getElementById('block-column'),
+            document.getElementById('imagen'),
+            document.getElementById('content-center'),
+            document.getElementById('rrss')
+        ], configDarcula());
 
         dark.on('drop',function(el){
             elementClick($(el));
@@ -131,9 +140,10 @@ AppPlay = (function($,window){
 
                 $this_element.unbind("click");
                 $this_element.click(function(e){
+                    type = $(this).attr("type");
                     if (type === "None")
                         categoryFormat($this_element.attr("category"));
-
+                    _function = eval("event." + type);
                     _function($this_element);
                    return false;
                 });
