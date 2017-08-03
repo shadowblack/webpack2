@@ -37,6 +37,7 @@
                                     <option value="3">Bloque Boton CTA</option>
                                     <option value="4">Bloque Text</option>
                                     <option value="5">Bloque de Imagen</option>
+                                    <option value="6">Bloque Footer</option>
                                 </select>
                             </div>
                             <div class="card-panel">
@@ -76,7 +77,7 @@
                 </li>
 
                 <li>
-                    <div class="collapsible-header"><i class="small material-icons">assessment</i>Lienzo</div>
+                    <div class="collapsible-header"><i class="small material-icons">assessment</i>Imagen</div>
                     <div class="collapsible-body">
 
                         <div class="row" id="imagen">
@@ -146,6 +147,25 @@
                         </div>
                     </div>
                 </li>
+
+                <!--<li>
+                    <div class="collapsible-header"><i class="material-icons">whatshot</i>Opciones de radio</div>
+                    <div class="collapsible-body">
+                        <div class="row" >
+                            <div class="col s12 m12">
+                                <div class="card-panel truncate center-align" >
+                                    <div id="radio">
+                                        <div params='{}' type="Radios">
+                                            <input name="group1" type="radio" id="test1" />
+                                            <input name="group1" type="radio" id="test1" />
+                                            <label for="test1">Opcion</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>-->
             </ul>
         </div>
 
@@ -169,6 +189,25 @@
         </div>
     </div>
 
+    <div id="modal" class="modal modal-fixed-footer">
+        <div class="modal-content">
+            <h4>Vista Previa de HTML</h4>
+            <iframe width="720" height="450" src="./layout.html"></iframe>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class="modal-action modal-close waves-effect waves-red btn-flat ">Disagree</a>
+            <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Agree</a>
+        </div>
+    </div>
+
+    <div class="fixed-action-btn vertical">
+        <a class="btn-floating btn-large red">
+            <i class="large material-icons">mode_edit</i>
+        </a>
+        <ul>
+            <li><a class="btn-floating green" id="publish"><i class="material-icons">publish</i></a></li>
+        </ul>
+    </div>
 
 </body>
 </html>

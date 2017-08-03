@@ -11,24 +11,82 @@ module.exports = function () {
         centerContent.find("[category]").each(function(i,object){
             var category = $( this ).attr("category");
 
-            params = [];
-            $( this ).find("param").each(function(e,objectChild){
-                var param = JSON.parse( $(this).attr("param") );
+            var params = [];
+            $( this ).find("[params]").each(function(e,objectChild){
+                var param = JSON.parse( $(this).attr("params") );
                 params.push(param);
+                if ($( this ).attr("type") === "Text"){
+                    getServices($( this ));
+                }
+
             });
 
             var data = {
                 category    : category,
                 params      : params
             };
-            console.log(data);
-            alert(data);
-            //data.params
-            //dataJson.push();
+
+            dataJson.push(data);
         });
-       // console.log(htmlString);
+
+        // verificnado si el componente seleccionado esta dentro de un div o bloque category
+        centerContent.find("[params]").each(function(i){
+            if($(this).parents("[category]:eq(0)").length === 0){
+                Materialize.toast('Ups, para poder utilizar esta funcionalidad correctamente, el componente debe estar dentro de un bloque', 4000)
+                return false;
+            }
+        });
+
+        console.log(JSON.stringify(dataJson));
+        console.log(htmlString);
     };
+
+    var getAllService = function(){
+      getServices("[params]");
+    };
+
+    var getServices = function(param){
+        $(param).each(function(i){
+            var self = $( this );
+            var paramsObject = JSON.parse( $(this).attr("params") );
+            if(paramsObject.isGetData !== undefined && paramsObject.isGetData === true && paramsObject.getData !== undefined){
+
+                 $.ajax({
+                     url:paramsObject.getData,
+                     dataType: 'text',
+                     statusCode: {
+                         404: function() {
+                             console.log( "page not found" );
+                             self.text("La URL no existe");
+                         }
+                     }
+                 }).done(function( text ) {
+                     paramsObject.caption = text;
+                     self.text(text);
+                 });
+            }
+        });
+    };
+
+    var make = function(){
+
+           // console.log(html);
+            var modal = $('#modal');
+            modal.modal('open');
+            modal.find(".modal-content");
+            modal.find("iframe")
+                .contents()
+                .find("#content")
+                .empty()
+                .append($("#content-center")
+                    .html());
+           // modal.append(html);
+
+    };
+
     return {
-        run : run
+        run             : run,
+        getAllService   : getAllService,
+        make            : make
     }
-}
+};

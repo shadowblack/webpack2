@@ -9,6 +9,7 @@ import 'dragula/dist/dragula.css';
 /*import 'jquery';*/
 
 var rightEventOptions = require ('./rightEventOptions');
+var makeHTML = require('./makeHTML');
 
 
 //import 'html-webpack-plugin'
@@ -26,6 +27,7 @@ AppPlay = (function($,window){
         startDragula();
         category();
         initialize();
+        edit();
 
         var block_left = $("#block-left");
         left.block = block_left.html();
@@ -40,6 +42,12 @@ AppPlay = (function($,window){
 
         };
         block_left.find("[reset]").click(function(){reset()});
+    };
+
+    var edit = function(){
+        $("#publish").click(function(){
+            makeHTML().make();
+        });
     };
 
     var initialize = function(){
@@ -111,7 +119,8 @@ AppPlay = (function($,window){
             document.getElementById('block-column'),
             document.getElementById('imagen'),
             document.getElementById('content-center'),
-            document.getElementById('rrss')
+            document.getElementById('rrss')/*,
+            document.getElementById('radio')*/
         ], configDarcula());
 
         dark.on('drop',function(el){
@@ -134,6 +143,7 @@ AppPlay = (function($,window){
             var type = $this_element.attr("type");
 
             try {
+
                 var _function = eval("event." + type);
                 // estableciendo criterios para el contenido centrado
                 _function($this_element);

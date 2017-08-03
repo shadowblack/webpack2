@@ -9,7 +9,12 @@ module.exports = function () {
 
     var imagen = function($this_element){
 
+        var params = JSON.parse($this_element.attr("params"));
+
         var _html = elementForm().inputFile('file-image','Imagen','image');
+        _html += elementForm().checkbox('link','Hipervinculo','image');
+        _html += elementForm().checkbox('radius','Redondo','image');
+        _html += elementForm().inputText('linkHiper','Hipervinculo','image',true);
         _html += elementForm().button('drop','Borrar','all');
         var dom = init().append(_html);
 
@@ -28,10 +33,52 @@ module.exports = function () {
         // file
         dom.find("#file-image").change(function(){
             readURL(this);
+            makeHTML().run();
         });
+
+        // radial
+        dom.find("#radius").click(function(){
+            params.radius = $(this).is(":checked");
+            $this_element.attr("params",JSON.stringify(params));
+
+            if (params.radius === true){
+                $this_element.find("div:eq(0)").removeClass("card");
+                $this_element.find("img").addClass("circle");
+                $this_element.find("img").addClass("responsive-img");
+            } else {
+                $this_element.find("div:eq(0)").addClass("card");
+                $this_element.find("img").removeClass("circle");
+                $this_element.find("img").removeClass("responsive-img");
+            }
+            makeHTML().run();
+        }).attr("checked",params.link);
+
+        // link
+        dom.find("#link").click(function(){
+            params.link = $(this).is(":checked");
+            $this_element.attr("params",JSON.stringify(params));
+            if (params.link === true){
+                $this_element.wrap("<a href='"+params.url+"'></a>")
+                    .css({"color":params.colorLink});
+            } else {
+                $this_element.unwrap();
+            }
+            makeHTML().run();
+        }).attr("checked",params.link);
+
+        // hipervinculo
+        dom.find("#linkHiper").keyup(function(){
+            params.url = $(this).val();
+            $this_element.attr("params",JSON.stringify(params));
+            if ($this_element.parent().is("a") === true)
+                $this_element.parent().attr("href",params.url);
+            makeHTML().run();
+        }).val(params.url);
+
         // borrar
         dom.find("#drop").click(function(){
             $this_element.remove();
+            makeHTML().run();
         });
 
     };
@@ -42,6 +89,7 @@ module.exports = function () {
         dom.unbind("click");
         dom.find("#drop").click(function(){
             $this_element.remove();
+            makeHTML().run();
         });
     };
 
@@ -142,12 +190,14 @@ module.exports = function () {
         dom.find("#block-color").change(function(){
             $this_element.css({"background-color":$(this).val()});
             params.backgroundColor = $(this).val();
-            $this_element.attr("params",JSON.stringify(params))
+            $this_element.attr("params",JSON.stringify(params));
+            makeHTML().run();
         }).val(params.backgroundColor);
 
         // borrar
         dom.find("#drop").click(function(){
             $this_element.remove();
+            makeHTML().run();
         });
 
         // align
@@ -157,6 +207,7 @@ module.exports = function () {
             $this_element.addClass($(this).val());
             params.align = $(this).val();
             $this_element.attr("params",JSON.stringify(params));
+            makeHTML().run();
         }).val(params.align);
 
         // align text
@@ -167,6 +218,7 @@ module.exports = function () {
             $this_element.addClass($(this).val());
             params.textAlign = $(this).val();
             $this_element.attr("params",JSON.stringify(params));
+            makeHTML().run();
         }).val(params.textAlign);
 
         // altura
@@ -174,6 +226,7 @@ module.exports = function () {
             params.height = $(this).val();
             $this_element.attr("params",JSON.stringify(params));
             $this_element.css("height",params.height);
+            makeHTML().run();
         }).val(params.height);
 
         // eventos del numero de bloques
@@ -198,6 +251,7 @@ module.exports = function () {
             params.c = $(this).val();
             block.addClass("s"+$(this).val());
             block.attr("params",JSON.stringify(params));
+            makeHTML().run();
         }).val(params.c);
 
         /*// width
@@ -205,6 +259,7 @@ module.exports = function () {
             params.width = $(this).val();
             $this_element.attr("params",JSON.stringify(params));
             $this_element.css({"width":params.width});
+            makeHTML().run();
         }).val(params.width);*/
     };
 
@@ -265,6 +320,7 @@ module.exports = function () {
             $this_element.attr("params",JSON.stringify(params));
             $this_element.empty();
             $this_element.append(params.caption);
+            makeHTML().run();
         }).val(params.caption);
 
         // opacity
@@ -273,20 +329,23 @@ module.exports = function () {
             $this_element.css({"opacity":value});
             params.opacity = $(this).val();
             $this_element.attr("params",JSON.stringify(params));
+            makeHTML().run();
         }).val(params.opacity);
 
         // background color
         dom.find("#buttonColor").change(function(){
             $this_element.css({"background-color":$(this).val()});
             params.backgroundColor = $(this).val();
-            $this_element.attr("params",JSON.stringify(params))
+            $this_element.attr("params",JSON.stringify(params));
+            makeHTML().run();
         }).val(params.backgroundColor);
 
         // color de texto
         dom.find("#buttonTextColor").change(function(){
             $this_element.css({"color":$(this).val()});
             params.color = $(this).val();
-            $this_element.attr("params",JSON.stringify(params))
+            $this_element.attr("params",JSON.stringify(params));
+            makeHTML().run();
         }).val(params.color);
 
         // borde
@@ -294,6 +353,7 @@ module.exports = function () {
             params.border = $(this).val();
             $this_element.attr("params",JSON.stringify(params));
             $this_element.css({"border-width":params.border});
+            makeHTML().run();
         }).val(params.border);
 
         // borde color
@@ -302,7 +362,8 @@ module.exports = function () {
                 "border-color":$(this).val()
             });
             params.borderColor = $(this).val();
-            $this_element.attr("params",JSON.stringify(params))
+            $this_element.attr("params",JSON.stringify(params));
+            makeHTML().run();
         }).val(params.borderColor);
 
         // border style
@@ -310,6 +371,7 @@ module.exports = function () {
             $this_element.css({"border-style":$(this).val()});
             params.borderStyle = $(this).val();
             $this_element.attr("params",JSON.stringify(params));
+            makeHTML().run();
         }).val(params.borderStyle);
 
         // text size
@@ -317,6 +379,7 @@ module.exports = function () {
             params.textSize = $(this).val();
             $this_element.attr("params",JSON.stringify(params));
             $this_element.css({"font-size":params.textSize});
+            makeHTML().run();
         }).val(params.textSize);
 
         // height
@@ -324,6 +387,7 @@ module.exports = function () {
             params.height = $(this).val();
             $this_element.attr("params",JSON.stringify(params));
             $this_element.css({"height":params.height});
+            makeHTML().run();
         }).val(params.height);
 
         // width
@@ -331,6 +395,7 @@ module.exports = function () {
             params.width = $(this).val();
             $this_element.attr("params",JSON.stringify(params));
             $this_element.css({"width":params.width});
+            makeHTML().run();
         }).val(params.width);
 
         // text transformacion
@@ -338,6 +403,7 @@ module.exports = function () {
             $this_element.css({"text-transform":$(this).val()});
             params.textTransform = $(this).val();
             $this_element.attr("params",JSON.stringify(params));
+            makeHTML().run();
         }).val(params.textTransform);
 
         // text type
@@ -345,11 +411,13 @@ module.exports = function () {
             $this_element.css({"font-family":$(this).val()});
             params.fontFamily = $(this).val();
             $this_element.attr("params",JSON.stringify(params));
+            makeHTML().run();
         }).val(params.fontFamily);
 
         // borrar
         dom.find("#drop").click(function(){
             $this_element.remove();
+            makeHTML().run();
         });
     };
 
@@ -385,6 +453,9 @@ module.exports = function () {
         _html += elementForm().checkbox('link','Hipervinculo','text');
         _html += elementForm().inputColor('buttonTextColorLink','Color de Link','text');
         _html += elementForm().inputText('linkHiper','Hipervinculo','text',true);
+
+        _html += elementForm().checkbox('isGetData','Obtener de Servicio?','text');
+        _html += elementForm().inputText('getData','Ruta de Servicio','text',true);
         _html += elementForm().button('drop','Borrar','button');
         var dom = init().append(_html);
 
@@ -395,13 +466,15 @@ module.exports = function () {
             $this_element.attr("params",JSON.stringify(params));
             $this_element.empty();
             $this_element.append(params.caption);
+            makeHTML().run();
         }).val(params.caption);
 
         // color de texto
         dom.find("#buttonTextColor").change(function(){
             $this_element.css({"color":$(this).val()});
             params.color = $(this).val();
-            $this_element.attr("params",JSON.stringify(params))
+            $this_element.attr("params",JSON.stringify(params));
+            makeHTML().run();
         }).val(params.color);
 
         // text transformacion
@@ -409,6 +482,7 @@ module.exports = function () {
             $this_element.css({"text-transform":$(this).val()});
             params.textTransform = $(this).val();
             $this_element.attr("params",JSON.stringify(params));
+            makeHTML().run();
         }).val(params.textTransform);
 
         // text type
@@ -416,6 +490,7 @@ module.exports = function () {
             $this_element.css({"font-family":$(this).val()});
             params.fontFamily = $(this).val();
             $this_element.attr("params",JSON.stringify(params));
+            makeHTML().run();
         }).val(params.fontFamily);
 
         // margin left
@@ -423,6 +498,7 @@ module.exports = function () {
             params.marginLeft = $(this).val();
             $this_element.attr("params",JSON.stringify(params));
             $this_element.css("margin-left",params.marginLeft);
+            makeHTML().run();
         }).val(params.marginLeft);
 
         // margin right
@@ -430,6 +506,7 @@ module.exports = function () {
             params.marginRight = $(this).val();
             $this_element.attr("params",JSON.stringify(params));
             $this_element.css("margin-right",params.marginRight);
+            makeHTML().run();
         }).val(params.marginRight);
 
         // margin top
@@ -437,6 +514,7 @@ module.exports = function () {
             params.marginTop = $(this).val();
             $this_element.attr("params",JSON.stringify(params));
             $this_element.css("margin-top",params.marginTop);
+            makeHTML().run();
         }).val(params.marginTop);
 
         // margin buttom
@@ -444,19 +522,21 @@ module.exports = function () {
             params.marginBottom = $(this).val();
             $this_element.attr("params",JSON.stringify(params));
             $this_element.css("margin-bottom",params.marginBottom);
+            makeHTML().run();
         }).val(params.marginBottom);
 
         // link
         dom.find("#link").click(function(){
             params.link = $(this).is(":checked");
             $this_element.attr("params",JSON.stringify(params));
-            $this_element.css("margin-right",params.link);
+            /*$this_element.css("margin-right",params.link);*/
             if (params.link === true){
                 $this_element.wrap("<a href='"+params.url+"'></a>")
                     .css({"color":params.colorLink});
             } else {
                 $this_element.unwrap();
             }
+            makeHTML().run();
         }).attr("checked",params.link);
 
         // bold
@@ -468,6 +548,7 @@ module.exports = function () {
             } else {
                 $this_element.css("font-weight","normal");
             }
+            makeHTML().run();
         }).attr("checked",params.bold);
 
         // italic
@@ -479,6 +560,7 @@ module.exports = function () {
             } else {
                 $this_element.css("font-style","normal");
             }
+            makeHTML().run();
         }).attr("checked",params.italic);
 
         // italic
@@ -490,6 +572,7 @@ module.exports = function () {
             } else {
                 $this_element.css("text-decoration","initial");
             }
+            makeHTML().run();
         }).attr("checked",params.subra);
 
         // text size
@@ -497,24 +580,43 @@ module.exports = function () {
             params.textSize = $(this).val();
             $this_element.attr("params",JSON.stringify(params));
             $this_element.css({"font-size":params.textSize});
+            makeHTML().run();
         }).val(params.textSize);
 
         // color de link
         dom.find("#buttonTextColorLink").change(function(){
             $this_element.parent().css({"color":$(this).val()});
             params.colorLink = $(this).val();
-            $this_element.parent().attr("params",JSON.stringify(params))
+            $this_element.parent().attr("params",JSON.stringify(params));
+            makeHTML().run();
         }).val(params.colorLink);
 
         // hipervinculo
         dom.find("#linkHiper").keyup(function(){
             params.url = $(this).val();
             $this_element.attr("params",JSON.stringify(params));
-            $this_element.parent().attr("src",params.url);
+            if ($this_element.parent().is("a") === true)
+                $this_element.parent().attr("href",params.url);
+            makeHTML().run();
         }).val(params.url);
+
+        // is get data
+        dom.find("#isGetData").click(function(){
+            params.isGetData = $(this).is(":checked");
+            $this_element.attr("params",JSON.stringify(params));
+            makeHTML().run();
+        }).attr("checked",params.isGetData);
+
+        // get data from URL
+        dom.find("#getData").keyup(function(){
+            params.getData = $(this).val();
+            $this_element.attr("params",JSON.stringify(params));
+            makeHTML().run();
+        }).val(params.getData);
 
         // borrar
         dom.find("#drop").click(function(){
+            makeHTML().run();
             $this_element.remove();
         });
     };
@@ -523,19 +625,20 @@ module.exports = function () {
         var params = JSON.parse($this_element.attr("params"));
 
         var _html = "";
-        _html += elementForm().inputText('linkHiper','Hipervinculo','video',true);
+        _html += elementForm().inputText('urlVideo','URL','video',true);
         _html += elementForm().checkbox('autoplay','Autoplay','video');
         _html += elementForm().checkbox('loop','Loop','video');
         _html += elementForm().button('drop','Borrar','video');
 
         var dom = init().append(_html);
 
-        // hipervinculo
-        dom.find("#linkHiper").keyup(function(){
+        // ruta del video
+        dom.find("#urlVideo").keyup(function(){
             params.url = $(this).val();
             $this_element.attr("params",JSON.stringify(params));
             $this_element.find("source").attr("src",params.url);
             $this_element[0].load();
+            makeHTML().run();
         }).val(params.url);
 
         // autoload
@@ -547,6 +650,7 @@ module.exports = function () {
             } else {
                 $this_element.removeAttr("autoload");
             }
+            makeHTML().run();
         }).attr("checked",params.autoplay);
 
         // loop
@@ -558,11 +662,13 @@ module.exports = function () {
             } else {
                 $this_element.removeAttr("loop");
             }
+            makeHTML().run();
         }).attr("checked",params.loop);
 
         // borrar
         dom.find("#drop").click(function(){
-            $this_element.remove()
+            $this_element.remove();
+            makeHTML().run();
         });
     };
 
@@ -592,7 +698,8 @@ module.exports = function () {
         dom.find("#textColor").change(function(){
             $this_element.css({"color":$(this).val()});
             params.color = $(this).val();
-            $this_element.attr("params",JSON.stringify(params))
+            $this_element.attr("params",JSON.stringify(params));
+            makeHTML().run();
         }).val(params.color);
 
         // text size
@@ -600,6 +707,7 @@ module.exports = function () {
             params.textSize = $(this).val();
             $this_element.attr("params",JSON.stringify(params));
             $this_element.css({"font-size":params.textSize});
+            makeHTML().run();
         }).val(params.textSize);
 
         // text transformacion
@@ -610,19 +718,21 @@ module.exports = function () {
             params.icon = $(this).val();
             $this_element.addClass(params.icon);
             $this_element.attr("params",JSON.stringify(params));
+            makeHTML().run();
         }).val(params.icon);
 
         // link
         dom.find("#link").click(function(){
             params.link = $(this).is(":checked");
             $this_element.attr("params",JSON.stringify(params));
-            $this_element.css("margin-right",params.link);
+            /*$this_element.css("margin-right",params.link);*/
             if (params.link === true){
                 $this_element.wrap("<a href='"+params.url+"'></a>")
                     .css({"color":params.colorLink});
             } else {
                 $this_element.unwrap();
             }
+            makeHTML().run();
         }).attr("checked",params.link);
 
         // hipervinculo
@@ -630,18 +740,36 @@ module.exports = function () {
             params.url = $(this).val();
             $this_element.attr("params",JSON.stringify(params));
             $this_element.parent().attr("href",params.url);
+            makeHTML().run();
         }).val(params.url);
 
         // color de link
         dom.find("#buttonTextColorLink").change(function(){
             $this_element.parent().css({"color":$(this).val()});
             params.colorLink = $(this).val();
-            $this_element.parent().attr("params",JSON.stringify(params))
+            $this_element.parent().attr("params",JSON.stringify(params));
+            makeHTML().run();
         }).val(params.colorLink);
 
         dom.find("#drop").click(function(){
             $this_element.remove()
+            makeHTML().run();
         });
+    };
+
+    var radioOption = function($this_element){
+        //alert("hola");
+        var params = JSON.parse($this_element.attr("params"));
+        var _html = "";
+
+        var _html = elementForm().button('drop','Borrar','all');
+        var dom = init().append(_html);
+        dom.unbind("click");
+        dom.find("#drop").click(function(){
+            $this_element.remove();
+            makeHTML().run();
+        });
+
     };
 
     return {
@@ -651,6 +779,7 @@ module.exports = function () {
         Button  : button,
         Text    : text,
         Video   : video,
-        Rrss    : rrss
+        Rrss    : rrss,
+        Radios   : radioOption
     }
 };
