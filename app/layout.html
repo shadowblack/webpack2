@@ -2,22 +2,59 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Generado</title>
     <script src="fragment/js/lib/jquery-3.2.1.min.js"></script>
     <link rel="stylesheet" href="fragment/js/lib/materialize/css/materialize.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="fragment/js/lib/icomoon/style.css">
 
-    <script type="text/javascript">
-        jQuery(function(){
 
-        })
-    </script>
 </head>
 <body >
     <div id="content">
         hola mundo
     </div>
-<script src="fragment/js/lib/materialize/js/materialize.min.js"></script>
+    <script type="text/javascript">
+
+        var my_slider = function(){
+            //console.log($("title").text());
+            var timeExpire = 2000;
+            var count = 0;
+
+            alert("llegoooo");
+            $("[params]").each(function(i){
+                alert("llego");
+                var params = JSON.parse($( this ).attr("params"));
+                alert(params.isSlider);
+                if (params.isSlider !== undefined && params.isSlider === true){
+                    count ++;
+                    var self = $(this);
+                    alert("ejecutar2");
+                    // sincronizando influenciador
+                    setTimeout(function(){
+                        var changeInfluencer;
+                        setInterval(function(){
+                            var name = params.name;
+                            $("div[type='text']").each(function(e){
+                                var paramsText = JSON.parse($( this ).attr("params"));
+                                if (paramsText.name === nameTarget){
+                                    $(this).text("Influenciador");
+                                }
+                            });
+                        },count * timeExpire)
+                    },count * timeExpire);
+                }
+          })
+        };
+        jQuery(function(){
+            my_slider();
+        });
+    </script>
+    <div id="script">
+        <script type="text/javascript">
+            // script
+        </script>
+    </div>
+    <script src="fragment/js/lib/materialize/js/materialize.min.js"></script>
 </body>
 </html>

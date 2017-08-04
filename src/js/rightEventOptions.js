@@ -15,6 +15,8 @@ module.exports = function () {
         _html += elementForm().checkbox('link','Hipervinculo','image');
         _html += elementForm().checkbox('radius','Redondo','image');
         _html += elementForm().inputText('linkHiper','Hipervinculo','image',true);
+        _html += elementForm().inputText('nameTarget','#nombre','image',true);
+        _html += elementForm().checkbox('isInfluencer','Es influenciador?','image');
         _html += elementForm().button('drop','Borrar','all');
         var dom = init().append(_html);
 
@@ -52,6 +54,19 @@ module.exports = function () {
             }
             makeHTML().run();
         }).attr("checked",params.link);
+
+        // name target, es el nombre del componente a relacionar con el influenciador
+        dom.find("#nameTarget").keyup(function(){
+            params.nameTarget = $(this).val();
+            $this_element.attr("params",JSON.stringify(params));
+            makeHTML().run();
+        }).val(params.nameTarget);
+
+        // is incluence
+        dom.find("#isInfluencer").click(function(){
+            params.isInfluencer = $(this).is(":checked");
+            $this_element.attr("params",JSON.stringify(params));
+        }).attr("checked",params.isInfluencer);
 
         // link
         dom.find("#link").click(function(){
@@ -93,6 +108,7 @@ module.exports = function () {
         });
     };
 
+    // bloque de columnas
     var block = function($this_element){
         //var _html = elementForm().checkbox('color_block','color','block');
         var _html = "";
@@ -169,6 +185,9 @@ module.exports = function () {
 
 
         _html += elementForm().inputColor('block-color','Color de Fondo','block');
+        _html += elementForm().checkbox('fondo','Fondo?','block');
+        _html += elementForm().inputFile('file-image','Imagen de Fondo','block');
+        _html += elementForm().checkbox('imagenFondo','Imagen de Fondo?','block');
         _html += elementForm().inputRange('block-range','Opacidad','block');
         _html += elementForm().inputText('block-height','Altura, ej. 10px, 2%, 1em','block');
         _html += elementForm().button('drop','Borrar','all');
@@ -186,13 +205,69 @@ module.exports = function () {
             makeHTML().run();
         }).val(params.opacity);
 
+        // color de fondo?
+        dom.find("#fondo").click(function(){
+            params.isImageBackground = $(this).is(":checked");
+            $this_element.attr("params",JSON.stringify(params));
+            if (params.isColor === true){
+                $this_element.css("background",params.isImageBackground);
+            } else {
+                $this_element.css("background","none");
+            }
+            makeHTML().run();
+        }).attr("checked",params.isImageBackground);
+
+        dom.find("#imagenFondo").click(function(){
+            params.isImagenFondo = $(this).is(":checked");
+            $this_element.attr("params",JSON.stringify(params));
+            if (params.isImagenFondo === true){
+                $this_element.css("background-image",params.backgroundImage);
+            } else {
+                $this_element.css("background-image","none");
+            }
+            makeHTML().run();
+        }).attr("checked",params.isImagenFondo);
+
         // color
         dom.find("#block-color").change(function(){
             $this_element.css({"background-color":$(this).val()});
             params.backgroundColor = $(this).val();
             $this_element.attr("params",JSON.stringify(params));
+            dom.find("#fondo").attr("checked",true);
             makeHTML().run();
         }).val(params.backgroundColor);
+
+        // image background
+        dom.find("#file-image").change(function(){
+
+            var readURL = function(input) {
+
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        params.backgroundImage = 'url("'+e.target.result+'")';
+                        params.backgroundRepeat = 'no-repeat';
+                        params.backgroundPosition = 'center center';
+                        params.backgroundSize = 'cover';
+
+                        $this_element.css('background-image',params.backgroundImage);
+                        $this_element.css('background-repeat',params.backgroundRepeat);
+                        /* $this_element.css('background-attachment','fixed');*/
+                        $this_element.css('background-position', params.backgroundPosition);
+                        $this_element.css('background-size',params.backgroundSize);
+
+                        $("#imagenFondo").attr("checked",true);
+                        $this_element.attr("params",JSON.stringify(params));
+                    };
+
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+
+            readURL(this);
+            makeHTML().run();
+        });
 
         // borrar
         dom.find("#drop").click(function(){
@@ -424,7 +499,9 @@ module.exports = function () {
     var text = function($this_element){
         var params = JSON.parse($this_element.attr("params"));
 
-        var _html = elementForm().inputText('buttonCaption','Etiqueta','text',true);
+        var _html = "";
+        _html = elementForm().inputText('name','Nombre','text',true);
+        _html += elementForm().inputText('buttonCaption','Etiqueta','text',true);
         _html += elementForm().inputColor('buttonTextColor','Color de Texto','text');
         var options = [];
         options.push({value : "none", text : "none", attributes:""});
@@ -458,6 +535,13 @@ module.exports = function () {
         _html += elementForm().inputText('getData','Ruta de Servicio','text',true);
         _html += elementForm().button('drop','Borrar','button');
         var dom = init().append(_html);
+
+        // name
+        dom.find("#name").keyup(function(){
+            params.name = $(this).val();
+            $this_element.attr("params",JSON.stringify(params));
+            makeHTML().run();
+        }).val(params.name);
 
         // caption
         $this_element.text(params.caption);

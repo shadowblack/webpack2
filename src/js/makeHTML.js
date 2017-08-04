@@ -74,12 +74,16 @@ module.exports = function () {
             var modal = $('#modal');
             modal.modal('open');
             modal.find(".modal-content");
-            modal.find("iframe")
+            var iframe = modal.find("iframe");
+
+            iframe
                 .contents()
                 .find("#content")
                 .empty()
                 .append($("#content-center")
                     .html());
+
+            iframe[0].contentWindow.my_slider();
            // modal.append(html);
 
     };
