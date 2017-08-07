@@ -70,7 +70,6 @@ module.exports = function () {
 
     var make = function(){
 
-           // console.log(html);
             var modal = $('#modal');
             modal.modal('open');
             modal.find(".modal-content");
@@ -83,14 +82,22 @@ module.exports = function () {
                 .append($("#content-center")
                     .html());
 
-            iframe[0].contentWindow.my_slider();
-           // modal.append(html);
+            iframe[0].contentWindow.execute();
 
+    };
+
+    var destroy = function(){
+        var modal = $('#modal');
+        modal.modal('open');
+        modal.find(".modal-content");
+        var iframe = modal.find("iframe");
+        iframe[0].contentWindow.destroy();
     };
 
     return {
         run             : run,
         getAllService   : getAllService,
-        make            : make
+        make            : make,
+        destroy         : destroy
     }
 };

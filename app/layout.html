@@ -12,33 +12,44 @@
 </head>
 <body >
     <div id="content">
-        hola mundo
+        <!--Aqui se autogenera el html dinaico-->
     </div>
     <script type="text/javascript">
+        var intervalId;
+
+        var destroy = function(){
+            alert(intervalId);
+            clearInterval(intervalId);
+        };
 
         var my_slider = function(){
             //console.log($("title").text());
-            var timeExpire = 2000;
+            var timeExpire = 5000;
             var count = 0;
 
-            alert("llegoooo");
-            $("[params]").each(function(i){
-                alert("llego");
+            // buscando modulo de imagenes ya que las mismas manejan la capaciad de agregar influenciadores
+            $('[type="Imagen"]').each(function(i){
                 var params = JSON.parse($( this ).attr("params"));
-                alert(params.isSlider);
-                if (params.isSlider !== undefined && params.isSlider === true){
+                if (params.isInfluencer !== undefined && params.isInfluencer === true){
                     count ++;
                     var self = $(this);
-                    alert("ejecutar2");
                     // sincronizando influenciador
                     setTimeout(function(){
                         var changeInfluencer;
-                        setInterval(function(){
+                        intervalId = setInterval(function(){
+                            // cambiando imagenes
+                            self.find("img").attr("src",(self.find("img").attr("src") === "images/office.jpg" ? "images/sample-1.jpg" : "images/office.jpg"));
+
                             var name = params.name;
-                            $("div[type='text']").each(function(e){
+                            // buscando los textos cuya target se defina en el bloque de imagen influenciador
+                            $("div[type='Text']").each(function(e){
                                 var paramsText = JSON.parse($( this ).attr("params"));
-                                if (paramsText.name === nameTarget){
+
+                                if (params.nameTarget !== undefined && paramsText.name === params.nameTarget){
                                     $(this).text("Influenciador");
+
+                                    // solo entra una vez
+                                    return false;
                                 }
                             });
                         },count * timeExpire)
@@ -46,8 +57,13 @@
                 }
           })
         };
-        jQuery(function(){
+
+        var execute = function(){
             my_slider();
+        };
+
+        jQuery(function(){
+            execute();
         });
     </script>
     <div id="script">

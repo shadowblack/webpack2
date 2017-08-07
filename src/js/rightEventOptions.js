@@ -16,7 +16,7 @@ module.exports = function () {
         _html += elementForm().checkbox('radius','Redondo','image');
         _html += elementForm().inputText('linkHiper','Hipervinculo','image',true);
         _html += elementForm().inputText('nameTarget','#nombre','image',true);
-        _html += elementForm().checkbox('isInfluencer','Es influenciador?','image');
+        _html += elementForm().checkbox('isInfluencer','Es influenciador o slide?','image');
         _html += elementForm().button('drop','Borrar','all');
         var dom = init().append(_html);
 
@@ -856,14 +856,92 @@ module.exports = function () {
 
     };
 
+    var inputText = function($this_element){
+
+        var params = JSON.parse($this_element.attr("params"));
+        var _html = "";
+
+        _html += elementForm().inputText('inputName','Name','inputText',true);
+        _html += elementForm().inputText('inputCaption','Caption','inputText',true);
+        _html += elementForm().button('drop','Borrar','all');
+
+        var dom = init().append(_html);
+
+        // input caption
+        dom.find("#inputCaption").keyup(function(){
+            params.inputCaption = $(this).val();
+            $this_element.attr("params",JSON.stringify(params));
+            $this_element.find("label").text(params.inputCaption);
+            makeHTML().run();
+        }).val(params.inputCaption);
+
+        // input name, cambiando nombre y id
+        dom.find("#inputName").keyup(function(){
+            params.inputName = $(this).val();
+            $this_element.attr("params",JSON.stringify(params));
+            $this_element.attr("id",JSON.stringify(params));
+            $this_element.attr("name",JSON.stringify(params));
+            makeHTML().run();
+        }).val(params.inputName);
+
+        dom.unbind("click");
+
+        dom.find("#drop").click(function(){
+            $this_element.remove();
+            makeHTML().run();
+        });
+    };
+
+    var inputSelect = function($this_element){
+        var params = JSON.parse($this_element.attr("params"));
+        var _html = "";
+
+        _html += elementForm().inputText('inputSelectName','Name','inputSelectText',true);
+        _html += elementForm().inputText('inputSelectCaption','Caption','inputSelectText',true);
+        _html += elementForm().inputText('inputOptionValue','Option Value','inputSelectText',true);
+        _html += elementForm().button('drop','Borrar','all');
+
+        $this_element.empty();
+        $this_element.append("<div class='input-field col s12'><select></select><label>Materialize Select</label></div>");
+
+        var dom = init().append(_html);
+
+        // input caption select label
+        dom.find("#inputSelectCaption").keyup(function(){
+            params.inputSelectCaption = $(this).val();
+            //$this_element.find("select").empty();
+            $this_element.parent().find("label").text(params.inputSelectCaption);
+            makeHTML().run();
+        }).val(params.inputSelectCaption);
+
+        dom.find("#inputOptionValue").keyup(function(){
+            params.inputOptionValue = $(this).val();
+            //$this_element.find("select").empty();
+            $this_element.find("select").append("<option>holass</option>");
+            $('select').material_select();
+            makeHTML().run();
+        }).val(params.inputOptionValue);
+
+        dom.unbind("click");
+        dom.find("#drop").click(function(){
+            $this_element.remove();
+            makeHTML().run();
+        });
+
+        $('select').material_select();
+
+    };
+
     return {
-        Block   : block,
-        None    : none,
-        Imagen  : imagen,
-        Button  : button,
-        Text    : text,
-        Video   : video,
-        Rrss    : rrss,
-        Radios   : radioOption
+        Block       : block,
+        None        : none,
+        Imagen      : imagen,
+        Button      : button,
+        Text        : text,
+        Video       : video,
+        Rrss        : rrss,
+        Radios      : radioOption,
+        InputText   : inputText,
+        InputSelect : inputSelect
     }
 };

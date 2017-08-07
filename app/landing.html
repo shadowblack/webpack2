@@ -147,6 +147,46 @@
                         </div>
                     </div>
                 </li>
+                <li>
+                    <div class="collapsible-header"><i class="material-icons">whatshot</i>Inputs</div>
+                    <div class="collapsible-body">
+                        <div class="row" >
+                            <div class="col s12 m12">
+                                <div class="card-panel truncate center-align" >
+                                    <div id="inputText">
+                                        <div params='{}' type="InputText">
+                                            <div class="input-field col s12">
+                                                <input id="input" type="email" class="validate">
+                                                <label for="input">Input Text</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row" >
+                            <div class="col s12 m12">
+                                <div class="card-panel truncate center-align" >
+                                    <div id="inputSelect">
+                                        <br>
+                                        <div params='{}' type="InputSelect">
+                                            <div class="input-field col s12">
+                                                <select>
+                                                    <option value="" disabled selected>Choose your option</option>
+                                                    <option value="1">Option 1</option>
+                                                    <option value="2">Option 2</option>
+                                                    <option value="3">Option 3</option>
+                                                </select>
+                                                <label>Materialize Select</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
 
                 <!--<li>
                     <div class="collapsible-header"><i class="material-icons">whatshot</i>Opciones de radio</div>
@@ -196,7 +236,7 @@
         </div>
         <div class="modal-footer">
             <a href="#!" class="modal-action modal-close waves-effect waves-red btn-flat ">Guardar</a>
-            <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Cerrar Vista Previa</a>
+            <a href="javascript:void(0)" id="close_modal" class="modal-action modal-close waves-effect waves-green btn-flat ">Cerrar Vista Previa</a>
         </div>
     </div>
 

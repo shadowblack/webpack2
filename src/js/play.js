@@ -48,6 +48,10 @@ AppPlay = (function($,window){
         $("#publish").click(function(){
             makeHTML().make();
         });
+
+        $("#close_modal").click(function(){
+            makeHTML().destroy();
+        });
     };
 
     var initialize = function(){
@@ -119,7 +123,10 @@ AppPlay = (function($,window){
             document.getElementById('block-column'),
             document.getElementById('imagen'),
             document.getElementById('content-center'),
-            document.getElementById('rrss')/*,
+            document.getElementById('rrss'),
+            document.getElementById('inputText'),
+            document.getElementById('inputSelect')
+            /*,
             document.getElementById('radio')*/
         ], configDarcula());
 
