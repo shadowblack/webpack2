@@ -868,18 +868,46 @@ module.exports = function () {
     };
 
     var radioOption = function($this_element){
-        //alert("hola");
         var params = JSON.parse($this_element.attr("params"));
         var _html = "";
 
-        var _html = elementForm().button('drop','Borrar','all');
+        _html += elementForm().inputText('inputName','Name','radio',true);
+        _html += elementForm().inputText('caption','Caption','radio',true);
+        _html += elementForm().inputText('group','Group','radio',true);
+        _html += elementForm().button('drop','Borrar','all');
+
         var dom = init().append(_html);
+
+        // input name, cambiando nombre y id
+        dom.find("#inputName").keyup(function(){
+            params.inputName = $(this).val();
+            $this_element.attr("params",JSON.stringify(params));
+            $this_element.find("input").attr("id",params.inputName);
+            $this_element.find("label").attr("for",params.inputName);
+            makeHTML().run();
+        }).val(params.inputName);
+
+        // input name, cambiando nombre y id
+        dom.find("#caption").keyup(function(){
+            params.caption = $(this).val();
+            $this_element.attr("params",JSON.stringify(params));
+            $this_element.find("label").text(params.caption);
+            makeHTML().run();
+        }).val(params.caption);
+
+        // input name, cambiando nombre y id
+        dom.find("#group").keyup(function(){
+            params.group = $(this).val();
+            $this_element.attr("params",JSON.stringify(params));
+            $this_element.find("input").attr("name",params.group);
+            makeHTML().run();
+        }).val(params.group);
+
         dom.unbind("click");
         dom.find("#drop").click(function(){
             $this_element.remove();
             makeHTML().run();
         });
-
     };
 
     var inputText = function($this_element){
@@ -984,6 +1012,41 @@ module.exports = function () {
 
     };
 
+    var checkbox = function ($this_element) {
+        var params = JSON.parse($this_element.attr("params"));
+        var _html = "";
+
+        _html += elementForm().inputText('inputName','Name','checkbox',true);
+        _html += elementForm().inputText('caption','Caption','checkbox',true);
+        _html += elementForm().button('drop','Borrar','all');
+
+        var dom = init().append(_html);
+
+        // input name, cambiando nombre y id
+        dom.find("#inputName").keyup(function(){
+            params.inputName = $(this).val();
+            $this_element.attr("params",JSON.stringify(params));
+            $this_element.find("input").attr("id",params.inputName);
+            $this_element.find("input").attr("name",params.group);
+            $this_element.find("label").attr("for",params.inputName);
+            makeHTML().run();
+        }).val(params.inputName);
+
+        // input name, cambiando nombre y id
+        dom.find("#caption").keyup(function(){
+            params.caption = $(this).val();
+            $this_element.attr("params",JSON.stringify(params));
+            $this_element.find("label").text(params.caption);
+            makeHTML().run();
+        }).val(params.caption);
+
+        dom.unbind("click");
+        dom.find("#drop").click(function(){
+            $this_element.remove();
+            makeHTML().run();
+        });
+    };
+
     return {
         Block       : block,
         None        : none,
@@ -994,6 +1057,7 @@ module.exports = function () {
         Rrss        : rrss,
         Radios      : radioOption,
         InputText   : inputText,
-        InputSelect : inputSelect
+        InputSelect : inputSelect,
+        Checkboxs   : checkbox
     }
 };

@@ -125,9 +125,9 @@ AppPlay = (function($,window){
             document.getElementById('content-center'),
             document.getElementById('rrss'),
             document.getElementById('inputText'),
-            document.getElementById('inputSelect')
-            /*,
-            document.getElementById('radio')*/
+            document.getElementById('inputSelect'),
+            document.getElementById('radio'),
+            document.getElementById('checkbox')
         ], configDarcula());
 
         dark.on('drop',function(el){
