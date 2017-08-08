@@ -17,13 +17,12 @@
     <script type="text/javascript">
         var intervalId;
 
+        // destruye la ejecucion de los intervalos de tiempo
         var destroy = function(){
-            alert(intervalId);
             clearInterval(intervalId);
         };
 
         var my_slider = function(){
-            //console.log($("title").text());
             var timeExpire = 5000;
             var count = 0;
 
@@ -52,14 +51,67 @@
                                     return false;
                                 }
                             });
-                        },count * timeExpire)
+                        },timeExpire)
                     },count * timeExpire);
                 }
           })
         };
 
+        var buttonAction = function(){
+          $("a[type='Button']").click(function(){
+              var $this_element = $(this);
+              var params = JSON.parse($this_element.attr("params"));
+
+              var elementForms = (params.elementForm).split(','),
+              postParam = {};
+
+              $.each(elementForms, function(i,value){
+                  alert(value);
+
+                  var input = $("#"+value);
+                  console.log(input.html());
+                  eval('postParam.'+ input.attr("name") +'="'+input.val()+'"');
+              });
+
+              console.log(postParam);
+              console.log("pasando por aqui");
+
+              $.ajax({
+                  url:params.action,
+                  dataType: 'text',
+                  data : postParam,
+                  method: "POST",
+                  statusCode: {
+                      404: function() {
+                          console.log( "page not found" );
+                      }
+                  }
+              }).done(function( text ) {
+                  // contenido de ajax aqui
+              });
+          });
+        };
+
+        // se reconstruye select
+        var formatSelect = function(){
+            $("[type='InputSelect']").each(function(i){
+                var select = $(this).find("select:eq(0)");
+                var labelText = $(this).find("label").text();
+                var inputText = $(this).find("input");
+                $(this).empty();
+                $(this).append("<div class='input-field col s12'><select>"+select.html()+"</select><label>"+labelText+"</label></div>");
+
+                $(this).find("select").material_select();
+                $(this).find("input").attr("id",inputText.attr("id"));
+                $(this).find("input").attr("name",inputText.attr("name"));
+            });
+
+        };
+
         var execute = function(){
             my_slider();
+            formatSelect();
+            buttonAction();
         };
 
         jQuery(function(){

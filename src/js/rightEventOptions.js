@@ -384,8 +384,10 @@ module.exports = function () {
         options.push({value : "Verdana", text : "Verdana", attributes:""});
         options.push({value : "Roboto", text : "Roboto", attributes:""});
         _html += elementForm().select('buttonFontFamily','Estilo','button',options);
-
+        _html += elementForm().inputText('action','URL Action Form','button',true);
+        _html += elementForm().inputText('elementForm','#nombres, hola,mundo','button',true);
         _html += elementForm().button('drop','Borrar','button');
+
         var dom = init().append(_html);
 
         // caption
@@ -430,6 +432,28 @@ module.exports = function () {
             $this_element.css({"border-width":params.border});
             makeHTML().run();
         }).val(params.border);
+
+        // URL de la accion del formulario
+        dom.find("#action").keyup(function(){
+            params.action = $(this).val();
+            $this_element.attr("params",JSON.stringify(params));
+            makeHTML().run();
+        }).val(params.action);
+
+        // Nombres de los targets que estaran relacionados con el formulario
+        dom.find("#elementForm").keyup(function(){
+            params.elementForm = $(this).val();
+            $this_element.attr("params",JSON.stringify(params));
+            makeHTML().run();
+        }).val(params.elementForm);
+
+        // URL de la accion del formulario
+        dom.find("#action").keyup(function(){
+            params.action = $(this).val();
+            $this_element.attr("params",JSON.stringify(params));
+            $this_element.css({"border-width":params.action});
+            makeHTML().run();
+        }).val(params.action);
 
         // borde color
         dom.find("#buttonBorderColor").change(function(){
@@ -540,6 +564,8 @@ module.exports = function () {
         dom.find("#name").keyup(function(){
             params.name = $(this).val();
             $this_element.attr("params",JSON.stringify(params));
+            $this_element.attr("id",params.name);
+            $this_element.attr("name",params.name);
             makeHTML().run();
         }).val(params.name);
 
@@ -879,8 +905,8 @@ module.exports = function () {
         dom.find("#inputName").keyup(function(){
             params.inputName = $(this).val();
             $this_element.attr("params",JSON.stringify(params));
-            $this_element.attr("id",JSON.stringify(params));
-            $this_element.attr("name",JSON.stringify(params));
+            $this_element.find("input").attr("id",params.inputName);
+            $this_element.find("input").attr("name",params.inputName);
             makeHTML().run();
         }).val(params.inputName);
 
@@ -893,33 +919,59 @@ module.exports = function () {
     };
 
     var inputSelect = function($this_element){
+        //$this_element.attr("disabled","disabled");
         var params = JSON.parse($this_element.attr("params"));
         var _html = "";
 
         _html += elementForm().inputText('inputSelectName','Name','inputSelectText',true);
         _html += elementForm().inputText('inputSelectCaption','Caption','inputSelectText',true);
-        _html += elementForm().inputText('inputOptionValue','Option Value','inputSelectText',true);
+        _html += elementForm().inputText('inputOptionValue','Option Value: [{"option":"a","caption":"a"}]','inputSelectText',true);
         _html += elementForm().button('drop','Borrar','all');
 
         $this_element.empty();
-        $this_element.append("<div class='input-field col s12'><select></select><label>Materialize Select</label></div>");
+        $this_element.append("<div class='input-field col s12'><select disabled></select><label>Materialize Select</label></div>");
 
         var dom = init().append(_html);
 
+        // identificador unico del elemento del formulario
+        dom.find("#inputSelectName").keyup(function(){
+            params.inputName = $(this).val();
+            $this_element.attr("params",JSON.stringify(params));
+            $this_element.find("input").attr("id",params.inputName);
+            $this_element.find("input").attr("name",params.inputName);
+            makeHTML().run();
+        }).val(params.inputName);
+
         // input caption select label
+        if (params.inputSelectCaption !== undefined) $this_element.parent().find("label").text(params.inputSelectCaption);
         dom.find("#inputSelectCaption").keyup(function(){
             params.inputSelectCaption = $(this).val();
-            //$this_element.find("select").empty();
-            $this_element.parent().find("label").text(params.inputSelectCaption);
+            $this_element.attr("params",JSON.stringify(params));
+            $this_element.find("label").text(params.inputSelectCaption);
             makeHTML().run();
         }).val(params.inputSelectCaption);
 
-        dom.find("#inputOptionValue").keyup(function(){
-            params.inputOptionValue = $(this).val();
-            //$this_element.find("select").empty();
-            $this_element.find("select").append("<option>holass</option>");
+        var formatSelect = function(){
+            var json_object = [];
+            var select =  $this_element.find("select");
+            try{
+                $this_element.attr("params",JSON.stringify(params));
+                json_object = JSON.parse((params.inputOptionValue));
+                select.empty();
+                $.each(json_object,function(i,value){
+                    select.append("<option value='"+value.option+"'>"+value.caption+"</option>")
+                });
+            } catch (e) {
+                select.empty();
+            }
             $('select').material_select();
             makeHTML().run();
+        };
+        if (params.inputOptionValue !== undefined) formatSelect();
+        dom.find("#inputOptionValue").keyup(function(){
+            params.inputOptionValue = $(this).val();
+            formatSelect();
+
         }).val(params.inputOptionValue);
 
         dom.unbind("click");
