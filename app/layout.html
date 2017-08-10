@@ -62,15 +62,31 @@
               var $this_element = $(this);
               var params = JSON.parse($this_element.attr("params"));
 
-              var elementForms = (params.elementForm).split(','),
-              postParam = {};
+              var elementForms = [];
+              var postParam={};
+
+              try{
+                  elementForms = (params.elementForm).split(',');
+              } catch ( e ){
+                  Materialize.toast('El boton no #target definido, por favor identifica un #target', 4000)
+              }
 
               $.each(elementForms, function(i,value){
                   alert(value);
 
-                  var input = $("#"+value);
-                  console.log(input.html());
-                  eval('postParam.'+ input.attr("name") +'="'+input.val()+'"');
+                  // iterando si existe el elemento seleccionado, busqueda por id
+                  $("input[type='checkbox'][id='"+value+"']:checked,input[type='text'][id='"+value+"'],select#"+value).each(function(i){
+                      var input = $(this);
+                      eval('postParam.'+ input.attr("name") +'="'+input.val()+'"');
+                  });
+
+                  // iterando si existe elementos seleciconados typo radio por grupo
+                  $("input[type='radio'][name='"+value+"']:checked").each(function(i){
+                      var input = $(this);
+                      eval('postParam.'+ input.attr("name") +'="'+input.val()+'"');
+                  });
+
+
               });
 
               console.log(postParam);
@@ -108,10 +124,39 @@
 
         };
 
+        var formatDatapicker = function(){
+            $('.datepicker').pickadate({
+                selectMonths: true, // Creates a dropdown to control month
+                selectYears: 15, // Creates a dropdown of 15 years to control year,
+                today: 'Today',
+                clear: 'Clear',
+                close: 'Ok',
+                closeOnSelect: false, // Close upon selecting a date,
+                format: 'dd/mm/yyyy',
+                formatSubmit: 'yyyy/mm/dd',
+            });
+        };
+
+        var elementBody =  function(){
+
+            var $this_element = $("body:eq(0)");
+            if ($("input#elementBody").attr("params") !== undefined){
+                var params = JSON.parse($("input#elementBody").attr("params"));
+                $this_element.css('background-image',params.backgroundImage);
+                $this_element.css('background-repeat',params.backgroundRepeat);
+                /* $this_element.css('background-attachment','fixed');*/
+                $this_element.css('background-position', params.backgroundPosition);
+                $this_element.css('background-size',params.backgroundSize);
+                $this_element.css({"background-color":params.backgroundColor});
+            }
+        };
+
         var execute = function(){
             my_slider();
             formatSelect();
             buttonAction();
+            formatDatapicker();
+            elementBody();
         };
 
         jQuery(function(){

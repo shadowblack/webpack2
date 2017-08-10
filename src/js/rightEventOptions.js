@@ -7,6 +7,86 @@ module.exports = function () {
             .find("div.container:eq(0)").empty();
     };
 
+    var body = function($this_element){
+
+
+        var params = JSON.parse($this_element.attr("params"));
+        var _html = "";
+        _html += elementForm().checkbox('isBackgroundImage','background Image?','body');
+        _html += elementForm().inputFile('file-image','Imagen de Fondo','body');
+        _html += elementForm().checkbox('isBackgroundColor','background Color?','body');
+        _html += elementForm().inputColor('block-color','Color de Fondo','body');
+
+        var dom = init().append(_html);
+
+        // is background image
+        dom.find("#isBackgroundImage").click(function(){
+            params.isBackgroundImage = $(this).is(":checked");
+            if (params.isBackgroundImage === false)
+                $this_element.css({"background-image":"none"});
+            else
+                $this_element.css({"background-image":params.backgroundImage});
+            $this_element.attr("params",JSON.stringify(params));
+            $this_element.find("#elementBody").attr("params",JSON.stringify(params));
+        }).attr("checked",params.isBackgroundImage);
+
+        // is background color
+        dom.find("#isBackgroundColor").click(function(){
+
+            params.isBackgroundColor = $(this).is(":checked");
+            if(params.isBackgroundColor === true)
+                $this_element.css({"background-color":params.backgroundColor});
+            else
+                $this_element.css({"background-color":"initial"});
+
+            $this_element.attr("params",JSON.stringify(params));
+            $this_element.find("#elementBody").attr("params",JSON.stringify(params));
+        }).attr("checked",params.isBackgroundColor);
+
+        // color
+        dom.find("#block-color").change(function(){
+            $this_element.css({"background-color":$(this).val()});
+            params.backgroundColor = $(this).val();
+            $this_element.attr("params",JSON.stringify(params));
+            $this_element.find("#elementBody").attr("params",JSON.stringify(params));
+            dom.find("#isBackgroundColor").attr("checked",true);
+            dom.find("#fondo").attr("checked",true);
+            makeHTML().run();
+        }).val(params.backgroundColor);
+
+        // image background
+        dom.find("#file-image").change(function(){
+
+            var readURL = function(input) {
+
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        params.backgroundImage = 'url("'+e.target.result+'")';
+                        params.backgroundRepeat = 'no-repeat';
+                        params.backgroundPosition = 'center center';
+                        params.backgroundSize = 'cover';
+
+                        $this_element.css('background-image',params.backgroundImage);
+                        $this_element.css('background-repeat',params.backgroundRepeat);
+                        /* $this_element.css('background-attachment','fixed');*/
+                        $this_element.css('background-position', params.backgroundPosition);
+                        $this_element.css('background-size',params.backgroundSize);
+
+                        $("#isBackgroundImage").attr("checked",true);
+                        $this_element.attr("params",JSON.stringify(params));
+                    };
+
+                    reader.readAsDataURL(input.files[0]);
+                }
+            };
+
+            readURL(this);
+            makeHTML().run();
+        });
+    };
+
     var imagen = function($this_element){
 
         var params = JSON.parse($this_element.attr("params"));
@@ -27,6 +107,8 @@ module.exports = function () {
 
                 reader.onload = function (e) {
                     $this_element.find("img").attr("src",e.target.result);
+                    params.src = (e.target.result);
+                    $this_element.attr("params",JSON.stringify(params));
                 };
 
                 reader.readAsDataURL(input.files[0]);
@@ -874,9 +956,18 @@ module.exports = function () {
         _html += elementForm().inputText('inputName','Name','radio',true);
         _html += elementForm().inputText('caption','Caption','radio',true);
         _html += elementForm().inputText('group','Group','radio',true);
+        _html += elementForm().inputText('value','Valor','radio',true);
         _html += elementForm().button('drop','Borrar','all');
 
         var dom = init().append(_html);
+
+        // valor
+        dom.find("#value").keyup(function(){
+            params.value = $(this).val();
+            $this_element.attr("params",JSON.stringify(params));
+            $this_element.find("input").attr("value",params.value);
+            makeHTML().run();
+        }).val(params.value);
 
         // input name, cambiando nombre y id
         dom.find("#inputName").keyup(function(){
@@ -917,6 +1008,7 @@ module.exports = function () {
 
         _html += elementForm().inputText('inputName','Name','inputText',true);
         _html += elementForm().inputText('inputCaption','Caption','inputText',true);
+        _html += elementForm().checkbox('isCalendar','Es Calendario?','inputText',true);
         _html += elementForm().button('drop','Borrar','all');
 
         var dom = init().append(_html);
@@ -937,6 +1029,18 @@ module.exports = function () {
             $this_element.find("input").attr("name",params.inputName);
             makeHTML().run();
         }).val(params.inputName);
+
+        // si es datapicker se le agrega la clase que posteriormente sera visible al generar el html
+        dom.find("#isCalendar").click(function(){
+            params.isCalendar = $(this).is(":checked");
+            $this_element.attr("params",JSON.stringify(params));
+            if (params.isCalendar === true){
+                $this_element.find("input").addClass("datepicker");
+            } else {
+                $this_element.find("input").removeClass("datepicker");
+            }
+            makeHTML().run();
+        }).attr("checked",params.isCalendar === true);
 
         dom.unbind("click");
 
@@ -1018,16 +1122,25 @@ module.exports = function () {
 
         _html += elementForm().inputText('inputName','Name','checkbox',true);
         _html += elementForm().inputText('caption','Caption','checkbox',true);
+        _html += elementForm().inputText('value','Valor','checkbox',true);
         _html += elementForm().button('drop','Borrar','all');
 
         var dom = init().append(_html);
+
+        // valor
+        dom.find("#value").keyup(function(){
+            params.value = $(this).val();
+            $this_element.attr("params",JSON.stringify(params));
+            $this_element.find("input").attr("value",params.value);
+            makeHTML().run();
+        }).val(params.value);
 
         // input name, cambiando nombre y id
         dom.find("#inputName").keyup(function(){
             params.inputName = $(this).val();
             $this_element.attr("params",JSON.stringify(params));
             $this_element.find("input").attr("id",params.inputName);
-            $this_element.find("input").attr("name",params.group);
+            $this_element.find("input").attr("name",params.inputName);
             $this_element.find("label").attr("for",params.inputName);
             makeHTML().run();
         }).val(params.inputName);
@@ -1058,6 +1171,7 @@ module.exports = function () {
         Radios      : radioOption,
         InputText   : inputText,
         InputSelect : inputSelect,
-        Checkboxs   : checkbox
+        Checkboxs   : checkbox,
+        Body        : body
     }
 };

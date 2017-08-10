@@ -15,9 +15,9 @@ module.exports = function () {
             $( this ).find("[params]").each(function(e,objectChild){
                 var param = JSON.parse( $(this).attr("params") );
                 params.push(param);
-                if ($( this ).attr("type") === "Text"){
+                /*if ($( this ).attr("type") === "Text"){
                     getServices($( this ));
-                }
+                }*/
 
             });
 
@@ -25,6 +25,9 @@ module.exports = function () {
                 category    : category,
                 params      : params
             };
+
+            //console.log(JSON.stringify(dataJson))
+            //console.log(data);
 
             dataJson.push(data);
         });
@@ -49,7 +52,7 @@ module.exports = function () {
         $(param).each(function(i){
             var self = $( this );
             var paramsObject = JSON.parse( $(this).attr("params") );
-            if(paramsObject.isGetData !== undefined && paramsObject.isGetData === true && paramsObject.getData !== undefined){
+            /*if(paramsObject.isGetData !== undefined && paramsObject.isGetData === true && paramsObject.getData !== undefined){
 
                  $.ajax({
                      url:paramsObject.getData,
@@ -64,7 +67,7 @@ module.exports = function () {
                      paramsObject.caption = text;
                      self.text(text);
                  });
-            }
+            }*/
         });
     };
 

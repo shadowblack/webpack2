@@ -54,10 +54,6 @@
                             </div>
                         </div>
 
-                       <!-- <div class="row center display" style="display: none">
-                            <a class="waves-effect waves-light btn-large teal lighten-3" reset>Reiniciar</a>
-                        </div>-->
-
                     </div>
                 </li>
                 <li>
@@ -81,7 +77,7 @@
                     <div class="collapsible-body">
 
                         <div class="row" id="imagen">
-                            <div class="col s12 m12" type="Imagen" params='{"color":"12","src":"","opacity":""}'>
+                            <div class="col s12 m12" type="Imagen" params='{"color":"12","src":"images/sample-1.jpg","opacity":""}'>
                                 <div class="card">
                                     <div class="card-image" >
                                         <img src="images/sample-1.jpg" >
@@ -236,20 +232,13 @@
         </div>
 
         <div class="col s6 teal teal lighten-4 height-content" >
-            <div class="container" id="content-center">
-                <!--<div class="row" >
-                    hola
-
-                </div>-->
+            <div class="container" id="content-center" params="{}">
+                <input type="hidden" id="elementBody" params="{}">
             </div>
         </div>
 
         <div class="col s3 teal teal lighten-3 height-content" id="content-right">
             <div class="container" >
-
-                <!--<div class="row">
-                    hola2
-                </div>-->
 
             </div>
         </div>
@@ -261,7 +250,7 @@
             <iframe frameBorder="0" width="100%" height="450" src="./layout.html"></iframe>
         </div>
         <div class="modal-footer">
-            <a href="#!" class="modal-action modal-close waves-effect waves-red btn-flat ">Guardar</a>
+            <a href="javascript:void(0)" id="save_html" class="modal-action modal-close waves-effect waves-red btn-flat ">Guardar</a>
             <a href="javascript:void(0)" id="close_modal" class="modal-action modal-close waves-effect waves-green btn-flat ">Cerrar Vista Previa</a>
         </div>
     </div>

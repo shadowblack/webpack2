@@ -23,11 +23,23 @@ AppPlay = (function($,window){
 
     var left = {};
 
+    var saveHtml = function(){
+        $("#save_html").click(function(){
+            makeHTML().run()
+        });
+    };
+
     var init = function(){
         startDragula();
         category();
         initialize();
         edit();
+        saveHtml();
+
+        $("#content-center").click(function(){
+           rightEventOptions().Body($(this));
+           return false;
+        });
 
         var block_left = $("#block-left");
         left.block = block_left.html();
