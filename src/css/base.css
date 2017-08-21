@@ -292,3 +292,7 @@ button:hover {
 #content-center div[type="Text"]{
     border: 1px solid #999999;
 }
+
+.selected-border{
+    border:1px solid red !important;
+}

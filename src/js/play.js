@@ -37,6 +37,8 @@ AppPlay = (function($,window){
         saveHtml();
 
         $("#content-center").click(function(){
+            $(".selected-border").removeClass("selected-border");
+            $(this).addClass("selected-border");
            rightEventOptions().Body($(this));
            return false;
         });
@@ -154,6 +156,11 @@ AppPlay = (function($,window){
     var elementClick = function($this_element){
 
         var click = function() {
+
+            // agregando bordes
+            $(".selected-border").removeClass("selected-border");
+            $this_element.addClass("selected-border");
+
             categoryFormat($("#type_block").val());
 
             console.log($this_element.html());
@@ -169,6 +176,11 @@ AppPlay = (function($,window){
 
                 $this_element.unbind("click");
                 $this_element.click(function(e){
+
+                    // agregando bordes
+                    $(".selected-border").removeClass("selected-border");
+                    $(this).addClass("selected-border");
+
                     type = $(this).attr("type");
                     if (type === "None")
                         categoryFormat($this_element.attr("category"));
