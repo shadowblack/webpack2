@@ -484,7 +484,7 @@ module.exports = function () {
         _html += elementForm().inputColor('buttonColor','Color de Fondo','button');
         _html += elementForm().inputColor('buttonTextColor','Color de Texto','button');
         _html += elementForm().inputRange('opacityRangeButton','Opacidad','button');
-        _html += elementForm().inputText('buttonBorder','Borde, ej. 10px, 2%, 1em','button');
+        _html += elementForm().inputText('buttonBorder','Borde, ej. 10px, 2%, 1em','button',true);
         _html += elementForm().inputColor('buttonBorderColor','Border Color','button');
         var options = [];
 
@@ -502,9 +502,9 @@ module.exports = function () {
         options.push({value : "initial", text : "initial", attributes:""});
 
         _html += elementForm().select('buttonBorderStyle','Border Style','button',options);
-        _html += elementForm().inputText('buttonTextSize','Tamaño de Texto, ej. 10px, 2%, 1em','button');
-        _html += elementForm().inputText('buttonHeight','Altura, ej. 10px, 2%, 1em','button');
-        _html += elementForm().inputText('buttonWidth','Altura, ej. 10px, 2%, 1em','button');
+        _html += elementForm().inputText('buttonTextSize','Tamaño de Texto, ej. 10px, 2%, 1em','button',true);
+        _html += elementForm().inputText('buttonHeight','Altura, ej. 10px, 2%, 1em','button',true);
+        _html += elementForm().inputText('buttonWidth','Altura, ej. 10px, 2%, 1em','button',true);
 
         options = [];
         options.push({value : "none", text : "none", attributes:""});
@@ -684,11 +684,11 @@ module.exports = function () {
         _html += elementForm().checkbox('bold','Negrita','text');
         _html += elementForm().checkbox('italic','Italica','text');
         _html += elementForm().checkbox('subra','Subrayado','text');
-        _html += elementForm().inputText('marginLeft','Izquierdo, ej. 10px, 2%, 1em','text');
-        _html += elementForm().inputText('marginRight','Derecho, ej. 10px, 2%, 1em','text');
-        _html += elementForm().inputText('marginTop','Arriba, ej. 10px, 2%, 1em','text');
-        _html += elementForm().inputText('marginBottom','Abajo, ej. 10px, 2%, 1em','text');
-        _html += elementForm().inputText('textSize','Tamaño de Texto, ej. 10px, 2%, 1em','text');
+        _html += elementForm().inputText('marginLeft','Izquierdo, ej. 10px, 2%, 1em','text',true);
+        _html += elementForm().inputText('marginRight','Derecho, ej. 10px, 2%, 1em','text',true);
+        _html += elementForm().inputText('marginTop','Arriba, ej. 10px, 2%, 1em','text',true);
+        _html += elementForm().inputText('marginBottom','Abajo, ej. 10px, 2%, 1em','text',true);
+        _html += elementForm().inputText('textSize','Tamaño de Texto, ej. 10px, 2%, 1em','text',true);
         _html += elementForm().beginGroupElement();
         _html += elementForm().checkbox('link','Hipervinculo','text');
         _html += elementForm().inputColor('buttonTextColorLink','Color de Link','text');
@@ -935,7 +935,7 @@ module.exports = function () {
 
         _html += elementForm().button('drop','Borrar','rrss');
         _html += elementForm().select('icon','Iconos','rrss',icons);
-        _html += elementForm().inputText('textSize','Tamaño de Texto, ej. 10px, 2%, 1em','rrss');
+        _html += elementForm().inputText('textSize','Tamaño de Texto, ej. 10px, 2%, 1em','rrss',true);
         _html += elementForm().inputColor('textColor','Color de Texto','rrss');
         _html += elementForm().checkbox('link','Hipervinculo','rrss');
         _html += elementForm().inputText('linkHiper','Link','rrss',true);
