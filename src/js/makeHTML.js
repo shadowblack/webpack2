@@ -33,12 +33,12 @@ module.exports = function () {
         });
 
         // verificnado si el componente seleccionado esta dentro de un div o bloque category
-        centerContent.find("[params]").each(function(i){
+        /*centerContent.find("[params]").each(function(i){
             if($(this).parents("[category]:eq(0)").length === 0){
                 Materialize.toast('Ups, para poder utilizar esta funcionalidad correctamente, el componente debe estar dentro de un bloque', 4000)
                 return false;
             }
-        });
+        });*/
 
         console.log(JSON.stringify(dataJson));
         console.log(htmlString);

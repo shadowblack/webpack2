@@ -47,7 +47,7 @@
 
                         <div class="row display" style="display: none">
                             <label>Fila de Lienzo</label>
-                            <div class="card-panel truncate container_content" id="block">
+                            <div target="None" class="card-panel truncate container_content" id="block">
                                 <div class="row text insertable" type="None" category="">
 
                                 </div>
@@ -63,7 +63,7 @@
                             <label>Columna</label>
                             <div class="card-panel truncate container_content">
 
-                                <div class="row" id="block-column">
+                                <div target="Block" class="row" id="block-column">
                                     <div class="col s12 text insertable" type="Block" params='{"c":"12","opacity":"100","align":"left","height":"","textAlign":"left-align"}'>
                                     </div>
                                 </div>
@@ -76,7 +76,7 @@
                     <div class="collapsible-header"><i class="small material-icons">assessment</i>Imagen</div>
                     <div class="collapsible-body">
 
-                        <div class="row" id="imagen">
+                        <div target="Imagen" class="row" id="imagen">
                             <div class="col s12 m12" type="Imagen" params='{"color":"12","src":"images/sample-1.jpg","opacity":""}'>
                                 <div class="card">
                                     <div class="card-image" >
@@ -92,7 +92,7 @@
                     <div class="collapsible-header"><i class="material-icons">place</i>Button</div>
                     <div class="collapsible-body">
                         <div class="row" >
-                            <div class="col s12 m12">
+                            <div class="col s12 m12" target="Button">
                                 <div class="card-panel truncate center-align" id="button">
                                         <a type="Button" params='{"opacity":"100","borderStyle":"none","textTransform":"uppercase","fontFamily":"Roboto","caption":"button"}' class="waves-effect waves-light btn-large">Button</a>
                                 </div>
@@ -106,7 +106,7 @@
                     <div class="collapsible-body">
                         <div class="row" >
                             <div class="col s12 m12">
-                                <div class="card-panel truncate center-align" id="text">
+                                <div target="Text" class="card-panel truncate center-align" id="text">
                                     <div type="Text" params='{"caption":"Lorem ipsum dolor sit amet."}'>Lorem ipsum dolor sit amet.</div>
                                 </div>
                             </div>
@@ -118,7 +118,7 @@
                     <div class="collapsible-body">
                         <div class="row" >
                             <div class="col s12 m12">
-                                <div class="card-panel truncate center-align" id="video">
+                                <div target="Video" class="card-panel truncate center-align" id="video">
                                     <video type="Video" class="responsive-video" controls params='{"url":"videos/big_buck_bunny.mp4"}'>
                                         <source src="videos/big_buck_bunny.mp4" type="video/mp4">
                                     </video>
@@ -133,7 +133,7 @@
                         <div class="row" >
                             <div class="col s12 m12">
                                 <div class="card-panel truncate center-align" >
-                                    <div  class="clearfix bshadow0 pbs" id="rrss">
+                                    <div target="Rrss" class="clearfix bshadow0 pbs" id="rrss">
                                         <span type="Rrss" class="icon-facebook" params='{"icon":"icon-facebook"}'>
                                         </span>
                                     </div>
@@ -149,7 +149,7 @@
                         <div class="row" >
                             <div class="col s12 m12">
                                 <div class="card-panel truncate center-align" >
-                                    <div id="inputText">
+                                    <div target="InputText" id="inputText">
                                         <div params='{}' type="InputText">
                                             <div class="input-field col s12">
                                                 <input id="input" type="text" class="validate">
@@ -164,7 +164,7 @@
                         <div class="row" >
                             <div class="col s12 m12">
                                 <div class="card-panel truncate center-align" >
-                                    <div id="inputSelect">
+                                    <div id="inputSelect" target="InputSelect">
                                         <br>
                                         <div params='{}' type="InputSelect">
                                             <div class="input-field col s12">
@@ -185,7 +185,7 @@
                         <div class="row" >
                             <div class="col s12 m12">
                                 <div class="card-panel truncate center-align" >
-                                    <div id="radio">
+                                    <div id="radio" target="Radios">
                                         <div params='{}' type="Radios">
                                             <input name="group1" type="radio" id="test1" />
                                             <label for="test1">Opcion</label>
@@ -198,7 +198,7 @@
                         <div class="row" >
                             <div class="col s12 m12">
                                 <div class="card-panel truncate center-align" >
-                                    <div id="checkbox">
+                                    <div id="checkbox" target="Checkboxs">
                                         <div params='{}' type="Checkboxs">
                                             <input type="checkbox" id="test5" />
                                             <label for="test5">Red</label>
@@ -260,7 +260,7 @@
             <i class="large material-icons">mode_edit</i>
         </a>
         <ul>
-            <li><a class="btn-floating green" id="publish"><i class="material-icons">publish</i></a></li>
+            <li><a class="btn-floating green" id="publish"><i class="material-icons" data-toggle="tooltip" title="Hooray!">publish</i></a></li>
         </ul>
     </div>
 

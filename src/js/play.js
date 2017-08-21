@@ -108,8 +108,8 @@ AppPlay = (function($,window){
             },
             accepts: function (el, target, source, sibling) {
                 var html = $(el);
-                console.log($(el).parents("[leftSection]").length > 0);
-                return (/*!($(el).parents("[leftSection]").length > 0) ||*/ !($(target).parents("[leftSection]").length > 0));
+                console.log(!$(el).parents("[leftSection]").length > 0);
+                return (($(el).parents("[leftSection]").length > 0) && !($(target).parents("[leftSection]").length > 0));
                 //return false; // elements can be dropped in any of the `containers` by default
             },
             invalid: function (el, handle) {
