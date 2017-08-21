@@ -90,14 +90,15 @@ module.exports = function () {
     var imagen = function($this_element){
 
         var params = JSON.parse($this_element.attr("params"));
-
-        var _html = elementForm().inputFile('file-image','Imagen','image');
+        var _html = "";
+        _html += elementForm().button('drop','Borrar','all');
+        _html += elementForm().inputFile('file-image','Imagen','image');
         _html += elementForm().checkbox('link','Hipervinculo','image');
         _html += elementForm().checkbox('radius','Redondo','image');
         _html += elementForm().inputText('linkHiper','Hipervinculo','image',true);
         _html += elementForm().inputText('nameTarget','#nombre','image',true);
         _html += elementForm().checkbox('isInfluencer','Es influenciador o slide?','image');
-        _html += elementForm().button('drop','Borrar','all');
+
         var dom = init().append(_html);
 
         function readURL(input) {
@@ -197,7 +198,7 @@ module.exports = function () {
 
         var params = JSON.parse($this_element.attr("params"));
 
-        /*var _html = elementForm().inputText('blockCaption','Etiqueta','block',true);*/
+        _html += elementForm().button('drop','Borrar','all');
 
         var options = [
             {
@@ -249,30 +250,12 @@ module.exports = function () {
         ];
 
         _html += elementForm().select('text_aligns','Alineacion de Texto','block',options);
-
-        // creacion de los bordes
-        /*var options = [
-            {
-                value   : "0",
-                text    : "Sin bordes",
-                attributes : "selected"
-            }
-        ];
-
-        for (var i= 1 ; i <= 4; i++){
-            options.push({value : i, text : i, attributes:""})
-        }
-
-        _html += elementForm().select('border_block','Borde','block',options);*/
-
-
         _html += elementForm().inputColor('block-color','Color de Fondo','block');
         _html += elementForm().checkbox('fondo','Fondo?','block');
         _html += elementForm().inputFile('file-image','Imagen de Fondo','block');
         _html += elementForm().checkbox('imagenFondo','Imagen de Fondo?','block');
         _html += elementForm().inputRange('block-range','Opacidad','block');
         _html += elementForm().inputText('block-height','Altura, ej. 10px, 2%, 1em','block');
-        _html += elementForm().button('drop','Borrar','all');
 
         var dom = init().append(_html);
         dom.unbind("click");
@@ -423,8 +406,9 @@ module.exports = function () {
     var button = function($this_element){
        $this_element.empty();
         var params = JSON.parse($this_element.attr("params"));
-
-        var _html = elementForm().inputText('buttonCaption','Etiqueta','button',true);
+        var _html = "";
+        _html += elementForm().button('drop','Borrar','button');
+        _html += elementForm().inputText('buttonCaption','Etiqueta','button',true);
         _html += elementForm().inputColor('buttonColor','Color de Fondo','button');
         _html += elementForm().inputColor('buttonTextColor','Color de Texto','button');
         _html += elementForm().inputRange('opacityRangeButton','Opacidad','button');
@@ -468,7 +452,6 @@ module.exports = function () {
         _html += elementForm().select('buttonFontFamily','Estilo','button',options);
         _html += elementForm().inputText('action','URL Action Form','button',true);
         _html += elementForm().inputText('elementForm','#nombres, hola,mundo','button',true);
-        _html += elementForm().button('drop','Borrar','button');
 
         var dom = init().append(_html);
 
@@ -606,7 +589,8 @@ module.exports = function () {
         var params = JSON.parse($this_element.attr("params"));
 
         var _html = "";
-        _html = elementForm().inputText('name','Nombre','text',true);
+        _html += elementForm().button('drop','Borrar','button');
+        _html += elementForm().inputText('name','Nombre','text',true);
         _html += elementForm().inputText('buttonCaption','Etiqueta','text',true);
         _html += elementForm().inputColor('buttonTextColor','Color de Texto','text');
         var options = [];
@@ -639,7 +623,6 @@ module.exports = function () {
 
         _html += elementForm().checkbox('isGetData','Obtener de Servicio?','text');
         _html += elementForm().inputText('getData','Ruta de Servicio','text',true);
-        _html += elementForm().button('drop','Borrar','button');
         var dom = init().append(_html);
 
         // name
@@ -817,10 +800,10 @@ module.exports = function () {
         var params = JSON.parse($this_element.attr("params"));
 
         var _html = "";
+        _html += elementForm().button('drop','Borrar','video');
         _html += elementForm().inputText('urlVideo','URL','video',true);
         _html += elementForm().checkbox('autoplay','Autoplay','video');
         _html += elementForm().checkbox('loop','Loop','video');
-        _html += elementForm().button('drop','Borrar','video');
 
         var dom = init().append(_html);
 
@@ -876,13 +859,13 @@ module.exports = function () {
         icons.push({value : "icon-like2", text : "like2", attributes:""});
         icons.push({value : "icon-dislike-outline", text : "outline", attributes:""});
 
+        _html += elementForm().button('drop','Borrar','rrss');
         _html += elementForm().select('icon','Iconos','rrss',icons);
         _html += elementForm().inputText('textSize','Text Size, ej. 10px, 2%, 1em','rrss');
         _html += elementForm().inputColor('textColor','Color de Texto','rrss');
         _html += elementForm().checkbox('link','Hipervinculo','rrss');
         _html += elementForm().inputText('linkHiper','Link','rrss',true);
         _html += elementForm().inputColor('buttonTextColorLink','Color de Link','text');
-        _html += elementForm().button('drop','Borrar','rrss');
 
         var dom = init().append(_html);
 
@@ -953,11 +936,11 @@ module.exports = function () {
         var params = JSON.parse($this_element.attr("params"));
         var _html = "";
 
+        _html += elementForm().button('drop','Borrar','all');
         _html += elementForm().inputText('inputName','Name','radio',true);
         _html += elementForm().inputText('caption','Caption','radio',true);
         _html += elementForm().inputText('group','Group','radio',true);
         _html += elementForm().inputText('value','Valor','radio',true);
-        _html += elementForm().button('drop','Borrar','all');
 
         var dom = init().append(_html);
 
@@ -1006,10 +989,10 @@ module.exports = function () {
         var params = JSON.parse($this_element.attr("params"));
         var _html = "";
 
+        _html += elementForm().button('drop','Borrar','all');
         _html += elementForm().inputText('inputName','Name','inputText',true);
         _html += elementForm().inputText('inputCaption','Caption','inputText',true);
         _html += elementForm().checkbox('isCalendar','Es Calendario?','inputText',true);
-        _html += elementForm().button('drop','Borrar','all');
 
         var dom = init().append(_html);
 
@@ -1055,10 +1038,10 @@ module.exports = function () {
         var params = JSON.parse($this_element.attr("params"));
         var _html = "";
 
+        _html += elementForm().button('drop','Borrar','all');
         _html += elementForm().inputText('inputSelectName','Name','inputSelectText',true);
         _html += elementForm().inputText('inputSelectCaption','Caption','inputSelectText',true);
         _html += elementForm().inputText('inputOptionValue','Option Value: [{"option":"a","caption":"a"}]','inputSelectText',true);
-        _html += elementForm().button('drop','Borrar','all');
 
         $this_element.empty();
         $this_element.append("<div class='input-field col s12'><select disabled></select><label>Materialize Select</label></div>");
@@ -1120,10 +1103,10 @@ module.exports = function () {
         var params = JSON.parse($this_element.attr("params"));
         var _html = "";
 
+        _html += elementForm().button('drop','Borrar','all');
         _html += elementForm().inputText('inputName','Name','checkbox',true);
         _html += elementForm().inputText('caption','Caption','checkbox',true);
         _html += elementForm().inputText('value','Valor','checkbox',true);
-        _html += elementForm().button('drop','Borrar','all');
 
         var dom = init().append(_html);
 
