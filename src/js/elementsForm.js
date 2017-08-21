@@ -81,6 +81,16 @@ module.exports = function () {
         return html;
     };
 
+    var beginGroupElement = function(){
+       var html = '';
+       html += '<div class="row grey lighten-3 cards"><div class="col s12 m12">';
+       return html;
+    };
+
+    var endGroupElement = function(){
+      return "</div></div>";
+    };
+
     return {
         checkbox    : checkbox,
         select      : select,
@@ -89,5 +99,7 @@ module.exports = function () {
         inputColor   : inputColor,
         inputRange  : inputRange,
         inputFile   : inputFile,
+        beginGroupElement: beginGroupElement,
+        endGroupElement : endGroupElement
     }
 };
