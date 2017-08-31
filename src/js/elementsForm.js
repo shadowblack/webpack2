@@ -36,6 +36,20 @@ module.exports = function () {
         return html;
     };
 
+    var inputTextIn =function(id, title, group,active){
+        var html = '<div class="row white card" group="'+group+'">'+
+                        '<div class="input-field col s6"><input name="name" placeholder="nombre" type="text" class="validate"></div>'+
+                        '<div class="input-field col s6"><input name="value" placeholder="valor" type="text" class="validate"></div>'+
+                        '<div class="input-field col s12 center"><button class="btn1">Agregar</button>&nbsp;<button class="btn2">Borrar</button></div>'+
+                        '<div class="input-field col s12"></div>'+
+                        '<div class="input-field col s12">'+
+                            '<label for="'+id+'" class="'+(active === true ? 'active' : '')+'">'+title+'</label>' +
+                            '<input id="'+id+'" type="text" class="validate valid">'+
+                        '</div>'+
+                    '</div>';
+        return html;
+    };
+
     var inputColor =function(id, title, group){
         var html = '<div class="row white card" group="'+group+'">'+
                         '<label>'+title+'</label>'+
@@ -100,6 +114,7 @@ module.exports = function () {
         inputRange  : inputRange,
         inputFile   : inputFile,
         beginGroupElement: beginGroupElement,
-        endGroupElement : endGroupElement
+        endGroupElement : endGroupElement,
+        inputTextIn : inputTextIn
     }
 };

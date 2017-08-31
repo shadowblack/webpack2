@@ -251,9 +251,11 @@ module.exports = function () {
 
         _html += elementForm().select('text_aligns','Alineacion de Texto','block',options);
         _html += elementForm().inputColor('block-color','Color de Fondo','block');
+        _html += elementForm().beginGroupElement();
         _html += elementForm().checkbox('fondo','Fondo?','block');
         _html += elementForm().inputFile('file-image','Imagen de Fondo','block');
         _html += elementForm().checkbox('imagenFondo','Imagen de Fondo?','block');
+        _html += elementForm().endGroupElement();
         _html += elementForm().inputRange('block-range','Opacidad','block');
         //_html += elementForm().inputText('block-height','Altura, ej. 10px, 2%, 1em','block');
 
@@ -351,6 +353,9 @@ module.exports = function () {
             $this_element.attr("params",JSON.stringify(params));
             if (params.isImagenFondo === true){
                 $this_element.css("background-image",params.backgroundImage);
+                $this_element.css('background-repeat',params.backgroundRepeat);
+                $this_element.css('background-position', params.backgroundPosition);
+                $this_element.css('background-size',params.backgroundSize);
             } else {
                 $this_element.css("background-image","none");
             }
@@ -681,9 +686,11 @@ module.exports = function () {
         options.push({value : "Verdana", text : "Verdana", attributes:""});
         options.push({value : "Roboto", text : "Roboto", attributes:""});
         _html += elementForm().select('buttonFontFamily','Formato','button',options);
+        _html += elementForm().beginGroupElement();
         _html += elementForm().checkbox('bold','Negrita','text');
         _html += elementForm().checkbox('italic','Italica','text');
         _html += elementForm().checkbox('subra','Subrayado','text');
+        _html += elementForm().endGroupElement();
         _html += elementForm().inputText('marginLeft','Izquierdo, ej. 10px, 2%, 1em','text',true);
         _html += elementForm().inputText('marginRight','Derecho, ej. 10px, 2%, 1em','text',true);
         _html += elementForm().inputText('marginTop','Arriba, ej. 10px, 2%, 1em','text',true);
@@ -937,9 +944,11 @@ module.exports = function () {
         _html += elementForm().select('icon','Iconos','rrss',icons);
         _html += elementForm().inputText('textSize','Tamaño de Texto, ej. 10px, 2%, 1em','rrss',true);
         _html += elementForm().inputColor('textColor','Color de Texto','rrss');
+        _html += elementForm().beginGroupElement();
         _html += elementForm().checkbox('link','Hipervinculo','rrss');
         _html += elementForm().inputText('linkHiper','Link','rrss',true);
         _html += elementForm().inputColor('buttonTextColorLink','Color de Link','text');
+        _html += elementForm().endGroupElement();
 
         var dom = init().append(_html);
 
@@ -1011,9 +1020,9 @@ module.exports = function () {
         var _html = "";
 
         _html += elementForm().button('drop','Borrar','all');
-        _html += elementForm().inputText('inputName','Name','radio',true);
-        _html += elementForm().inputText('caption','Caption','radio',true);
-        _html += elementForm().inputText('group','Group','radio',true);
+        _html += elementForm().inputText('inputName','Nombre','radio',true);
+        _html += elementForm().inputText('caption','Etiqueta','radio',true);
+        _html += elementForm().inputText('group','Grupo','radio',true);
         _html += elementForm().inputText('value','Valor','radio',true);
 
         var dom = init().append(_html);
@@ -1064,8 +1073,8 @@ module.exports = function () {
         var _html = "";
 
         _html += elementForm().button('drop','Borrar','all');
-        _html += elementForm().inputText('inputName','Name','inputText',true);
-        _html += elementForm().inputText('inputCaption','Caption','inputText',true);
+        _html += elementForm().inputText('inputName','Nombre','inputText',true);
+        _html += elementForm().inputText('inputCaption','Etiqueta','inputText',true);
         _html += elementForm().checkbox('isCalendar','Es Calendario?','inputText',true);
 
         var dom = init().append(_html);
@@ -1113,9 +1122,9 @@ module.exports = function () {
         var _html = "";
 
         _html += elementForm().button('drop','Borrar','all');
-        _html += elementForm().inputText('inputSelectName','Name','inputSelectText',true);
-        _html += elementForm().inputText('inputSelectCaption','Caption','inputSelectText',true);
-        _html += elementForm().inputText('inputOptionValue','Option Value: [{"option":"a","caption":"a"}]','inputSelectText',true);
+        _html += elementForm().inputText('inputSelectName','Nombre','inputSelectText',true);
+        _html += elementForm().inputText('inputSelectCaption','Etiqueta','inputSelectText',true);
+        _html += elementForm().inputTextIn('inputOptionValue','Valores: [{"option":"a","caption":"a"}]','inputSelectText',true);
 
         $this_element.empty();
         $this_element.append("<div class='input-field col s12'><select disabled></select><label>Materialize Select</label></div>");
@@ -1160,8 +1169,26 @@ module.exports = function () {
         dom.find("#inputOptionValue").keyup(function(){
             params.inputOptionValue = $(this).val();
             formatSelect();
-
         }).val(params.inputOptionValue);
+
+        var group = dom.find("#inputOptionValue").parents("[group]:eq(0)");
+        var selectOptions = [];
+        var option = {};
+        var inputOption = dom.find("#inputOptionValue");
+
+        group.find(".btn1").click(function(){
+            var name = group.find("input[name='name']").val();
+            var value = group.find("input[name='value']").val();
+            selectOptions.push({option:name,caption:value});
+            inputOption.val(JSON.stringify(selectOptions));
+            inputOption.trigger("keyup");
+        });
+
+        group.find(".btn2").click(function(){
+            selectOptions = [];
+            inputOption.val("");
+            inputOption.trigger("keyup");
+        });
 
         dom.unbind("click");
         dom.find("#drop").click(function(){
