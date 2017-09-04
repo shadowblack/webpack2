@@ -34,10 +34,13 @@ module.exports = function () {
         dom.find("#isBackgroundColor").click(function(){
 
             params.isBackgroundColor = $(this).is(":checked");
-            if(params.isBackgroundColor === true)
+            if(params.isBackgroundColor === true){
                 $this_element.css({"background-color":params.backgroundColor});
-            else
+                params.backgroundColor = params.backgroundColor;
+            } else {
                 $this_element.css({"background-color":"initial"});
+                params.backgroundColor = "initial";
+            }
 
             $this_element.attr("params",JSON.stringify(params));
             $this_element.find("#elementBody").attr("params",JSON.stringify(params));
