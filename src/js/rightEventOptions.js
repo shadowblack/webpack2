@@ -530,7 +530,8 @@ module.exports = function () {
         options.push({value : "Verdana", text : "Verdana", attributes:""});
         options.push({value : "Roboto", text : "Roboto", attributes:""});
         _html += elementForm().select('buttonFontFamily','Formato','button',options);
-        //_html += elementForm().inputText('action','URL Action Form','button',true);
+        _html += elementForm().inputText('action','URL Action Form or HREF','button',true);
+		_html += elementForm().checkbox('esAction','esAction','text');
         //_html += elementForm().inputText('elementForm','#nombres, hola,mundo','button',true);
 
         var dom = init().append(_html);
@@ -579,11 +580,12 @@ module.exports = function () {
         }).val(params.border);
 
         // URL de la accion del formulario
-        dom.find("#action").keyup(function(){
+        /*dom.find("#action").keyup(function(){
+			debugger;
             params.action = $(this).val();
             $this_element.attr("params",JSON.stringify(params));
             makeHTML().run();
-        }).val(params.action);
+        }).val(params.action);*/
 
         // Nombres de los targets que estaran relacionados con el formulario
         dom.find("#elementForm").keyup(function(){
@@ -592,13 +594,15 @@ module.exports = function () {
             makeHTML().run();
         }).val(params.elementForm);
 
-        // URL de la accion del formulario
+        /*// URL de la accion del formulario
         dom.find("#action").keyup(function(){
+			debugger;
             params.action = $(this).val();
             $this_element.attr("params",JSON.stringify(params));
             $this_element.css({"border-width":params.action});
+			$this_element.attr("action", $(this).val());
             makeHTML().run();
-        }).val(params.action);
+        }).val(params.action);*/
 
         // borde color
         dom.find("#buttonBorderColor").change(function(){
@@ -657,6 +661,64 @@ module.exports = function () {
             $this_element.attr("params",JSON.stringify(params));
             makeHTML().run();
         }).val(params.fontFamily);
+		
+		 // URL de la accion o el href del formulario
+        dom.find("#action").keyup(function(){
+			var isChecked = dom.find("#esAction").is(":checked");
+			if(isChecked){
+				params.action = $(this).val();
+				$this_element.attr("action", $(this).val());
+				
+				delete params.href;
+				$this_element.removeAttr("href");
+				
+				$this_element.attr("params",JSON.stringify(params));
+				
+				makeHTML().run();
+			}
+			else{
+				params.href = $(this).val();
+				$this_element.attr("href", $(this).val());
+				
+				delete params.action;
+				$this_element.removeAttr("action");
+				
+				$this_element.attr("params",JSON.stringify(params));
+						
+				makeHTML().run();
+			}
+        }).val(params.action);
+		
+		/* // URL del href del formulario
+        dom.find("#href").keyup(function(){
+			var isChecked = dom.find("#esAction").is(":checked");
+			if(!isChecked){
+				params.href = $(this).val();
+				$this_element.attr("params",JSON.stringify(params));
+				$this_element.attr("href", $(this).val());
+				makeHTML().run();
+			}
+        }).val(params.action);*/
+		
+		// esAction
+        dom.find("#esAction").click(function(){
+            params.esAction = $(this).is(":checked");
+            $this_element.attr("params",JSON.stringify(params));
+            if (params.esAction === true){
+				params.action = params.href;
+				$this_element.attr("action", params.action);
+				delete params.href;
+				$this_element.removeAttr("href");
+            } 
+			else {
+				params.href = params.action;
+				$this_element.attr("href", params.href);
+				delete params.action;
+				$this_element.removeAttr("action");
+            }
+			$this_element.attr("params",JSON.stringify(params))
+            makeHTML().run();
+        }).attr("checked",params.link);
 
         // borrar
         dom.find("#drop").click(function(){
