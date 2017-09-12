@@ -14,7 +14,21 @@ module.exports = function () {
             var params = [];
             $( this ).find("[params]").each(function(e,objectChild){
                 var param = JSON.parse( $(this).attr("params") );
-                params.push(param);
+                var nameAttr = Object.keys( param );
+
+                console.log(nameAttr);
+
+                var attributes = [];
+                for (var index in  nameAttr){
+                    eval('var value = param.'+nameAttr[index]);
+                    eval('var parser_object = {name:"'+nameAttr[index]+'",value:"'+value+'"}');
+                    attributes.push(parser_object);
+                }
+
+                /*console.log(attributes);
+                alert(attributes);*/
+                //eval('params.push("'++'")')
+                params.push(attributes);
                 /*if ($( this ).attr("type") === "Text"){
                     getServices($( this ));
                 }*/
@@ -39,6 +53,16 @@ module.exports = function () {
                 return false;
             }
         });*/
+
+        $.ajax({
+            url: "http://192.168.3.187:8080/parse/",
+            method: "POST",
+            dataType: "JSON",
+            data: JSON.stringify(dataJson),
+            contentType: "application/json"
+        }).done(function() {
+            $( this ).addClass( "done" );
+        });
 
         console.log(JSON.stringify(dataJson));
         console.log(htmlString);
