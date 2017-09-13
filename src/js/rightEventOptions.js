@@ -99,8 +99,24 @@ module.exports = function () {
         _html += elementForm().checkbox('link','Hipervinculo','image');
         _html += elementForm().checkbox('radius','Redondo','image');
         _html += elementForm().inputText('linkHiper','Hipervinculo','image',true);
-        //_html += elementForm().inputText('nameTarget','#nombre','image',true);
+
+        _html += elementForm().beginGroupElement();
+        _html += elementForm().inputText('nameTarget','#nombre','image',true);
+
+        var options = [
+
+        ];
+
+        // ajax aqui
+        var data_influence = '[{"id":66,"nombre":"venezuela","status":"ACTIVO"},{"id":72,"nombre":"Nancy Patiño","status":"ACTIVO"},{"id":69,"nombre":"Lovelygourmet","status":"ACTIVO"},{"id":70,"nombre":"Tomas Drever","status":"ACTIVO"},{"id":74,"nombre":"Daniel Brito","status":"ACTIVO"},{"id":76,"nombre":"Eliana Jimenez","status":"ACTIVO"},{"id":75,"nombre":"Andrea Rivas","status":"ACTIVO"},{"id":77,"nombre":"Roberto Villarreal","status":"ACTIVO"},{"id":73,"nombre":"Irina Rodriguez","status":"ACTIVO"},{"id":78,"nombre":"Jaime Cherigo","status":"ACTIVO"},{"id":27,"nombre":"Marcos Calderon","status":"ACTIVO"}]'
+
+         $.each(JSON.parse(data_influence),function(i, object){
+             options.push({value : object.id, text : object.nombre, attributes:""})
+         });
+
+        _html += elementForm().select('influencer','influenciador','image',options);
         _html += elementForm().checkbox('isInfluencer','Es influenciador o slide?','image');
+        _html += elementForm().endGroupElement();
 
         var dom = init().append(_html);
 
@@ -147,6 +163,16 @@ module.exports = function () {
             $this_element.attr("params",JSON.stringify(params));
             makeHTML().run();
         }).val(params.nameTarget);
+
+        // eventos del numero de bloques
+        dom.find("#influencer").change(function(){
+
+            var block = ($this_element);
+            params.influencer = $(this).val();
+            block.attr("params",JSON.stringify(params));
+            makeHTML().run();
+
+        }).val(params.influencer);
 
         // is incluence
         dom.find("#isInfluencer").click(function(){

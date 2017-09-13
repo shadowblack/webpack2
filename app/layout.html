@@ -44,6 +44,7 @@
                             $("div[type='Text']").each(function(e){
                                 var paramsText = JSON.parse($( this ).attr("params"));
 
+                                // cambiando el texto del influenciador al target del nombre de la imagen del influenciador
                                 if (params.nameTarget !== undefined && paramsText.name === params.nameTarget){
                                     $(this).text("Influenciador");
 
