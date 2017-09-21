@@ -108,14 +108,31 @@ module.exports = function () {
         ];
 
         // ajax aqui
-        var data_influence = '[{"id":66,"nombre":"venezuela","status":"ACTIVO"},{"id":72,"nombre":"Nancy Patiño","status":"ACTIVO"},{"id":69,"nombre":"Lovelygourmet","status":"ACTIVO"},{"id":70,"nombre":"Tomas Drever","status":"ACTIVO"},{"id":74,"nombre":"Daniel Brito","status":"ACTIVO"},{"id":76,"nombre":"Eliana Jimenez","status":"ACTIVO"},{"id":75,"nombre":"Andrea Rivas","status":"ACTIVO"},{"id":77,"nombre":"Roberto Villarreal","status":"ACTIVO"},{"id":73,"nombre":"Irina Rodriguez","status":"ACTIVO"},{"id":78,"nombre":"Jaime Cherigo","status":"ACTIVO"},{"id":27,"nombre":"Marcos Calderon","status":"ACTIVO"}]'
+        //var data_influence = '[{"id":66,"nombre":"venezuela","status":"ACTIVO"},{"id":72,"nombre":"Nancy Patiño","status":"ACTIVO"},{"id":69,"nombre":"Lovelygourmet","status":"ACTIVO"},{"id":70,"nombre":"Tomas Drever","status":"ACTIVO"},{"id":74,"nombre":"Daniel Brito","status":"ACTIVO"},{"id":76,"nombre":"Eliana Jimenez","status":"ACTIVO"},{"id":75,"nombre":"Andrea Rivas","status":"ACTIVO"},{"id":77,"nombre":"Roberto Villarreal","status":"ACTIVO"},{"id":73,"nombre":"Irina Rodriguez","status":"ACTIVO"},{"id":78,"nombre":"Jaime Cherigo","status":"ACTIVO"},{"id":27,"nombre":"Marcos Calderon","status":"ACTIVO"}]'
+        //var data_influence = '[{"id":80,"nombre":"Veratrends","nombreima":"http://wap.alamano.com/sbk/banners/categoria/veratrends_1458_Smart.png","textoinvitacion":null},{"id":72,"nombre":"Nancy Patiño","nombreima":"http://wap.alamano.com/sbk/banners/categoria/nancy patino_1365_Smart.png","textoinvitacion":null},{"id":27,"nombre":"Marcos Calderon","nombreima":"http://wap.alamano.com/sbk/banners/categoria/marcos1_926_Smart.png","textoinvitacion":"textoejemplo"},{"id":69,"nombre":"Lovelygourmet","nombreima":"http://wap.alamano.com/sbk/banners/categoria/lovely_1394_Smart_926_Smart.png","textoinvitacion":null},{"id":70,"nombre":"Tomas Drever","nombreima":"http://wap.alamano.com/sbk/banners/categoria/tomas_926_Smart.png","textoinvitacion":null},{"id":74,"nombre":"Daniel Brito","nombreima":"http://wap.alamano.com/sbk/banners/categoria/daniel_1353_Smart.png","textoinvitacion":null},{"id":76,"nombre":"Eliana Jimenez","nombreima":"http://wap.alamano.com/sbk/banners/categoria/eliana-jimenez (2)_1357_Smart_1359_Smart.png","textoinvitacion":null},{"id":75,"nombre":"Andrea Rivas","nombreima":"http://wap.alamano.com/sbk/banners/categoria/andrea-rivas-_1357_Smart_1359_Smart.png","textoinvitacion":null},{"id":77,"nombre":"Roberto Villarreal","nombreima":"http://wap.alamano.com/sbk/banners/categoria/roberto_1357_Smart_1359_Smart.png","textoinvitacion":null},{"id":73,"nombre":"Irina Rodriguez","nombreima":"http://wap.alamano.com/sbk/banners/categoria/irina-rodrigez_1357_Smart_1359_Smart.png","textoinvitacion":null},{"id":78,"nombre":"Jaime Cherigo","nombreima":"http://wap.alamano.com/sbk/banners/categoria/jaime_1151_Smart.png","textoinvitacion":null}]';
+        var data_influence = '';
 
+
+        $.ajax({
+            url: "http://192.168.3.187:8080/influencer",
+            method: "GET",
+            dataType: "JSON",
+            async : false
+        }).done(function(data) {
+            data_influence = JSON.stringify(data);
+        });
+        //data_influence = '[{"id":80,"nombre":"Veratrends","nombreima":"http://wap.alamano.com/sbk/banners/categoria/veratrends_1458_Smart.png","textoinvitacion":null},{"id":72,"nombre":"Nancy Patiño","nombreima":"http://wap.alamano.com/sbk/banners/categoria/nancy patino_1365_Smart.png","textoinvitacion":null},{"id":27,"nombre":"Marcos Calderon","nombreima":"http://wap.alamano.com/sbk/banners/categoria/marcos1_926_Smart.png","textoinvitacion":"textoejemplo"},{"id":69,"nombre":"Lovelygourmet","nombreima":"http://wap.alamano.com/sbk/banners/categoria/lovely_1394_Smart_926_Smart.png","textoinvitacion":null},{"id":70,"nombre":"Tomas Drever","nombreima":"http://wap.alamano.com/sbk/banners/categoria/tomas_926_Smart.png","textoinvitacion":null},{"id":74,"nombre":"Daniel Brito","nombreima":"http://wap.alamano.com/sbk/banners/categoria/daniel_1353_Smart.png","textoinvitacion":null},{"id":76,"nombre":"Eliana Jimenez","nombreima":"http://wap.alamano.com/sbk/banners/categoria/eliana-jimenez (2)_1357_Smart_1359_Smart.png","textoinvitacion":null},{"id":75,"nombre":"Andrea Rivas","nombreima":"http://wap.alamano.com/sbk/banners/categoria/andrea-rivas-_1357_Smart_1359_Smart.png","textoinvitacion":null},{"id":77,"nombre":"Roberto Villarreal","nombreima":"http://wap.alamano.com/sbk/banners/categoria/roberto_1357_Smart_1359_Smart.png","textoinvitacion":null},{"id":73,"nombre":"Irina Rodriguez","nombreima":"http://wap.alamano.com/sbk/banners/categoria/irina-rodrigez_1357_Smart_1359_Smart.png","textoinvitacion":null},{"id":78,"nombre":"Jaime Cherigo","nombreima":"http://wap.alamano.com/sbk/banners/categoria/jaime_1151_Smart.png","textoinvitacion":null}]';
+
+        $("#influence").val(data_influence);
          $.each(JSON.parse(data_influence),function(i, object){
-             options.push({value : object.id, text : object.nombre, attributes:""})
+             options.push({value : object.id, text : object.nombre,
+                 attributes:"image='"+object.nombreima+"' name='"+object.nombre+"'"
+             })
          });
 
         _html += elementForm().select('influencer','influenciador','image',options);
-        _html += elementForm().checkbox('isInfluencer','Es influenciador o slide?','image');
+        _html += elementForm().checkbox('isInfluencer','Es influenciador?','image');
+        _html += elementForm().checkbox('isSlider','Es Slider?','image');
         _html += elementForm().endGroupElement();
 
         var dom = init().append(_html);
@@ -169,16 +186,37 @@ module.exports = function () {
 
             var block = ($this_element);
             params.influencer = $(this).val();
+
+            var image = $(this).find("option:selected").attr("image");
+            var name = $(this).find("option:selected").attr("name");
+            params.imagenInfluence = image;
+            params.nameInfluence = name;
+
+            $this_element.find("img").attr("src",params.imagenInfluence);
+
             block.attr("params",JSON.stringify(params));
+
+            if (!dom.find("#isInfluencer").is(":checked"))
+                dom.find("#isInfluencer").trigger("click");
             makeHTML().run();
 
         }).val(params.influencer);
 
-        // is incluence
+        // is influence
         dom.find("#isInfluencer").click(function(){
             params.isInfluencer = $(this).is(":checked");
             $this_element.attr("params",JSON.stringify(params));
+            if (params.isInfluencer === true)
+                $this_element.find("img").attr("src",params.imagenInfluence);
+            else
+                $this_element.find("img").attr("src",params.src);
         }).attr("checked",params.isInfluencer);
+
+        // is influence
+        dom.find("#isSlider").click(function(){
+            params.isSlider = $(this).is(":checked");
+            $this_element.attr("params",JSON.stringify(params));
+        }).attr("checked",params.isSlider);
 
         // link
         dom.find("#link").click(function(){
@@ -289,6 +327,11 @@ module.exports = function () {
         //_html += elementForm().inputText('block-height','Altura, ej. 10px, 2%, 1em','block');
 
         options = [
+            {
+                value   : "auto",
+                text    : "auto",
+                attributes : ""
+            },
             {
                 value   : "25px",
                 text    : "25px",

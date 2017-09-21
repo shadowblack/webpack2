@@ -23,23 +23,98 @@
         };
 
         var my_slider = function(){
-            var timeExpire = 5000;
+            var timeExpire = 2000;
             var count = 0;
+
+            /*alert($("#influence").val());*/
+            if ($("#influence").val() === undefined) return;
+
+            var dataInfluence = JSON.parse($("#influence").val());
+
+            console.log(dataInfluence);
+
+            var tempInfluence = [];
+            // dinamic parser
+            $.each(dataInfluence,function(i,object){
+                object.shown = false;
+                object.image =  object.nombreima;
+            });
 
             // buscando modulo de imagenes ya que las mismas manejan la capaciad de agregar influenciadores
             $('[type="Imagen"]').each(function(i){
+                var self = $(this);
                 var params = JSON.parse($( this ).attr("params"));
                 if (params.isInfluencer !== undefined && params.isInfluencer === true){
-                    count ++;
-                    var self = $(this);
+
+                    // seteando texto a la imagen
+                    //self.find("img").attr("src",(self.find("img").attr("src") === "images/office.jpg" ? "images/sample-1.jpg" : "images/office.jpg"));
+
+                    // buscando los textos cuya target se defina en el bloque de imagen influenciador
+                    $("div[type='Text']").each(function(e){
+                        var paramsText = JSON.parse($( this ).attr("params"));
+
+                        // cambiando el texto del influenciador al target del nombre de la imagen del influenciador
+                        if (params.nameTarget !== undefined && paramsText.name === params.nameTarget){
+                            $(this).text(params.nameInfluence);
+
+                            // solo entra una vez
+                            return false;
+                        }
+                    });
+                }
+                if(params.isSlider !== undefined && params.isSlider === true
+                    && (params.isInfluencer !== undefined && params.isInfluencer === true)
+                ){
+                    count++;
                     // sincronizando influenciador
                     setTimeout(function(){
-                        var changeInfluencer;
-                        intervalId = setInterval(function(){
-                            // cambiando imagenes
-                            self.find("img").attr("src",(self.find("img").attr("src") === "images/office.jpg" ? "images/sample-1.jpg" : "images/office.jpg"));
 
-                            var name = params.name;
+                        var timer = null;
+
+                        self.mouseenter(function(){
+                            clearInterval(timer);
+                            timer = null
+                        });
+
+                        self.on("mouseleave",function(){
+                            clearInterval(timer);
+                            timer = null
+
+                            if (timer !== null) return;
+                            timer = setInterval(influencerBlockEvent,count * timeExpire);
+                        });
+
+                        var influencerBlockEvent = function(){
+                            var reset = true;
+                            var actualObject = {};
+
+                            // validando si todo los influenciadores se han mostrado en el efecto slider
+                            $.each(dataInfluence, function(i,object){
+                                if(object.shown === false){
+                                    object.shown = true;
+                                    actualObject = object;
+                                    reset = false;
+                                    return false;
+                                }
+                            });
+
+                            // reiniciando los influenciadores
+                            if (reset === true) {
+                                $.each(dataInfluence, function(i,object){
+                                    object.shown = false;
+                                    dataInfluence[i] = object;
+                                });
+                                actualObject = dataInfluence[0];
+                            }
+
+                            // se debe validar que el json tenga influenciadores para mostrar
+                            // aqui
+
+
+                            // cambiando imagenes
+                            self.find("img").attr("src",actualObject.image);
+                            // agrego el cambio desde el dataInfluence
+
                             // buscando los textos cuya target se defina en el bloque de imagen influenciador
                             $("div[type='Text']").each(function(e){
                                 var paramsText = JSON.parse($( this ).attr("params"));
@@ -48,12 +123,15 @@
                                 if (params.nameTarget !== undefined && paramsText.name === params.nameTarget){
                                     $(this).text("Influenciador");
 
-                                    // solo entra una vez
-                                    return false;
+                                    ///dataInfluence.show = true;
+                                    return true;
                                 }
+
                             });
-                        },timeExpire)
-                    },count * timeExpire);
+                        };
+
+                        timer = setInterval(influencerBlockEvent,count * timeExpire)
+                     },count * timeExpire);
                 }
           })
         };

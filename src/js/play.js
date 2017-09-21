@@ -30,7 +30,7 @@ AppPlay = (function($,window){
     };
 
     var loaderType = function(){
-        $.ajax({
+        /*$.ajax({
             url: "http://192.168.3.187:8080/tipodebloques",
             method: "GET",
             dataType: "JSON",
@@ -42,15 +42,15 @@ AppPlay = (function($,window){
              });
 
             $("select").material_select();
-        });
+        });*/
 
-        /*var type = JSON.parse('[{"id":1,"tipo":"lienzo"},{"id":2,"tipo":"top"},{"id":3,"tipo":"boton cta"},{"id":4,"tipo":"texto"},{"id":5,"tipo":"video"},{"id":6,"tipo":"influenciador basico"},{"id":7,"tipo":"influenciador compuesto"},{"id":8,"tipo":"formulario"},{"id":9,"tipo":"imagen"},{"id":10,"tipo":"redes sociales"},{"id":11,"tipo":"encuesta"},{"id":12,"tipo":"msisdn"},{"id":13,"tipo":"footer"}]');
+        var type = JSON.parse('[{"id":1,"tipo":"lienzo"},{"id":2,"tipo":"top"},{"id":3,"tipo":"boton cta"},{"id":4,"tipo":"texto"},{"id":5,"tipo":"video"},{"id":6,"tipo":"influenciador basico"},{"id":7,"tipo":"influenciador compuesto"},{"id":8,"tipo":"formulario"},{"id":9,"tipo":"imagen"},{"id":10,"tipo":"redes sociales"},{"id":11,"tipo":"encuesta"},{"id":12,"tipo":"msisdn"},{"id":13,"tipo":"footer"}]');
 
         var $type_block = $("#type_block");
         $.each(type,function(index,object){
 
             $type_block.append('<option value="'+object.id+'">'+object.tipo+'</option>')
-        })*/
+        })
     };
 
     var init = function(){
