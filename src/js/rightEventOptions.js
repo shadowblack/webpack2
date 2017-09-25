@@ -32,14 +32,13 @@ module.exports = function () {
 
         // is background color
         dom.find("#isBackgroundColor").click(function(){
-
             params.isBackgroundColor = $(this).is(":checked");
             if(params.isBackgroundColor === true){
                 $this_element.css({"background-color":params.backgroundColor});
-                params.backgroundColor = params.backgroundColor;
+                //params.backgroundColor = params.backgroundColor;
             } else {
                 $this_element.css({"background-color":"initial"});
-                params.backgroundColor = "initial";
+                //params.backgroundColor = "initial";
             }
 
             $this_element.attr("params",JSON.stringify(params));
@@ -53,7 +52,18 @@ module.exports = function () {
             $this_element.attr("params",JSON.stringify(params));
             $this_element.find("#elementBody").attr("params",JSON.stringify(params));
             dom.find("#isBackgroundColor").attr("checked",true);
-            dom.find("#fondo").attr("checked",true);
+            dom.find("#isBackgroundImage").attr("checked",false);
+            params.isBackgroundColor = true;
+            params.isBackgroundImage = false;
+
+            $this_element.css('background-image','none');
+            $this_element.css('background-repeat','none');
+            /* $this_element.css('background-attachment','fixed');*/
+            $this_element.css('background-position', 'none');
+            $this_element.css('background-size','none');
+
+            $this_element.find("#elementBody").attr("params",JSON.stringify(params));
+
             makeHTML().run();
         }).val(params.backgroundColor);
 
@@ -77,8 +87,13 @@ module.exports = function () {
                         $this_element.css('background-position', params.backgroundPosition);
                         $this_element.css('background-size',params.backgroundSize);
 
-                        $("#isBackgroundImage").attr("checked",true);
+                        params.isBackgroundImage = true;
+                        params.isBackgroundColor = false;
+
+                        dom.find("#isBackgroundColor").attr("checked",false);
                         $this_element.attr("params",JSON.stringify(params));
+                        dom.find("#isBackgroundImage").attr("checked",true);
+                        $this_element.find("#elementBody").attr("params",JSON.stringify(params));
                     };
 
                     reader.readAsDataURL(input.files[0]);
