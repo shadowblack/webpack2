@@ -105,6 +105,38 @@ module.exports = function () {
       return "</div></div>";
     };
 
+    var listCheckBox = function(id, title, group, options){
+        var html_options = "";
+
+        $(options).each(function(i,obj){
+            html_options += '<p><input type="checkbox" id="list_check'+i+'"  value="'+obj.value+'"/><label for="list_check'+i+'"">'+obj.text+'</label></p>';
+        });
+
+        var html =  '<div group="'+group+'">' +
+                        '<label>'+title+'</label>'+
+                        html_options+
+                    '</div>';
+        return html;
+    };
+
+    var divRadioBox = function(id, title, group, options){
+        var html_options = "";
+
+        $(options).each(function(i,obj){
+            html_options += '<p><input name="'+id+'" type="radio" id="list_check'+i+'"  value="'+obj.value+'"/><label for="list_check'+i+'"">'+obj.text+'</label></p>';
+        });
+
+        var html =  '<div group="'+group+'">' +
+            '<label>'+title+'</label>'+
+            html_options+
+            '</div>';
+        return html;
+    };
+
+    var divSection = function(id, group, text){
+        return '<div id="'+id+'" class="row white card" group="'+group+'">'+text+'</div>';
+    };
+
     return {
         checkbox    : checkbox,
         select      : select,
@@ -115,6 +147,10 @@ module.exports = function () {
         inputFile   : inputFile,
         beginGroupElement: beginGroupElement,
         endGroupElement : endGroupElement,
-        inputTextIn : inputTextIn
+        inputTextIn : inputTextIn,
+        listCheckBox : listCheckBox,
+        divSection  :   divSection,
+        divRadioBox  :   divRadioBox
+
     }
 };

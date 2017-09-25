@@ -123,10 +123,7 @@ module.exports = function () {
         ];
 
         // ajax aqui
-        //var data_influence = '[{"id":66,"nombre":"venezuela","status":"ACTIVO"},{"id":72,"nombre":"Nancy Patiño","status":"ACTIVO"},{"id":69,"nombre":"Lovelygourmet","status":"ACTIVO"},{"id":70,"nombre":"Tomas Drever","status":"ACTIVO"},{"id":74,"nombre":"Daniel Brito","status":"ACTIVO"},{"id":76,"nombre":"Eliana Jimenez","status":"ACTIVO"},{"id":75,"nombre":"Andrea Rivas","status":"ACTIVO"},{"id":77,"nombre":"Roberto Villarreal","status":"ACTIVO"},{"id":73,"nombre":"Irina Rodriguez","status":"ACTIVO"},{"id":78,"nombre":"Jaime Cherigo","status":"ACTIVO"},{"id":27,"nombre":"Marcos Calderon","status":"ACTIVO"}]'
-        //var data_influence = '[{"id":80,"nombre":"Veratrends","nombreima":"http://wap.alamano.com/sbk/banners/categoria/veratrends_1458_Smart.png","textoinvitacion":null},{"id":72,"nombre":"Nancy Patiño","nombreima":"http://wap.alamano.com/sbk/banners/categoria/nancy patino_1365_Smart.png","textoinvitacion":null},{"id":27,"nombre":"Marcos Calderon","nombreima":"http://wap.alamano.com/sbk/banners/categoria/marcos1_926_Smart.png","textoinvitacion":"textoejemplo"},{"id":69,"nombre":"Lovelygourmet","nombreima":"http://wap.alamano.com/sbk/banners/categoria/lovely_1394_Smart_926_Smart.png","textoinvitacion":null},{"id":70,"nombre":"Tomas Drever","nombreima":"http://wap.alamano.com/sbk/banners/categoria/tomas_926_Smart.png","textoinvitacion":null},{"id":74,"nombre":"Daniel Brito","nombreima":"http://wap.alamano.com/sbk/banners/categoria/daniel_1353_Smart.png","textoinvitacion":null},{"id":76,"nombre":"Eliana Jimenez","nombreima":"http://wap.alamano.com/sbk/banners/categoria/eliana-jimenez (2)_1357_Smart_1359_Smart.png","textoinvitacion":null},{"id":75,"nombre":"Andrea Rivas","nombreima":"http://wap.alamano.com/sbk/banners/categoria/andrea-rivas-_1357_Smart_1359_Smart.png","textoinvitacion":null},{"id":77,"nombre":"Roberto Villarreal","nombreima":"http://wap.alamano.com/sbk/banners/categoria/roberto_1357_Smart_1359_Smart.png","textoinvitacion":null},{"id":73,"nombre":"Irina Rodriguez","nombreima":"http://wap.alamano.com/sbk/banners/categoria/irina-rodrigez_1357_Smart_1359_Smart.png","textoinvitacion":null},{"id":78,"nombre":"Jaime Cherigo","nombreima":"http://wap.alamano.com/sbk/banners/categoria/jaime_1151_Smart.png","textoinvitacion":null}]';
         var data_influence = '';
-
 
        /* $.ajax({
             url: "http://192.168.3.187:8080/influencer",
@@ -1357,8 +1354,48 @@ module.exports = function () {
         _html += elementForm().inputText('inputName','Name','checkbox',true);
         _html += elementForm().inputText('caption','Caption','checkbox',true);
         _html += elementForm().inputText('value','Valor','checkbox',true);
+        _html += elementForm().checkbox('isPoll','Es Encuesta?','checkbox',true);
+
+        // lista de encuestas ajax1
+        var options = [];
+        var poll = '[{"id":4,"nombre":"Alma Guia Demo"},{"id":1,"nombre":"Encuesta De Prueba"}]';
+
+        $.each(JSON.parse(poll), function(i,object){
+            var option = {value : object.id, text : object.nombre};
+            options.push(option)
+        });
+
+        _html += elementForm().select('poll','Encuesta','checkbox',options);
+        _html += elementForm().divSection('listCheckBox','checkbox','Preguntas');
 
         var dom = init().append(_html);
+
+        // eventos del numero de bloques
+        dom.find("#poll").change(function(){
+            params.pollSelected = $(this).val();
+            // ajax2
+            var option = JSON.parse('[{"id":7,"planteamiento":"como?","encuestas":1},{"id":2,"planteamiento":"Cual es su Color Favorito?..","encuestas":1},{"id":6,"planteamiento":"que?","encuestas":1},{"id":1,"planteamiento":"Que dia de la Semana Prefiere?","encuestas":1},{"id":3,"planteamiento":"Tu Edad Esta Entre:","encuestas":1}]');
+            var polls = [];
+            $.each(option,function(i,object){
+                polls.push({value:object.id,text:object.planteamiento});
+            });
+
+            $("#listCheckBox").empty().append(elementForm().divRadioBox("pollListRadio","Lista de Preguntas","ListPollQuestion",polls));
+            block.attr("params",JSON.stringify(params));
+            makeHTML().run();
+        }).val(params.pollSelected);
+
+        // si es datapicker se le agrega la clase que posteriormente sera visible al generar el html
+        dom.find("#isPoll").click(function(){
+            params.isPoll = $(this).is(":checked");
+            $this_element.attr("params",JSON.stringify(params));
+            /*if (params.isPoll === true){
+                $this_element.find("input").addClass("datepicker");
+            } else {
+                $this_element.find("input").removeClass("datepicker");
+            }*/
+            makeHTML().run();
+        }).attr("checked",params.isPoll === true);
 
         // valor
         dom.find("#value").keyup(function(){
