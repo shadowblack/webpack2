@@ -1,5 +1,5 @@
 module.exports = function () {
-
+    var host = 'http://192.168.3.187:8080';
     var run = function(){
 
         var centerContent = $("#content-center");
@@ -55,7 +55,7 @@ module.exports = function () {
         });*/
 
         $.ajax({
-            url: "http://192.168.3.187:8080/parse/",
+            url: host+"/parse/",
             method: "POST",
             dataType: "JSON",
             data: JSON.stringify(dataJson),

@@ -1,4 +1,5 @@
 module.exports = function () {
+    var host = 'http://192.168.3.187:8080';
     var elementForm = require('./elementsForm'),
     makeHTML = require('./makeHTML');
 
@@ -114,7 +115,7 @@ module.exports = function () {
 
 
         $.ajax({
-            url: "http://192.168.3.187:8080/influencer",
+            url: host+"/influencer",
             method: "GET",
             dataType: "JSON",
             async : false
