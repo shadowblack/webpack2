@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Generado</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <script src="fragment/js/lib/jquery-3.2.1.min.js"></script>
     <link rel="stylesheet" href="fragment/js/lib/materialize/css/materialize.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -28,8 +29,7 @@
             var timeExpire = 2000;
             var count = 0;
 
-            /*alert($("#influence").val());*/
-            if ($("#influence").val() === undefined) return;
+            if ($("#influence").val() === undefined || $("#influence").val() === "") return;
 
             var dataInfluence = JSON.parse($("#influence").val());
 
@@ -219,25 +219,41 @@
         };
 
         var elementBody =  function(){
-
             var $this_element = $("body:eq(0)");
             if ($("input#elementBody").attr("params") !== undefined){
                 var params = JSON.parse($("input#elementBody").attr("params"));
-                $this_element.css('background-image',params.backgroundImage);
-                $this_element.css('background-repeat',params.backgroundRepeat);
-                /* $this_element.css('background-attachment','fixed');*/
-                $this_element.css('background-position', params.backgroundPosition);
-                $this_element.css('background-size',params.backgroundSize);
-                $this_element.css({"background-color":params.backgroundColor});
+
+                if (params.isBackgroundColor === true){
+                    $this_element.css('background-image','none');
+                    $this_element.css('background-repeat','none');
+                    $this_element.css('background-position', 'none');
+                    $this_element.css('background-size','none');
+                    $this_element.css({"background-color":params.backgroundColor});
+                } else {
+                    $this_element.css({"background-color":'initial'});
+                }
+                if (params.isBackgroundImage === true){
+                    $this_element.css('background-image',params.backgroundImage);
+                    $this_element.css('background-repeat',params.backgroundRepeat);
+                    $this_element.css('background-position', params.backgroundPosition);
+                    $this_element.css('background-size',params.backgroundSize);
+                    $this_element.css({"background-color":'initial'});
+                } else {
+                    $this_element.css('background-image','none');
+                    $this_element.css('background-repeat','none');
+                    $this_element.css('background-position', 'none');
+                    $this_element.css('background-size','none');
+                }
             }
         };
 
         var execute = function(){
+            elementBody();
             my_slider();
             formatSelect();
             buttonAction();
             formatDatapicker();
-            elementBody();
+
         };
 
         jQuery(function(){
