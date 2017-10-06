@@ -121,10 +121,20 @@ module.exports = function () {
         iframe[0].contentWindow.destroy();
     };
 
+    var init = function(){
+        // guardando el html
+        $("#save_html").click(function(){
+            alert("guardando hola mundo");
+
+            $("#modal").modal("close");
+        });
+    };
+
     return {
         run             : run,
         getAllService   : getAllService,
         make            : make,
-        destroy         : destroy
+        destroy         : destroy,
+        init            : init
     }
 };

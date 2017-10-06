@@ -11,7 +11,7 @@ import 'dragula/dist/dragula.css';
 var rightEventOptions = require ('./rightEventOptions');
 var makeHTML = require('./makeHTML');
 
-
+makeHTML().init();
 //import 'html-webpack-plugin'
 //var x = require('html-webpack-plugin!../../templates/hola.html');
 //import 'dragula';
@@ -20,7 +20,7 @@ import * as dragula from 'dragula';
 var AppPlay;
 
 AppPlay = (function($,window){
-
+    var host = "http://192.168.3.187:8088/api-rest/";
     var left = {};
 
     var saveHtml = function(){
@@ -59,6 +59,7 @@ AppPlay = (function($,window){
         category();
         initialize();
         edit();
+        manager();
         saveHtml();
 
         $("#content-center").click(function(){
@@ -81,6 +82,64 @@ AppPlay = (function($,window){
 
         };
         block_left.find("[reset]").click(function(){reset()});
+    };
+
+    var manager = function(){
+        var modal = $("#manager_modal").modal();
+        $("#btn_manager_site").click(function(){
+            modal.modal('open');
+
+            // cargando site
+            $.ajax({
+                 url: host+"sites",
+                 method: "GET",
+                 dataType: "JSON",
+                 contentType: "application/json"
+             }).done(function(type) {
+                 var type_site = $("#type_site_select");
+                 $.each(type,function(index,object){
+                     type_site.append('<option value="'+object.id+'">'+object.nombre+'</option>');
+                 });
+
+                $("select").material_select();
+
+                type_site.change(function(){
+                    var value = $(this).val();
+
+                    // consulto servicio
+                    var html = '<tr>' +
+                        '<td>11</td>' +
+                        '<td>1.1</td>' +
+                        '<td>0101</td>' +
+                        '<td>0202</td>' +
+                        '<td>fecha</td>' +
+                        '<td>fecha</td>' +
+                        '<td><a href="#"><span class="new badge" data-badge-caption="Desarrollo"></span></a></td>' +
+                        '<td><a class="edit_link" href="#"><i class="material-icons dp48">edit</i></a></td>' +
+                    '</tr>';
+
+                    $("#modal-table-sites").find("tbody")
+                        .empty()
+                        .append(html)
+                        .append(html)
+                        .append(html)
+                        .find(".edit_link").click(function(){
+                            var value = $(this).attr("href");
+                            $("#site_present").val("1");
+                            modal.modal('close');
+                        });
+                    ;
+
+                });
+
+                modal-table-sites
+
+             });
+        });
+
+        $("#close_modal_manager").click(function(){
+            modal.modal('close');
+        });
     };
 
     var edit = function(){
