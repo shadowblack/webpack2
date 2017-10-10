@@ -20,7 +20,8 @@ import * as dragula from 'dragula';
 var AppPlay;
 
 AppPlay = (function($,window){
-    var host = "http://192.168.3.187:8088/api-rest/";
+    //var host = "http://192.168.3.187:8088/api-rest/";
+    var host = "http://prueba.conectium.com/api-rest/";
     var left = {};
 
     var saveHtml = function(){
@@ -53,6 +54,31 @@ AppPlay = (function($,window){
         })
     };
 
+    var loader_site = function(){
+        $.ajax({
+            url: host+"sites",
+            method: "GET",
+            dataType: "JSON",
+            contentType: "application/json"
+        }).done(function(type) {
+            var type_site = $("#type_site_select2");
+            $.each(type, function (index, object) {
+                type_site.append('<option value="' + object.id + '">' + object.nombre + '</option>');
+            });
+
+            $("select").material_select();
+
+            type_site.change(function () {
+                var site_id = $(this).val();
+                $("#site_present").val(site_id);
+            });
+        });
+        $("#type_site_select2").change(function () {
+            var site_id = $(this).val();
+            $("#site_present").val(site_id);
+        });
+    };
+
     var init = function(){
         loaderType();
         startDragula();
@@ -61,6 +87,7 @@ AppPlay = (function($,window){
         edit();
         manager();
         saveHtml();
+        loader_site();
 
         $("#content-center").click(function(){
             $(".selected-border").removeClass("selected-border");
@@ -121,6 +148,7 @@ AppPlay = (function($,window){
                                         '<td>'+object.version+'</td>' +
                                         '<td>'+object.fecha_registro+'</td>' +
                                         '<td>'+object.fecha_actualizacion+'</td>' +
+                                        '<td>'+object.status+'</td>' +
                                         '<td><a href="#"><span class="new badge" data-badge-caption="'+object.tipo_ambiente+'"></span></a></td>' +
                                         '<td><a class="edit_link" href="javascript:void(0)" val="'+object.id+'"><i class="material-icons dp48">edit</i></a></td>' +
                                     '</tr>';

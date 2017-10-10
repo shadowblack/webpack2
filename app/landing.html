@@ -12,7 +12,7 @@
 
 </head>
 <body>
-<hidden id="site_present"></hidden>
+<input type="hidden" id="site_present" />
 <div class="row">
         <div class="col s12 teal darken-4 ">
             <nav>
@@ -73,12 +73,12 @@
                             <div class="input-field col s12">
                                 <select id="type_block">
                                     <option value="0" disabled selected>Tipo de bloque</option>
-                                    <!--<option value="1">Lienzo</option>
+                                    <option value="1">Lienzo</option>
                                     <option value="2">Bloque Top</option>
                                     <option value="3">Bloque Boton CTA</option>
                                     <option value="4">Bloque Text</option>
                                     <option value="5">Bloque de Imagen</option>
-                                    <option value="6">Bloque Footer</option>-->
+                                    <option value="6">Bloque Footer</option>
                                 </select>
                             </div>
                             <div class="card-panel">
@@ -275,7 +275,6 @@
         <div class="col s6 teal teal lighten-4 height-content" >
             <div class="container" id="content-center" params="{}">
                 <input type="hidden" id="elementBody" params="{}">
-                <input type="hidden" id="influence">
             </div>
         </div>
 
@@ -289,22 +288,28 @@
     <div id="modal" class="modal modal-fixed-footer">
         <div class="modal-content">
             <h4>Vista Previa de HTML</h4>
+            <div class="input-field col s12">
+                <select id="type_site_select2">
+                    <option value="" disabled selected>Selecciona el site</option>
+                </select>
+                <label>Sitios</label>
+            </div>
             <iframe frameBorder="0" width="100%" height="450" src="./layout.html"></iframe>
         </div>
         <div class="modal-footer" style="bottom:50px">
             <div class="row">
                 <div class="col s3">
                     <select id="select_site_plublish">
-                        <option value="" disabled selected>Choose your option</option>
-                        <option value="1">Option 1</option>
-                        <option value="2">Option 2</option>
-                        <option value="3">Option 3</option>
+                        <option value="" disabled selected>Selecciona tu ambiente</option>
+                        <option value="1">Desarrollo</option>
+                        <option value="2">Preproduccion</option>
+                        <option value="3">Produccion</option>
                     </select>
                 </div>
                 <div class="col s3">
                     <p>
-                        <input type="checkbox" class="filled-in" id="filled-in-box"  />
-                        <label for="filled-in-box">Publicar</label>
+                        <input type="checkbox" class="filled-in" id="ispublish"  />
+                        <label for="ispublish">Publicar</label>
                     </p>
                 </div>
                 <div class="col s3">

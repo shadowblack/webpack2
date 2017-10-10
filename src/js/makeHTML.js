@@ -1,5 +1,6 @@
 module.exports = function () {
-    var host = "http://192.168.3.187:8088/api-rest/";
+    //var host = "http://192.168.3.187:8088/api-rest/";
+    var host = "http://prueba.conectium.com/api-rest/";
 
     var html;
 
@@ -40,7 +41,8 @@ module.exports = function () {
 
             var data = {
                 category    : category,
-                params      : params
+                params      : params,
+                site        : $("#site_present").val()
             };
 
             //console.log(JSON.stringify(dataJson))
@@ -57,6 +59,7 @@ module.exports = function () {
             }
         });*/
 
+        if ($("#site_present").val() !== "")
         $.ajax({
             url: host+"/parse/",
             method: "POST",
@@ -129,24 +132,37 @@ module.exports = function () {
         // guardando el html
         $("#save_html").click(function(){
 
+            var type_environment = $("#select_site_plublish").val();
+            if (type_environment === "" || type_environment === 1)
+                type_environment = "desarrollo";
+            else if(type_environment === 2)
+                type_environment = "preproduccion";
+            else if(type_environment === 3)
+                type_environment = "produccion";
+            else
+                type_environment = "desarrollo";
+
+            html = $("#content-center").html();
+
+            alert(html);
             $.ajax({
-                url: host+"landing",
+                url: host+"parserlanding/",
                 method: "POST",
                 dataType: "JSON",
                 contentType: "application/json",
-                data : {
+                data : JSON.stringify([{
                     siteid          :   1345,
                     nombre          :   "landing3",
-                    tipo_ambiente   :   "produccion",
-                    status          :   false,
+                    tipo_ambiente   :   type_environment,
+                    status          :   $("#ispublish").is(":checked"),
                     html            : html
-                }
+                }])
             }).done(function(result) {
+                alert("guardando hola mundo");
 
+                $("#modal").modal("close");
             });
-            alert("guardando hola mundo");
 
-            $("#modal").modal("close");
         });
     };
 
