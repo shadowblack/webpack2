@@ -1,5 +1,8 @@
 module.exports = function () {
-    var host = 'http://192.168.3.187:8080';
+    var host = "http://192.168.3.187:8088/api-rest/";
+
+    var html;
+
     var run = function(){
 
         var centerContent = $("#content-center");
@@ -111,6 +114,7 @@ module.exports = function () {
 
             iframe[0].contentWindow.execute();
 
+            html = $("#content-center").html();
     };
 
     var destroy = function(){
@@ -124,6 +128,22 @@ module.exports = function () {
     var init = function(){
         // guardando el html
         $("#save_html").click(function(){
+
+            $.ajax({
+                url: host+"landing",
+                method: "POST",
+                dataType: "JSON",
+                contentType: "application/json",
+                data : {
+                    siteid          :   1345,
+                    nombre          :   "landing3",
+                    tipo_ambiente   :   "produccion",
+                    status          :   false,
+                    html            : html
+                }
+            }).done(function(result) {
+
+            });
             alert("guardando hola mundo");
 
             $("#modal").modal("close");

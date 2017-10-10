@@ -104,35 +104,51 @@ AppPlay = (function($,window){
                 $("select").material_select();
 
                 type_site.change(function(){
-                    var value = $(this).val();
+                    var site_id = $(this).val();
 
                     // consulto servicio
-                    var html = '<tr>' +
-                        '<td>11</td>' +
-                        '<td>1.1</td>' +
-                        '<td>0101</td>' +
-                        '<td>0202</td>' +
-                        '<td>fecha</td>' +
-                        '<td>fecha</td>' +
-                        '<td><a href="#"><span class="new badge" data-badge-caption="Desarrollo"></span></a></td>' +
-                        '<td><a class="edit_link" href="#"><i class="material-icons dp48">edit</i></a></td>' +
-                    '</tr>';
-
-                    $("#modal-table-sites").find("tbody")
-                        .empty()
-                        .append(html)
-                        .append(html)
-                        .append(html)
-                        .find(".edit_link").click(function(){
-                            var value = $(this).attr("href");
-                            $("#site_present").val("1");
-                            modal.modal('close');
+                    var html = "";
+                    $.ajax({
+                        url: host+"landing_info/"+site_id,
+                        method: "GET",
+                        dataType: "JSON",
+                        contentType: "application/json"
+                    }).done(function(landings) {
+                        $.each(landings,function(index,object){
+                            html += '<tr>' +
+                                        '<td>'+object.id+'</td>' +
+                                        '<td>'+object.nombre+'</td>' +
+                                        '<td>'+object.version+'</td>' +
+                                        '<td>'+object.fecha_registro+'</td>' +
+                                        '<td>'+object.fecha_actualizacion+'</td>' +
+                                        '<td><a href="#"><span class="new badge" data-badge-caption="'+object.tipo_ambiente+'"></span></a></td>' +
+                                        '<td><a class="edit_link" href="javascript:void(0)" val="'+object.id+'"><i class="material-icons dp48">edit</i></a></td>' +
+                                    '</tr>';
                         });
-                    ;
+                        $("#modal-table-sites").find("tbody")
+                            .empty()
+                            .append(html)
+                            .find(".edit_link").click(function(){
+                                var landing_id = $(this).attr("val");
+                                $("#site_present").val(type_site.val());
 
+                                // cargando landing
+                                $.ajax({
+                                    url: host+"landing_info/"+landing_id,
+                                    method: "GET",
+                                    dataType: "JSON",
+                                    contentType: "application/json"
+                                }).done(function(landing){
+                                    $("#content-center").html( landing.html );
+                                });
+
+                                modal.modal('close');
+                            });
+                        ;
+                    });
                 });
 
-                modal-table-sites
+               // modal-table-sites
 
              });
         });
