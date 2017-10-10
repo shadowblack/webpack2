@@ -296,3 +296,7 @@ button:hover {
 .selected-border{
     border:1px solid red !important;
 }
+
+a.edit_link, a.edit_link:hover {
+    color: #484949;
+}
