@@ -1224,9 +1224,16 @@ module.exports = function () {
         _html += elementForm().button('drop','Borrar','all');
         _html += elementForm().inputText('inputName','Nombre','inputText',true);
         _html += elementForm().inputText('inputCaption','Etiqueta','inputText',true);
+        _html += elementForm().validator('validator','inputText');
         _html += elementForm().checkbox('isCalendar','Es Calendario?','inputText',true);
 
         var dom = init().append(_html);
+
+        dom.find("[name='validator']").click(function(){
+            params.validator = $(this).attr("values");
+            $this_element.attr("params",JSON.stringify(params));
+            makeHTML().run();
+        }).val(params.validator);
 
         // input caption
         dom.find("#inputCaption").keyup(function(){

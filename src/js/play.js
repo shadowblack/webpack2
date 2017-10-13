@@ -133,7 +133,7 @@ AppPlay = (function($,window){
                 type_site.change(function(){
                     var site_id = $(this).val();
 
-                    // consulto servicio
+                    // consultando informacion del landing
                     var html = "";
                     $.ajax({
                         url: host+"landing_info/"+site_id,
@@ -162,12 +162,13 @@ AppPlay = (function($,window){
 
                                 // cargando landing
                                 $.ajax({
-                                    url: host+"landing_info/"+landing_id,
+                                    url: host+"html/"+landing_id,
                                     method: "GET",
                                     dataType: "JSON",
                                     contentType: "application/json"
                                 }).done(function(landing){
                                     $("#content-center").html( landing.html );
+                                    initialize();
                                 });
 
                                 modal.modal('close');
@@ -197,7 +198,8 @@ AppPlay = (function($,window){
     };
 
     var initialize = function(){
-        $("#content-center").find("type").each(function(e){
+
+        $("#content-center").find("div[type]").each(function(e){
             elementClick( $(this) );
         });
     };
@@ -326,6 +328,7 @@ AppPlay = (function($,window){
 
         $this_element.unbind("click");
         $this_element.click(function(){
+            alert("hola");
             click();
         });
 

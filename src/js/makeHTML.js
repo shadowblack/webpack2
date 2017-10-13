@@ -4,8 +4,7 @@ module.exports = function () {
 
     var html;
 
-    var run = function(){
-
+    var runParser = function(){
         var centerContent = $("#content-center");
 
         var htmlString = centerContent.html();
@@ -30,12 +29,12 @@ module.exports = function () {
                 }
 
                 /*console.log(attributes);
-                alert(attributes);*/
+                 alert(attributes);*/
                 //eval('params.push("'++'")')
                 params.push(attributes);
                 /*if ($( this ).attr("type") === "Text"){
-                    getServices($( this ));
-                }*/
+                 getServices($( this ));
+                 }*/
 
             });
 
@@ -53,25 +52,29 @@ module.exports = function () {
 
         // verificnado si el componente seleccionado esta dentro de un div o bloque category
         /*centerContent.find("[params]").each(function(i){
-            if($(this).parents("[category]:eq(0)").length === 0){
-                Materialize.toast('Ups, para poder utilizar esta funcionalidad correctamente, el componente debe estar dentro de un bloque', 4000)
-                return false;
-            }
-        });*/
+         if($(this).parents("[category]:eq(0)").length === 0){
+         Materialize.toast('Ups, para poder utilizar esta funcionalidad correctamente, el componente debe estar dentro de un bloque', 4000)
+         return false;
+         }
+         });*/
 
         if ($("#site_present").val() !== "")
-        $.ajax({
-            url: host+"/parse/",
-            method: "POST",
-            dataType: "JSON",
-            data: JSON.stringify(dataJson),
-            contentType: "application/json"
-        }).done(function() {
-            $( this ).addClass( "done" );
-        });
+            $.ajax({
+                url: host+"/parse/",
+                method: "POST",
+                dataType: "JSON",
+                data: JSON.stringify(dataJson),
+                contentType: "application/json"
+            }).done(function() {
+                $( this ).addClass( "done" );
+            });
 
         console.log(JSON.stringify(dataJson));
         console.log(htmlString);
+    };
+
+    var run = function(){
+        // aqui estaba el codigo para actualizar sin tener que darle al boton guardar
     };
 
     var getAllService = function(){
@@ -133,16 +136,19 @@ module.exports = function () {
         $("#save_html").click(function(){
 
             var type_environment = $("#select_site_plublish").val();
-            if (type_environment === "" || type_environment === 1)
+
+            if (type_environment === "" || type_environment === "1")
                 type_environment = "desarrollo";
-            else if(type_environment === 2)
+            else if(type_environment === "2")
                 type_environment = "preproduccion";
-            else if(type_environment === 3)
+            else if(type_environment === "3")
                 type_environment = "produccion";
             else
                 type_environment = "desarrollo";
 
             html = $("#content-center").html();
+
+            alert(type_environment);
 
             $.ajax({
                 url: host+"parserlanding/",
@@ -151,14 +157,20 @@ module.exports = function () {
                 contentType: "application/json",
                 data : JSON.stringify([{
                     siteid          :   $("#site_present").val(),
-                    nombre          :   "landing3",
+                    nombre          :   $("#site_name").val() === "" ? "n/a" : $("#site_name").val(),
                     tipo_ambiente   :   type_environment,
                     status          :   $("#ispublish").is(":checked"),
                     html            : html
-                }])
+                }]),
+                statusCode:{
+                    201: function (response) {
+                        $("#modal").modal("close");
+                        runParser();
+                    }
+                }
+
             }).done(function(result) {
 
-                $("#modal").modal("close");
             });
 
         });

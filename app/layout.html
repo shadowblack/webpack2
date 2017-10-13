@@ -247,7 +247,19 @@
             }
         };
 
+        var formValidator = function(){
+            $("[type='InputText']").each(function(i,obj){
+                var json = JSON.parse($(this).attr("params"));
+                if(json.validator === 1){
+                    alert("sin validacion")
+                } else {
+                    alert("con validacion");
+                }
+            });
+        };
+
         var execute = function(){
+            formValidator();
             elementBody();
             my_slider();
             formatSelect();

@@ -78,6 +78,24 @@ module.exports = function () {
         return html;
     };
 
+    var validator = function( name, group ){
+        var html =  '<div class="row white card" group="'+group+'">' +
+                        '<p>'+
+                            'Validator'+
+                        '</p>'+
+                        '<p>'+
+                            '<input name="'+name+'" type="radio" id="validator1" values="1" checked="checked" >'+
+                            '<label for="validator1">Sin validación</label>'+
+                        '</p>'+
+                        '<p>'+
+                            '<input name="'+name+'" type="radio" id="validator2" values="2" >'+
+                            '<label for="validator2">Solo Numeros</label>'+
+                        '</p>'+
+                    '</div>'
+        ;
+        return html;
+    };
+
     var select = function(id, title, group, options){
 
         var html_options = "";
@@ -139,6 +157,7 @@ module.exports = function () {
 
     return {
         checkbox    : checkbox,
+        validator    : validator,
         select      : select,
         button      : button,
         inputText   : inputText,
