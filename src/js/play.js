@@ -20,7 +20,7 @@ import * as dragula from 'dragula';
 var AppPlay;
 
 AppPlay = (function($,window){
-    var host = "http://192.168.3.187:8088/api-rest/";
+    var host = "http://192.168.3.92:8088/api-rest/";
     //var host = "http://prueba.conectium.com/api-rest/";
     var left = {};
 
@@ -31,8 +31,8 @@ AppPlay = (function($,window){
     };
 
     var loaderType = function(){
-        /*$.ajax({
-            url: "http://192.168.3.187:8080/tipodebloques",
+        $.ajax({
+            url: host+"tipodebloques",
             method: "GET",
             dataType: "JSON",
             contentType: "application/json"
@@ -43,15 +43,15 @@ AppPlay = (function($,window){
              });
 
             $("select").material_select();
-        });*/
+        });
 
-        var type = JSON.parse('[{"id":1,"tipo":"lienzo"},{"id":2,"tipo":"top"},{"id":3,"tipo":"boton cta"},{"id":4,"tipo":"texto"},{"id":5,"tipo":"video"},{"id":6,"tipo":"influenciador basico"},{"id":7,"tipo":"influenciador compuesto"},{"id":8,"tipo":"formulario"},{"id":9,"tipo":"imagen"},{"id":10,"tipo":"redes sociales"},{"id":11,"tipo":"encuesta"},{"id":12,"tipo":"msisdn"},{"id":13,"tipo":"footer"}]');
+        /*var type = JSON.parse('[{"id":1,"tipo":"lienzo"},{"id":2,"tipo":"top"},{"id":3,"tipo":"boton cta"},{"id":4,"tipo":"texto"},{"id":5,"tipo":"video"},{"id":6,"tipo":"influenciador basico"},{"id":7,"tipo":"influenciador compuesto"},{"id":8,"tipo":"formulario"},{"id":9,"tipo":"imagen"},{"id":10,"tipo":"redes sociales"},{"id":11,"tipo":"encuesta"},{"id":12,"tipo":"msisdn"},{"id":13,"tipo":"footer"}]');
 
         var $type_block = $("#type_block");
         $.each(type,function(index,object){
 
             $type_block.append('<option value="'+object.id+'">'+object.tipo+'</option>')
-        })
+        })*/
     };
 
     var loader_site = function(){
@@ -63,7 +63,7 @@ AppPlay = (function($,window){
         }).done(function(type) {
             var type_site = $("#type_site_select2");
             $.each(type, function (index, object) {
-                type_site.append('<option value="' + object.id + '">' + object.nombre + '</option>');
+                type_site.append('<option value="' + object.id + '"> ' + object.id +' '+ object.nombre + '</option>');
             });
 
             $("select").material_select();
@@ -125,7 +125,7 @@ AppPlay = (function($,window){
              }).done(function(type) {
                  var type_site = $("#type_site_select");
                  $.each(type,function(index,object){
-                     type_site.append('<option value="'+object.id+'">'+object.nombre+'</option>');
+                     type_site.append('<option value="' + object.id + '"> ' + object.id +' '+ object.nombre + '</option>');
                  });
 
                 $("select").material_select();

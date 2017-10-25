@@ -1,5 +1,5 @@
 var Index = (function($){
-    var host = 'http://192.168.3.187:8080';
+    var host = "http://192.168.3.92:8088/api-rest/";
 
     var intervalId;
 
@@ -231,12 +231,48 @@ var Index = (function($){
     };
 
     var formValidator = function(){
+        var _self;
         $("[type='InputText']").each(function(i,obj){
+            _self = this;
             var json = JSON.parse($(this).attr("params"));
-            if(json.validator === 1){
+            alert(json.validator);
+            if(json.validator === "1"){
                 alert("sin validacion")
             } else {
-                alert("con validacion");
+                $(_self).keydown(function (e) {
+                    if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
+                        (e.keyCode == 65 && e.ctrlKey === true) ||
+                        (e.keyCode >= 35 && e.keyCode <= 39)) {
+                        return;
+                    }
+
+                    if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+                        e.preventDefault();
+                    }
+                });
+            }
+        });
+    };
+    var pool = function(){
+        $("div[type='Checkboxs']").each(function(i){
+
+            var self = this;
+            var params = JSON.parse($(this).attr("params"));
+
+            if (params.isPoll === true){
+                $.ajax({
+                    url: host+"preguntas/"+params.pollSelected,
+                    method: "GET",
+                    dataType: "JSON",
+                    contentType: "application/json"
+                }).done(function(option) {
+                    $.each(option,function(i,object){
+                        if(parseInt($(self).find("input").val()) === object.id){
+                            $(self).find("label").text(object.planteamiento)
+                            return true;
+                        }
+                    });
+                });
             }
         });
     };
@@ -248,6 +284,7 @@ var Index = (function($){
         formatSelect();
         buttonAction();
         formatDatapicker();
+        pool();
     };
 
     var init = function(){

@@ -39,6 +39,7 @@
     "webpack-jquery-ui": "^1.0.0"
   },
   "dependencies": {
+    "dotenv": "^4.0.0",
     "dragula": "^3.7.2",
     "jquery-ui-bundle": "^1.12.1",
     "materialize-css": "^0.99.0",

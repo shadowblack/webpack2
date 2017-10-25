@@ -1,5 +1,5 @@
 module.exports = function () {
-    var host = 'http://192.168.3.187:8080';
+    var host = "http://192.168.3.92:8088/api-rest/";
     var elementForm = require('./elementsForm'),
     makeHTML = require('./makeHTML');
 
@@ -339,6 +339,7 @@ module.exports = function () {
         _html += elementForm().checkbox('imagenFondo','Imagen de Fondo?','block');
         _html += elementForm().endGroupElement();
         _html += elementForm().inputRange('block-range','Opacidad','block');
+        _html += elementForm().checkbox('isMSISDN','Establecer MSISDN','block',true);
         //_html += elementForm().inputText('block-height','Altura, ej. 10px, 2%, 1em','block');
 
         options = [
@@ -411,10 +412,17 @@ module.exports = function () {
         _html += elementForm().select('block-height','Altura','block',options);
 
         var dom = init().append(_html);
-        dom.unbind("click");
-        dom.unbind("change");
+
+        // estableciendo logica para el MSISDN
+        dom.find("#isMSISDN").click(function(){
+            params.isMSISDN = $(this).is(":checked");
+            $this_element.attr("params",JSON.stringify(params));
+            makeHTML().run();
+        }).attr("checked",params.isMSISDN === true);
 
         // slider
+        dom.unbind("click");
+        dom.unbind("change");
         dom.find("#block-range").change(function(){
             var value = ($(this).val()==="0" ? 0 : $(this).val() / 100);
             $this_element.css({"opacity":value});
@@ -1226,8 +1234,16 @@ module.exports = function () {
         _html += elementForm().inputText('inputCaption','Etiqueta','inputText',true);
         _html += elementForm().validator('validator','inputText');
         _html += elementForm().checkbox('isCalendar','Es Calendario?','inputText',true);
+        _html += elementForm().checkbox('isMSISDN','Establecer MSISDN','inputText',true);
 
         var dom = init().append(_html);
+
+        // estableciendo logica para el MSISDN
+        dom.find("#isMSISDN").click(function(){
+            params.isMSISDN = $(this).is(":checked");
+            $this_element.attr("params",JSON.stringify(params));
+            makeHTML().run();
+        }).attr("checked",params.isMSISDN === true);
 
         dom.find("[name='validator']").click(function(){
             params.validator = $(this).attr("values");
@@ -1281,11 +1297,19 @@ module.exports = function () {
         _html += elementForm().inputText('inputSelectName','Nombre','inputSelectText',true);
         _html += elementForm().inputText('inputSelectCaption','Etiqueta','inputSelectText',true);
         _html += elementForm().inputTextIn('inputOptionValue','Valores: [{"option":"a","caption":"a"}]','inputSelectText',true);
+        _html += elementForm().checkbox('isMSISDN','Establecer MSISDN','inputSelectText',true);
 
         $this_element.empty();
         $this_element.append("<div class='input-field col s12'><select disabled></select><label>Materialize Select</label></div>");
 
         var dom = init().append(_html);
+
+        // estableciendo logica para el MSISDN
+        dom.find("#isMSISDN").click(function(){
+            params.isMSISDN = $(this).is(":checked");
+            $this_element.attr("params",JSON.stringify(params));
+            makeHTML().run();
+        }).attr("checked",params.isMSISDN === true);
 
         // identificador unico del elemento del formulario
         dom.find("#inputSelectName").keyup(function(){
@@ -1368,11 +1392,24 @@ module.exports = function () {
 
         // lista de encuestas ajax1
         var options = [];
-        var poll = '[{"id":4,"nombre":"Alma Guia Demo"},{"id":1,"nombre":"Encuesta De Prueba"}]';
-
-        $.each(JSON.parse(poll), function(i,object){
-            var option = {value : object.id, text : object.nombre};
-            options.push(option)
+        $.ajax({
+            url: host+"encuestas",
+            method: "GET",
+            dataType: "JSON",
+            contentType: "application/json"
+        }).done(function(poll) {
+            //var poll = '[{"id":4,"nombre":"Alma Guia Demo"},{"id":1,"nombre":"Encuesta De Prueba"}]';
+            $.each(/*JSON.parse*/(poll), function(i,object){
+                var option = {value : object.id, text : object.nombre};
+                options.push(option);
+            });
+            dom.find("#poll").empty();
+            var html_options = "";
+            $(options).each(function(i,obj){
+                html_options += '<option value="'+obj.value+'">'+obj.text+'</option>';
+            });
+            dom.find("#poll").append(html_options);
+            dom.find("#poll").trigger("change");
         });
 
         _html += elementForm().select('poll','Encuesta','checkbox',options);
@@ -1383,26 +1420,34 @@ module.exports = function () {
         // eventos del numero de bloques
         dom.find("#poll").change(function(){
             params.pollSelected = $(this).val();
-            // ajax2 esto debe consultar el servicio de nay cuando haga el cambio
-            var option = JSON.parse('[{"id":7,"planteamiento":"como?","encuestas":1},{"id":2,"planteamiento":"Cual es su Color Favorito?..","encuestas":1},{"id":6,"planteamiento":"que?","encuestas":1},{"id":1,"planteamiento":"Que dia de la Semana Prefiere?","encuestas":1},{"id":3,"planteamiento":"Tu Edad Esta Entre:","encuestas":1}]');
-            var polls = [];
-            $.each(option,function(i,object){
-                polls.push({value:object.id,text:object.planteamiento});
-            });
 
-            $("#listCheckBox")
-                .empty()
-                .append(elementForm().divRadioBox("pollListRadio","Lista de Preguntas","ListPollQuestion",polls))
-                .find("input").click(function(e){
-                    parameters_checkbox = {text : $(this).parent().find("label").text(), value:$(this).attr("value")};
-                    if (dom.find("#isPoll").is(":checked")){
-                        $this_element.find("label:eq(0)").text(parameters_checkbox.text);
-                        $this_element.find("input:eq(0)").val(parameters_checkbox.value);
-                    }
-                })
-            ;
-            $this_element.attr("params",JSON.stringify(params));
-            makeHTML().run();
+            $.ajax({
+                url: host+"preguntas/"+params.pollSelected,
+                method: "GET",
+                dataType: "JSON",
+                contentType: "application/json"
+            }).done(function(option) {
+
+                //var option = JSON.parse('[{"id":7,"planteamiento":"como?","encuestas":1},{"id":2,"planteamiento":"Cual es su Color Favorito?..","encuestas":1},{"id":6,"planteamiento":"que?","encuestas":1},{"id":1,"planteamiento":"Que dia de la Semana Prefiere?","encuestas":1},{"id":3,"planteamiento":"Tu Edad Esta Entre:","encuestas":1}]');
+                var polls = [];
+                $.each(option,function(i,object){
+                    polls.push({value:object.id,text:object.planteamiento});
+                });
+
+                $("#listCheckBox")
+                    .empty()
+                    .append(elementForm().divRadioBox("pollListRadio","Lista de Preguntas","ListPollQuestion",polls))
+                    .find("input").click(function(e){
+                        parameters_checkbox = {text : $(this).parent().find("label").text(), value:$(this).attr("value")};
+                        if (dom.find("#isPoll").is(":checked")){
+                            $this_element.find("label:eq(0)").text(parameters_checkbox.text);
+                            $this_element.find("input:eq(0)").val(parameters_checkbox.value);
+                        }
+                    })
+                ;
+                $this_element.attr("params",JSON.stringify(params));
+                makeHTML().run();
+            });
         }).val(params.pollSelected);
 
         // si es poll encuesta se le agrega la clase que posteriormente sera visible al generar el html
