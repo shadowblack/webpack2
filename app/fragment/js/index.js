@@ -278,6 +278,30 @@ var Index = (function($){
         });
     };
 
+    var poolRadioBox = function(){
+        $("div[type='Radios']").each(function(i){
+
+            var self = this;
+            var params = JSON.parse($(this).attr("params"));
+
+            if (params.isPoll === true){
+                $.ajax({
+                    url: host+"preguntas/"+params.pollSelected,
+                    method: "GET",
+                    dataType: "JSON",
+                    contentType: "application/json"
+                }).done(function(option) {
+                    $.each(option,function(i,object){
+                        if(parseInt($(self).find("input").val()) === object.id){
+                            $(self).find("label").text(object.planteamiento)
+                            return true;
+                        }
+                    });
+                });
+            }
+        });
+    };
+
     // seteando las preguntas en las encuestas
     var pollText = function(){
         $("div[type='Text']").each(function(i){
@@ -311,6 +335,7 @@ var Index = (function($){
         formatDatapicker();
         poolCheckBox();
         pollText();
+        poolRadioBox();
     };
 
     var init = function(){
