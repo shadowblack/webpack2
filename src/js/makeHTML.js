@@ -1,6 +1,6 @@
 module.exports = function () {
-    var host = "http://192.168.3.92:8088/api-rest/";
-    //var host = "http://prueba.conectium.com/api-rest/";
+    //var host = "http://192.168.3.92:8088/api-rest/";
+    var host = "http://prueba.conectium.com/api-rest/";
 
     var html;
 

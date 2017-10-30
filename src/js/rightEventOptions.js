@@ -1,5 +1,7 @@
 module.exports = function () {
-    var host = "http://192.168.3.92:8088/api-rest/";
+    //var host = "http://192.168.3.92:8088/api-rest/";
+    var host = "http://prueba.conectium.com/api-rest/";
+
     var elementForm = require('./elementsForm'),
     makeHTML = require('./makeHTML');
 
@@ -859,9 +861,84 @@ module.exports = function () {
         _html += elementForm().inputText('linkHiper','Hipervinculo','text',true);
         _html += elementForm().endGroupElement();
 
-        //_html += elementForm().checkbox('isGetData','Obtener de Servicio?','text');
-        //_html += elementForm().inputText('getData','Ruta de Servicio','text',true);
+        _html += elementForm().beginGroupElement();
+        _html += elementForm().checkbox('isPoll','Es Encuesta?','checkbox',true);
+        // lista de encuestas ajax1
+        var options = [];
+        $.ajax({
+            url: host+"encuestas",
+            method: "GET",
+            dataType: "JSON",
+            contentType: "application/json"
+        }).done(function(poll) {
+            //var poll = '[{"id":4,"nombre":"Alma Guia Demo"},{"id":1,"nombre":"Encuesta De Prueba"}]';
+            $.each(/*JSON.parse*/(poll), function(i,object){
+                var option = {value : object.id, text : object.nombre};
+                options.push(option);
+            });
+            dom.find("#poll").empty();
+            var html_options = "";
+            $(options).each(function(i,obj){
+                html_options += '<option value="'+obj.value+'">'+obj.text+'</option>';
+            });
+            dom.find("#poll").append(html_options);
+            dom.find("#poll").trigger("change");
+        });
+
+        _html += elementForm().select('poll','Encuesta','checkbox',options);
+        _html += elementForm().divSection('listCheckBox','checkbox','Preguntas');
+        _html += elementForm().endGroupElement();
+
         var dom = init().append(_html);
+
+        // eventos del numero de bloques
+        dom.find("#poll").change(function(){
+            params.pollSelected = $(this).val();
+
+            $.ajax({
+                url: host+"preguntas/"+params.pollSelected,
+                method: "GET",
+                dataType: "JSON",
+                contentType: "application/json"
+            }).done(function(option) {
+
+                //var option = JSON.parse('[{"id":7,"planteamiento":"como?","encuestas":1},{"id":2,"planteamiento":"Cual es su Color Favorito?..","encuestas":1},{"id":6,"planteamiento":"que?","encuestas":1},{"id":1,"planteamiento":"Que dia de la Semana Prefiere?","encuestas":1},{"id":3,"planteamiento":"Tu Edad Esta Entre:","encuestas":1}]');
+                var polls = [];
+                $.each(option,function(i,object){
+                    polls.push({value:object.id,text:object.planteamiento});
+                });
+
+                $("#listCheckBox")
+                    .empty()
+                    .append(elementForm().divRadioBox("pollListRadio","Lista de Preguntas","ListPollQuestion",polls))
+                    .find("input").click(function(e){
+                    parameters_checkbox = {text : $(this).parent().find("label").text(), value:$(this).attr("value")};
+                    if (dom.find("#isPoll").is(":checked")){
+                        $this_element.text(parameters_checkbox.text);
+                        params.questionSelect = parameters_checkbox.value;
+                        $this_element.attr("params",JSON.stringify(params));
+                    }
+                })
+                ;
+                $this_element.attr("params",JSON.stringify(params));
+                makeHTML().run();
+            });
+        }).val(params.pollSelected);
+
+        // si es poll encuesta se le agrega la clase que posteriormente sera visible al generar el html
+        var parameters_checkbox = {};
+        dom.find("#isPoll").click(function(){
+            params.isPoll = $(this).is(":checked");
+
+            if (params.isPoll === true){
+                $this_element.find("label:eq(0)").text(parameters_checkbox.text);
+                $this_element.find("input:eq(0)").val(parameters_checkbox.value);
+            }
+
+            $this_element.attr("params",JSON.stringify(params));
+
+            makeHTML().run();
+        }).attr("checked",params.isPoll === true);
 
         // name
         dom.find("#name").keyup(function(){
@@ -1414,6 +1491,7 @@ module.exports = function () {
 
         _html += elementForm().select('poll','Encuesta','checkbox',options);
         _html += elementForm().divSection('listCheckBox','checkbox','Preguntas');
+        _html += elementForm().divSection('optionsQuestions','checkbox','Opciones');
 
         var dom = init().append(_html);
 
@@ -1438,12 +1516,31 @@ module.exports = function () {
                     .empty()
                     .append(elementForm().divRadioBox("pollListRadio","Lista de Preguntas","ListPollQuestion",polls))
                     .find("input").click(function(e){
-                        parameters_checkbox = {text : $(this).parent().find("label").text(), value:$(this).attr("value")};
-                        if (dom.find("#isPoll").is(":checked")){
-                            $this_element.find("label:eq(0)").text(parameters_checkbox.text);
-                            $this_element.find("input:eq(0)").val(parameters_checkbox.value);
-                        }
-                    })
+                        parameters_checkbox = {/*text : $(this).parent().find("label").text(),*/ value:$(this).attr("value")};
+
+                        $.ajax({
+                            url: host+"opciones/"+parameters_checkbox.value,
+                            method: "GET",
+                            dataType: "JSON",
+                            contentType: "application/json"
+                        }).done(function(option) {
+
+                            var questions = [];
+                            $.each(option, function (i, object) {
+                                questions.push({value: object.id, text: object.opcion});
+                            });
+
+                            $("#optionsQuestions")
+                                .empty()
+                                .append(elementForm().divRadioBox("optionsQuestions","Lista de Opciones","ListPollQuestion2",questions))
+                                .find("input").click(function(){
+                                    if (dom.find("#isPoll").is(":checked")){
+                                        $this_element.find("label:eq(0)").text($(this).parent().find("label[for='"+$(this).attr("id")+"']").text());
+                                        $this_element.find("input:eq(0)").val($(this).val());
+                                    }
+                                });
+                        });
+                    });
                 ;
                 $this_element.attr("params",JSON.stringify(params));
                 makeHTML().run();

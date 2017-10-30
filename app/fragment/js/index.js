@@ -1,5 +1,6 @@
 var Index = (function($){
-    var host = "http://192.168.3.92:8088/api-rest/";
+    //var host = "http://192.168.3.92:8088/api-rest/";
+    var host = "http://prueba.conectium.com/api-rest/";
 
     var intervalId;
 
@@ -63,7 +64,7 @@ var Index = (function($){
 
                     self.on("mouseleave",function(){
                         clearInterval(timer);
-                        timer = null
+                        timer = null;
 
                         if (timer !== null) return;
                         timer = setInterval(influencerBlockEvent,count * timeExpire);
@@ -253,7 +254,7 @@ var Index = (function($){
             }
         });
     };
-    var pool = function(){
+    var poolCheckBox = function(){
         $("div[type='Checkboxs']").each(function(i){
 
             var self = this;
@@ -277,6 +278,30 @@ var Index = (function($){
         });
     };
 
+    // seteando las preguntas en las encuestas
+    var pollText = function(){
+        $("div[type='Text']").each(function(i){
+            var self = this;
+            var params = JSON.parse($(this).attr("params"));
+
+            if (params.isPoll === true){
+                $.ajax({
+                    url: host+"preguntas/"+params.pollSelected,
+                    method: "GET",
+                    dataType: "JSON",
+                    contentType: "application/json"
+                }).done(function(option) {
+                    $.each(option,function(i,object){
+                        if(parseInt(params.questionSelect) === object.id){
+                            $(self).text(object.planteamiento );
+                            return true;
+                        }
+                    });
+                });
+            }
+        });
+    };
+
     var execute = function(){
         formValidator();
         elementBody();
@@ -284,7 +309,8 @@ var Index = (function($){
         formatSelect();
         buttonAction();
         formatDatapicker();
-        pool();
+        poolCheckBox();
+        pollText();
     };
 
     var init = function(){

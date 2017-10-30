@@ -141,7 +141,7 @@ module.exports = function () {
         var html_options = "";
 
         $(options).each(function(i,obj){
-            html_options += '<p><input name="'+id+'" type="radio" id="list_check'+i+'"  value="'+obj.value+'"/><label for="list_check'+i+'"">'+obj.text+'</label></p>';
+            html_options += '<p><input name="'+id+'" type="radio" id="list_check'+i+group+'"  value="'+obj.value+'"/><label for="list_check'+i+group+'"">'+obj.text+'</label></p>';
         });
 
         var html =  '<div group="'+group+'">' +
