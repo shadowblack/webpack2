@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Generado</title>
+    <meta name="google-signin-client_id" content="814248064664-9pa8soav0ffu9oc58fdreev4bfmbq74m.apps.googleusercontent.com">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <script src="fragment/js/lib/jquery-3.2.1.min.js"></script>
     <script src="fragment/js/index.js"></script>
@@ -12,18 +13,19 @@
 
 
 </head>
-<body >
+<body style="display: none">
     <div id="content">
         <!--Aqui se autogenera el html dinaico-->
     </div>
     <script type="text/javascript">
-        Index.init();
+        var index = Index;
+        index.init(true,"04123114140","lmarin@lmarin.com",1353);
         var execute = function(){
-            Index.execute();
+            index.execute();
         };
 
         var destroy = function(){
-            Index.destroy();
+            index.destroy();
         }
     </script>
     <div id="script">
@@ -32,5 +34,6 @@
         </script>
     </div>
     <script src="fragment/js/lib/materialize/js/materialize.min.js"></script>
+    <script src="https://apis.google.com/js/platform.js?onload=index.renderButton" async defer></script>
 </body>
 </html>

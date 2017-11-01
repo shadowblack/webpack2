@@ -1253,7 +1253,26 @@ module.exports = function () {
         _html += elementForm().inputColor('buttonTextColorLink','Color de Link','text');
         _html += elementForm().endGroupElement();
 
+        var optionsArr = [
+            {value:"na" , text: "Ninguno"},
+            {value:"google" , text: "Google"},
+            {value:"facebook" , text: "Facebook"}
+        ];
+        _html += elementForm().divSection('optionRRSS','all',optionsArr);
+
         var dom = init().append(_html);
+
+        // insertando valores en el selector
+        $("#optionRRSS")
+            .empty()
+            .append(elementForm().divRadioBox("optionRRSSs","Seleccion de opcion","RRSS",optionsArr))
+            .find("input").click(function(){
+
+            params.actionType = $(this).val();
+
+            $this_element.attr("params",JSON.stringify(params));
+            makeHTML().run();
+        });
 
         // color de texto
         dom.find("#textColor").change(function(){
@@ -1486,7 +1505,7 @@ module.exports = function () {
         _html += elementForm().inputText('inputCaption','Etiqueta','inputText',true);
         _html += elementForm().validator('validator','inputText');
         _html += elementForm().checkbox('isCalendar','Es Calendario?','inputText',true);
-        _html += elementForm().checkbox('isMSISDN','Establecer MSISDN','inputText',false);
+        //_html += elementForm().checkbox('isMSISDN','Establecer MSISDN','inputText',false);
         _html += elementForm().divSection('optionActionText','checkbox','inputText');
 
         var dom = init().append(_html);
@@ -1659,7 +1678,7 @@ module.exports = function () {
         _html += elementForm().inputText('buttonName','#Nombre del Boton','checkbox',true);
         _html += elementForm().inputText('caption','Caption','checkbox',true);
         _html += elementForm().inputText('value','Valor','checkbox',true);
-        _html += elementForm().checkbox('isPoll','Es Encuesta?','checkbox',true);
+        //_html += elementForm().checkbox('isPoll','Es Encuesta?','checkbox',true);
 
         // lista de encuestas ajax1
         var options = [];

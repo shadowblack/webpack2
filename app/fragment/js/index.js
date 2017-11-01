@@ -2,8 +2,12 @@ var Index = (function($){
     //var host = "http://192.168.3.92:8088/api-rest/";
     var host = "http://prueba.conectium.com/api-rest/";
 
+    // variables de inicializacion
     var intervalId;
-    var isMSISDN = true;
+    var isMSISDN;
+    var subscriber;
+    var email;
+    var site;
 
     // destruye la ejecucion de los intervalos de tiempo
     var destroy = function(){
@@ -133,12 +137,12 @@ var Index = (function($){
 
             alert(params.actionType);
             if (params.actionType !== undefined && params.actionType === "action"){
-                window.location.href = params.url;
+                window.location.href = params.href;
             } else if (params.actionType !== undefined && params.actionType === "poll")  {
                 postParam=[{
-                   subscriber   : "04125822956",
-                   site         : 1353,
-                   correo       : "micorreo@tucorreo.com"
+                   subscriber   : subscriber,
+                   site         : site,
+                   correo       : email
                 }];
 
                 $("div[type='Radios']").find("input:checked").each(function(i){
@@ -348,14 +352,32 @@ var Index = (function($){
     var MSISDN = function(){
         var self = this;
         $("div[type='None']").each(function(){
+
             var params = JSON.parse($(this).attr("params"));
-            if (params.actionType === "msisdn"){
+            if (params.actionType !== undefined && params.actionType === "msisdn"){
                 if (isMSISDN === true){
                     $(this).show();
                 } else {
                     // mostrando el contenido
                     $(this).hide();
                 }
+            }
+        });
+    };
+
+    var showContent = function(){
+      $("body").show();
+    };
+
+    var RRSS = function(){
+        var self = this;
+        $("span[type='Rrss']").each(function(){
+
+            var params = JSON.parse($(this).attr("params"));
+            if (params.actionType !== undefined && params.actionType === "google"){
+                $(this).hide();
+                $(this).after('<div id="my-signin2"></div>');
+                renderButton();
             }
         });
     };
@@ -372,18 +394,45 @@ var Index = (function($){
         poolRadioBox();
         InputText();
         MSISDN();
+        RRSS();
+        showContent();
     };
 
-    var init = function(){
+    var init = function(_isMSISDN,_subscriber,_email,_site){
+        isMSISDN = _isMSISDN;
+        subscriber = _subscriber;
+        email = _email;
+        site = _site;
         jQuery(function(){
             execute();
         });
     };
 
+    var renderButton = function(){
+        gapi.signin2.render('my-signin2', {
+            'scope': 'profile email',
+            'width': 240,
+            'height': 50,
+            'longtitle': true,
+            'theme': 'dark',
+            'onsuccess': onSuccess,
+            'onfailure': onFailure
+        });
+    };
+    var onSuccess = function(){
+        console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
+    };
+
+    var onFailure = function(){
+        console.log(error);
+    };
     return {
         init : init,
         destroy : destroy,
-        execute : execute
+        execute : execute,
+        renderButton : renderButton ,
+        onSuccess : onSuccess,
+        onFailure : onFailure
     }
 
 })(jQuery);
