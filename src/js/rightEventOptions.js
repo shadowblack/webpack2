@@ -266,8 +266,27 @@ module.exports = function () {
     };
 
     var none = function($this_element){
+        var params = JSON.parse($this_element.attr("params"));
         var _html = elementForm().button('drop','Borrar','all');
+        var optionsArr = [
+            {value:"na" , text: "Ninguno"},
+            {value:"msisdn" , text: "MSISDN"}
+        ];
+        _html += elementForm().divSection('optionButtonAction','all',optionsArr);
         var dom = init().append(_html);
+
+        // insertando valores en el selector
+        $("#optionButtonAction")
+            .empty()
+            .append(elementForm().divRadioBox("optionsActions","Seleccion de opcion","radioOptionsAction",optionsArr))
+            .find("input").click(function(){
+
+            params.actionType = $(this).val();
+
+            $this_element.attr("params",JSON.stringify(params));
+            makeHTML().run();
+        });
+
         dom.unbind("click");
         dom.find("#drop").click(function(){
             $this_element.remove();
@@ -341,7 +360,7 @@ module.exports = function () {
         _html += elementForm().checkbox('imagenFondo','Imagen de Fondo?','block');
         _html += elementForm().endGroupElement();
         _html += elementForm().inputRange('block-range','Opacidad','block');
-        _html += elementForm().checkbox('isMSISDN','Establecer MSISDN','block',true);
+        //_html += elementForm().checkbox('isMSISDN','Establecer MSISDN','block',true);
         //_html += elementForm().inputText('block-height','Altura, ej. 10px, 2%, 1em','block');
 
         options = [
@@ -416,11 +435,11 @@ module.exports = function () {
         var dom = init().append(_html);
 
         // estableciendo logica para el MSISDN
-        dom.find("#isMSISDN").click(function(){
+        /*dom.find("#isMSISDN").click(function(){
             params.isMSISDN = $(this).is(":checked");
             $this_element.attr("params",JSON.stringify(params));
             makeHTML().run();
-        }).attr("checked",params.isMSISDN === true);
+        }).attr("checked",params.isMSISDN === true);*/
 
         // slider
         dom.unbind("click");
@@ -583,6 +602,7 @@ module.exports = function () {
         var _html = "";
         _html += elementForm().button('drop','Borrar','button');
         _html += elementForm().inputText('buttonCaption','Etiqueta','button',true);
+        _html += elementForm().inputText('buttonName','#Nombre del Boton','text',true);
         _html += elementForm().inputColor('buttonColor','Color de Fondo','button');
         _html += elementForm().inputColor('buttonTextColor','Color de Texto','button');
         _html += elementForm().inputRange('opacityRangeButton','Opacidad','button');
@@ -625,10 +645,42 @@ module.exports = function () {
         options.push({value : "Roboto", text : "Roboto", attributes:""});
         _html += elementForm().select('buttonFontFamily','Formato','button',options);
         _html += elementForm().inputText('action','URL Action Form or HREF','button',true);
-		_html += elementForm().checkbox('esAction','esAction','text');
-        //_html += elementForm().inputText('elementForm','#nombres, hola,mundo','button',true);
+        _html += elementForm().divSection('optionButtonAction','checkbox','button');
 
         var dom = init().append(_html);
+
+        // insertando valores en el selector
+        var optionsArr = [
+            {value:"na" , text: "Ninguno"},
+            {value:"action" , text: "Call to Action"},
+            {value:"msisdn" , text: "MSISDN"},
+            {value:"poll" , text: "Encuesta"}
+        ];
+
+        $("#optionButtonAction")
+            .empty()
+            .append(elementForm().divRadioBox("optionsActions","Seleccion de opcion","radioOptionsAction",optionsArr))
+            .find("input").click(function(){
+
+                params.actionType = $(this).val();
+                params.esAction = $(this).val() === 'action';
+                $this_element.attr("params",JSON.stringify(params));
+                if (params.esAction === true){
+                    params.action = params.href;
+                    $this_element.attr("action", params.action);
+                    delete params.href;
+                    $this_element.removeAttr("href");
+                }
+                else {
+                    params.href = params.action;
+                    $this_element.attr("href", params.href);
+                    delete params.action;
+                    $this_element.removeAttr("action");
+                }
+                $this_element.attr("params",JSON.stringify(params))
+                makeHTML().run();
+
+        });
 
         // caption
         $this_element.text(params.caption);
@@ -639,6 +691,13 @@ module.exports = function () {
             $this_element.append(params.caption);
             makeHTML().run();
         }).val(params.caption);
+
+        // name target, es el nombre del componente a relacionar con el influenciador
+        dom.find("#buttonName").keyup(function(){
+            params.buttonName = $(this).val();
+            $this_element.attr("params",JSON.stringify(params));
+            makeHTML().run();
+        }).val(params.buttonName);
 
         // opacity
         dom.find("#opacityRangeButton").change(function(){
@@ -827,6 +886,7 @@ module.exports = function () {
         var _html = "";
         _html += elementForm().button('drop','Borrar','button');
         _html += elementForm().inputText('name','Nombre','text',true);
+        _html += elementForm().inputText('buttonName','#Nombre del Boton','text',true);
         _html += elementForm().inputText('buttonCaption','Etiqueta','text',true);
         _html += elementForm().inputColor('buttonTextColor','Color de Texto','text');
         var options = [];
@@ -948,6 +1008,15 @@ module.exports = function () {
             $this_element.attr("name",params.name);
             makeHTML().run();
         }).val(params.name);
+
+        //target
+
+        // name target, es el nombre del componente a relacionar con el influenciador
+        dom.find("#buttonName").keyup(function(){
+            params.buttonName = $(this).val();
+            $this_element.attr("params",JSON.stringify(params));
+            makeHTML().run();
+        }).val(params.buttonName);
 
         // caption
         $this_element.text(params.caption);
@@ -1255,6 +1324,7 @@ module.exports = function () {
 
         _html += elementForm().button('drop','Borrar','all');
         _html += elementForm().inputText('inputName','Nombre','radio',true);
+        _html += elementForm().inputText('buttonName','#Nombre del Boton','radio',true);
         _html += elementForm().inputText('caption','Etiqueta','radio',true);
         _html += elementForm().inputText('group','Grupo','radio',true);
         _html += elementForm().inputText('value','Valor','radio',true);
@@ -1365,6 +1435,15 @@ module.exports = function () {
             makeHTML().run();
         }).val(params.value);
 
+        //target
+
+        // name target, es el nombre del componente a relacionar con el influenciador
+        dom.find("#buttonName").keyup(function(){
+            params.buttonName = $(this).val();
+            $this_element.attr("params",JSON.stringify(params));
+            makeHTML().run();
+        }).val(params.buttonName);
+
         // input name, cambiando nombre y id
         dom.find("#inputName").keyup(function(){
             params.inputName = $(this).val();
@@ -1407,16 +1486,34 @@ module.exports = function () {
         _html += elementForm().inputText('inputCaption','Etiqueta','inputText',true);
         _html += elementForm().validator('validator','inputText');
         _html += elementForm().checkbox('isCalendar','Es Calendario?','inputText',true);
-        _html += elementForm().checkbox('isMSISDN','Establecer MSISDN','inputText',true);
+        _html += elementForm().checkbox('isMSISDN','Establecer MSISDN','inputText',false);
+        _html += elementForm().divSection('optionActionText','checkbox','inputText');
 
         var dom = init().append(_html);
 
+        // insertando valores en el selector
+        var optionsArr = [
+            {value:"na" , text: "Ninguno"},
+            /*{value:"action" , text: "Call to Action"},*/
+            /*{value:"msisdn" , text: "MSISDN"},*/
+            {value:"msisdn" , text: "MSISDN"}
+        ];
+
+        $("#optionActionText")
+            .empty()
+            .append(elementForm().divRadioBox("optionsActions","Seleccion de opcion","optionActionText",optionsArr))
+            .find("input").click(function(){
+                params.actionType = $(this).val();
+                $this_element.attr("params",JSON.stringify(params));
+                makeHTML().run();
+            });
+
         // estableciendo logica para el MSISDN
-        dom.find("#isMSISDN").click(function(){
+        /*dom.find("#isMSISDN").click(function(){
             params.isMSISDN = $(this).is(":checked");
             $this_element.attr("params",JSON.stringify(params));
             makeHTML().run();
-        }).attr("checked",params.isMSISDN === true);
+        }).attr("checked",params.isMSISDN === true);*/
 
         dom.find("[name='validator']").click(function(){
             params.validator = $(this).attr("values");
@@ -1468,21 +1565,14 @@ module.exports = function () {
 
         _html += elementForm().button('drop','Borrar','all');
         _html += elementForm().inputText('inputSelectName','Nombre','inputSelectText',true);
+        _html += elementForm().inputText('buttonName','#Nombre del Boton','inputSelectText',true);
         _html += elementForm().inputText('inputSelectCaption','Etiqueta','inputSelectText',true);
         _html += elementForm().inputTextIn('inputOptionValue','Valores: [{"option":"a","caption":"a"}]','inputSelectText',true);
-        _html += elementForm().checkbox('isMSISDN','Establecer MSISDN','inputSelectText',true);
 
         $this_element.empty();
         $this_element.append("<div class='input-field col s12'><select disabled></select><label>Materialize Select</label></div>");
 
         var dom = init().append(_html);
-
-        // estableciendo logica para el MSISDN
-        dom.find("#isMSISDN").click(function(){
-            params.isMSISDN = $(this).is(":checked");
-            $this_element.attr("params",JSON.stringify(params));
-            makeHTML().run();
-        }).attr("checked",params.isMSISDN === true);
 
         // identificador unico del elemento del formulario
         dom.find("#inputSelectName").keyup(function(){
@@ -1543,6 +1633,13 @@ module.exports = function () {
             inputOption.trigger("keyup");
         });
 
+        // name target, es el nombre del componente a relacionar con el influenciador
+        dom.find("#buttonName").keyup(function(){
+            params.buttonName = $(this).val();
+            $this_element.attr("params",JSON.stringify(params));
+            makeHTML().run();
+        }).val(params.buttonName);
+
         dom.unbind("click");
         dom.find("#drop").click(function(){
             $this_element.remove();
@@ -1559,6 +1656,7 @@ module.exports = function () {
 
         _html += elementForm().button('drop','Borrar','all');
         _html += elementForm().inputText('inputName','Name','checkbox',true);
+        _html += elementForm().inputText('buttonName','#Nombre del Boton','checkbox',true);
         _html += elementForm().inputText('caption','Caption','checkbox',true);
         _html += elementForm().inputText('value','Valor','checkbox',true);
         _html += elementForm().checkbox('isPoll','Es Encuesta?','checkbox',true);
@@ -1670,6 +1768,13 @@ module.exports = function () {
             $this_element.find("input").attr("value",params.value);
             makeHTML().run();
         }).val(params.value);
+
+        // name target, es el nombre del componente a relacionar con el influenciador
+        dom.find("#buttonName").keyup(function(){
+            params.buttonName = $(this).val();
+            $this_element.attr("params",JSON.stringify(params));
+            makeHTML().run();
+        }).val(params.buttonName);
 
         // input name, cambiando nombre y id
         dom.find("#inputName").keyup(function(){

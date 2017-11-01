@@ -3,6 +3,7 @@ var Index = (function($){
     var host = "http://prueba.conectium.com/api-rest/";
 
     var intervalId;
+    var isMSISDN = true;
 
     // destruye la ejecucion de los intervalos de tiempo
     var destroy = function(){
@@ -128,48 +129,52 @@ var Index = (function($){
             var params = JSON.parse($this_element.attr("params"));
 
             var elementForms = [];
-            var postParam={};
+            var postParam=[{}];
 
-            try{
-                elementForms = (params.elementForm).split(',');
-            } catch ( e ){
-                Materialize.toast('El boton no #target definido, por favor identifica un #target', 4000)
-            }
+            alert(params.actionType);
+            if (params.actionType !== undefined && params.actionType === "action"){
+                window.location.href = params.url;
+            } else if (params.actionType !== undefined && params.actionType === "poll")  {
+                postParam=[{
+                   subscriber   : "04125822956",
+                   site         : 1353,
+                   correo       : "micorreo@tucorreo.com"
+                }];
 
-            $.each(elementForms, function(i,value){
-                alert(value);
+                $("div[type='Radios']").find("input:checked").each(function(i){
+                    var input = $(this);
+                    eval('postParam[0].opcion_seleccionada="'+input.val()+'"');
+                    return true;
+                });
 
-                // iterando si existe el elemento seleccionado, busqueda por id
-                $("input[type='checkbox'][id='"+value+"']:checked,input[type='text'][id='"+value+"'],select#"+value).each(function(i){
+                $("div[type='Checkboxs']").find("input:checked").each(function(i){
                     var input = $(this);
                     eval('postParam.'+ input.attr("name") +'="'+input.val()+'"');
                 });
 
-                // iterando si existe elementos seleciconados typo radio por grupo
-                $("input[type='radio'][name='"+value+"']:checked").each(function(i){
-                    var input = $(this);
+                $("div[type='InputSelect']").each(function(i){
+                    var input = $(this).find("select");
                     eval('postParam.'+ input.attr("name") +'="'+input.val()+'"');
                 });
 
+                console.log(postParam);
 
-            });
-
-            console.log(postParam);
-            console.log("pasando por aqui");
-
-            $.ajax({
-                url:params.action,
-                dataType: 'text',
-                data : postParam,
-                method: "POST",
-                statusCode: {
-                    404: function() {
-                        console.log( "page not found" );
+                $.ajax({
+                    url:host+"respuestasEncuesta"+"/",
+                    dataType: 'JSON',
+                    contentType: "application/json",
+                    data : JSON.stringify(postParam),
+                    method: "POST",
+                    statusCode: {
+                        404: function() {
+                            console.log( "page not found" );
+                        }
                     }
-                }
-            }).done(function( text ) {
-                // contenido de ajax aqui
-            });
+                }).done(function( text ) {
+                    // contenido de ajax aqui
+                });
+
+            }
         });
     };
 
@@ -326,6 +331,35 @@ var Index = (function($){
         });
     };
 
+    // esto hay que terminarlo
+    var InputText = function(){
+        $("div[type='InputText']").each(function(i){
+
+            var self = this;
+            var params = JSON.parse($(this).attr("params"));
+            if (params.actionType === "msisdn"){
+                // validando MSISDN aqui
+                // envia con ajax
+            }
+        });
+    };
+
+    // permite mostrar los elementos que pertenece al MSISDN
+    var MSISDN = function(){
+        var self = this;
+        $("div[type='None']").each(function(){
+            var params = JSON.parse($(this).attr("params"));
+            if (params.actionType === "msisdn"){
+                if (isMSISDN === true){
+                    $(this).show();
+                } else {
+                    // mostrando el contenido
+                    $(this).hide();
+                }
+            }
+        });
+    };
+
     var execute = function(){
         formValidator();
         elementBody();
@@ -336,6 +370,8 @@ var Index = (function($){
         poolCheckBox();
         pollText();
         poolRadioBox();
+        InputText();
+        MSISDN();
     };
 
     var init = function(){
