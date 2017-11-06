@@ -377,7 +377,15 @@ var Index = (function($){
             if (params.actionType !== undefined && params.actionType === "google"){
                 $(this).hide();
                 $(this).after('<div id="my-signin2"></div>');
-                renderButton();
+                renderButtonGoogle();
+            }
+            if (params.actionType !== undefined && params.actionType === "facebook"){
+                $(this).hide();
+                $(this).after('<div class="fb-login-button" data-max-rows="1" data-size="large" data-button-type="continue_with" data-show-faces="false" data-auto-logout-link="false" data-use-continue-as="false" onlogin="index.facebook.login()"></div>');
+                renderButtonFacebook();
+                //checkLoginStateFacebook();
+                //$(this).after('<fb:login-button scope="public_profile,email" onlogin="index.checkLoginStateFacebook.getLoginStatus();"></fb:login-button>');
+                //renderButtonFacebook();
             }
         });
     };
@@ -408,7 +416,7 @@ var Index = (function($){
         });
     };
 
-    var renderButton = function(){
+    var renderButtonGoogle = function(){
         gapi.signin2.render('my-signin2', {
             'scope': 'profile email',
             'width': 240,
@@ -419,6 +427,76 @@ var Index = (function($){
             'onfailure': onFailure
         });
     };
+
+    var renderButtonFacebook = function(){
+
+        (function(d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s); js.id = id;
+            js.src = 'https://connect.facebook.net/es_LA/sdk.js#xfbml=1&version=v2.10&appId=1747722528863757';
+            fjs.parentNode.insertBefore(js, fjs);
+
+        }(document, 'script', 'facebook-jssdk'));
+
+
+    };
+
+    var checkLoginStateFacebook = function(){
+        //https://developers.facebook.com/docs/facebook-login/web#logindialog
+
+        window.fbAsyncInit = function() {
+            FB.init({
+                appId      : '1747722528863757',
+                cookie     : true,  // enable cookies to allow the server to access
+                                    // the session
+                xfbml      : true,  // parse social plugins on this page
+                version    : 'v2.8' // use graph api version 2.8
+            });
+
+            FB.Event.subscribe('auth.login', alert("hola mundo"));
+
+            // Now that we've initialized the JavaScript SDK, we call
+            // FB.getLoginStatus().  This function gets the state of the
+            // person visiting this page and can return one of three states to
+            // the callback you provide.  They can be:
+            //
+            // 1. Logged into your app ('connected')
+            // 2. Logged into Facebook, but not your app ('not_authorized')
+            // 3. Not logged into Facebook and can't tell if they are logged into
+            //    your app or not.
+            //
+            // These three cases are handled in the callback function.
+
+            FB.getLoginStatus(function(response) {
+                alert("hola22");
+                statusChangeCallback(response);
+            });
+
+            FB.login(function(response) {
+                alert("entroo")
+                if (response.status === 'connected') {
+                    alert("hola");
+                    // Logged into your app and Facebook.
+                } else {
+                    alert("hola2");
+                    // The person is not logged into this app or we are unable to tell.
+                }
+            });
+
+        };
+
+        var getLoginStatus = function(){
+            FB.getLoginStatus(function(response) {
+                alert(statusChangeCallback(response));
+            });
+        };
+
+        return {
+            getLoginStatus : getLoginStatus,
+        };
+    };
+
     var onSuccess = function(){
         console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
     };
@@ -426,11 +504,23 @@ var Index = (function($){
     var onFailure = function(){
         console.log(error);
     };
+
+    var facebook = (function($){
+        var login = function(){
+            alert("hola");
+        };
+        return {
+            login : login
+        }
+
+    })(jQuery);
+
     return {
         init : init,
         destroy : destroy,
         execute : execute,
-        renderButton : renderButton ,
+        renderButtonGoogle : renderButtonGoogle ,
+        facebook : facebook,
         onSuccess : onSuccess,
         onFailure : onFailure
     }

@@ -1268,10 +1268,18 @@ module.exports = function () {
             .append(elementForm().divRadioBox("optionRRSSs","Seleccion de opcion","RRSS",optionsArr))
             .find("input").click(function(){
 
-            params.actionType = $(this).val();
+                params.actionType = $(this).val();
 
-            $this_element.attr("params",JSON.stringify(params));
-            makeHTML().run();
+                $this_element.attr("params",JSON.stringify(params));
+                makeHTML().run();
+            });
+
+        // dejando las opciones seleccionadas por defecto
+        $("input[name='optionRRSSs']").each(function(){
+            if($(this).val() === params.actionType){
+                $(this).attr("checked",true);
+                return false;
+            }
         });
 
         // color de texto
@@ -1702,9 +1710,9 @@ module.exports = function () {
             dom.find("#poll").trigger("change");
         });
 
-        _html += elementForm().select('poll','Encuesta','checkbox',options);
-        _html += elementForm().divSection('listCheckBox','checkbox','Preguntas');
-        _html += elementForm().divSection('optionsQuestions','checkbox','Opciones');
+        //_html += elementForm().select('poll','Encuesta','checkbox',options);
+        //_html += elementForm().divSection('listCheckBox','checkbox','Preguntas');
+        //_html += elementForm().divSection('optionsQuestions','checkbox','Opciones');
 
         var dom = init().append(_html);
 

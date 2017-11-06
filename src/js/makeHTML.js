@@ -111,14 +111,19 @@ module.exports = function () {
             modal.find(".modal-content");
             var iframe = modal.find("iframe");
 
-            iframe
-                .contents()
-                .find("#content")
-                .empty()
-                .append($("#content-center")
-                    .html());
+            iframe[0].contentWindow.location.reload(true);
 
-            iframe[0].contentWindow.execute();
+            iframe.on('load',function(){
+                $(this)
+                    .contents()
+                    .find("#content")
+                    .empty()
+                    .append($("#content-center")
+                        .html());
+
+
+                iframe[0].contentWindow.execute();
+            });
 
             html = $("#content-center").html();
     };
