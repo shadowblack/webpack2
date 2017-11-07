@@ -18,10 +18,28 @@ module.exports = function () {
         var _html = "";
         _html += elementForm().checkbox('isBackgroundImage','background Image?','body');
         _html += elementForm().inputFile('file-image','Imagen de Fondo','body');
+        _html += elementForm().beginGroupElement();
         _html += elementForm().checkbox('isBackgroundColor','background Color?','body');
         _html += elementForm().inputColor('block-color','Color de Fondo','body');
+        _html += elementForm().inputText('input-color','Hexadecimal','body',true);
+        _html += elementForm().divSection('box-color','body','<div style="text-align: center">color</div>');
+        _html += elementForm().endGroupElement();
 
         var dom = init().append(_html);
+        // color de fondo
+        dom.find("#input-color").keyup(function(){
+            params.isBackgroundColor = $("#isBackgroundColor").is(":checked");
+            params.backgroundColor = $(this).val();
+            $this_element.attr("params",JSON.stringify(params));
+            $("#box-color > div").css({"background-color":$(this).val()});
+            if(params.isBackgroundColor === true){
+                $this_element.css({"background-color":$(this).val()});
+                $this_element.find("#elementBody").attr("params",JSON.stringify(params));
+                //params.backgroundColor = params.backgroundColor;
+            } else {
+
+            }
+        });
 
         // is background image
         dom.find("#isBackgroundImage").click(function(){
@@ -52,6 +70,7 @@ module.exports = function () {
         // color
         dom.find("#block-color").change(function(){
             $this_element.css({"background-color":$(this).val()});
+            $("#box-color > div").css({"background-color":$(this).val()});
             params.backgroundColor = $(this).val();
             $this_element.attr("params",JSON.stringify(params));
             $this_element.find("#elementBody").attr("params",JSON.stringify(params));
@@ -67,8 +86,6 @@ module.exports = function () {
             $this_element.css('background-size','none');
 
             $this_element.find("#elementBody").attr("params",JSON.stringify(params));
-
-            alert($(this).val());
 
             makeHTML().run();
         }).val(params.backgroundColor);
@@ -359,8 +376,10 @@ module.exports = function () {
         ];
 
         _html += elementForm().select('text_aligns','Alineacion de Texto','block',options);
-        _html += elementForm().inputColor('block-color','Color de Fondo','block');
         _html += elementForm().beginGroupElement();
+        _html += elementForm().inputColor('block-color','Color de Fondo','block');
+        _html += elementForm().inputText('input-color','Hexadecimal','body',true);
+        _html += elementForm().divSection('box-color','body','<div style="text-align: center">color</div>');
         _html += elementForm().checkbox('fondo','Fondo?','block');
         _html += elementForm().inputFile('file-image','Imagen de Fondo','block');
         _html += elementForm().checkbox('imagenFondo','Imagen de Fondo?','block');
@@ -447,6 +466,21 @@ module.exports = function () {
             makeHTML().run();
         }).attr("checked",params.isMSISDN === true);*/
 
+        // color de fondo
+        dom.find("#input-color").keyup(function(){
+            params.isBackgroundColor = $("#fondo").is(":checked");
+            params.backgroundColor = $(this).val();
+            $this_element.attr("params",JSON.stringify(params));
+            $("#box-color > div").css({"background-color":$(this).val()});
+            if(params.isBackgroundColor === true){
+                $this_element.css({"background-color":$(this).val()});
+                $this_element.find("#elementBody").attr("params",JSON.stringify(params));
+                //params.backgroundColor = params.backgroundColor;
+            } else {
+
+            }
+        });
+
         // slider
         dom.unbind("click");
         dom.unbind("change");
@@ -486,6 +520,7 @@ module.exports = function () {
 
         // color
         dom.find("#block-color").change(function(){
+            $("#box-color > div").css({"background-color":$(this).val()});
             $this_element.css({"background-color":$(this).val()});
             params.backgroundColor = $(this).val();
             $this_element.attr("params",JSON.stringify(params));
@@ -613,7 +648,11 @@ module.exports = function () {
         _html += elementForm().inputText('buttonCaption','Etiqueta','button',true);
         _html += elementForm().inputText('buttonName','#Nombre del Boton','text',true);
         _html += elementForm().inputColor('buttonColor','Color de Fondo','button');
+        _html += elementForm().beginGroupElement();
         _html += elementForm().inputColor('buttonTextColor','Color de Texto','button');
+        _html += elementForm().inputText('input-color','Hexadecimal','body',true);
+        _html += elementForm().divSection('box-color','body','<div style="text-align: center">color</div>');
+        _html += elementForm().endGroupElement();
         _html += elementForm().inputRange('opacityRangeButton','Opacidad','button');
         _html += elementForm().inputText('buttonBorder','Borde, ej. 10px, 2%, 1em','button',true);
         _html += elementForm().inputColor('buttonBorderColor','Border Color','button');
@@ -665,6 +704,18 @@ module.exports = function () {
             {value:"msisdn" , text: "MSISDN"},
             {value:"poll" , text: "Encuesta"}
         ];
+
+        dom.find("#input-color").keyup(function(){
+            params.isBackgroundColor = $("#isBackgroundColor").is(":checked");
+            params.backgroundColor = $(this).val();
+            $this_element.attr("params",JSON.stringify(params));
+            $("#box-color > div").css({"background-color":$(this).val()});
+
+            $this_element.css({"background-color":$(this).val()});
+
+                //params.backgroundColor = params.backgroundColor;
+
+        });
 
         $("#optionButtonAction")
             .empty()
@@ -727,6 +778,8 @@ module.exports = function () {
 
         // color de texto
         dom.find("#buttonTextColor").change(function(){
+            $("#box-color > div").css({"background-color":$(this).val()});
+            $("#input-color").val($(this).val());
             $this_element.css({"color":$(this).val()});
             params.color = $(this).val();
             $this_element.attr("params",JSON.stringify(params));
