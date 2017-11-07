@@ -3,7 +3,8 @@ module.exports = function () {
     var host = "http://prueba.conectium.com/api-rest/";
 
     var elementForm = require('./elementsForm'),
-    makeHTML = require('./makeHTML');
+    makeHTML = require('./makeHTML'),
+    colorFunction = require('./complements/color');
 
     var init = function(){
         return $("#content-right")
@@ -66,6 +67,8 @@ module.exports = function () {
             $this_element.css('background-size','none');
 
             $this_element.find("#elementBody").attr("params",JSON.stringify(params));
+
+            alert($(this).val());
 
             makeHTML().run();
         }).val(params.backgroundColor);
@@ -289,8 +292,11 @@ module.exports = function () {
 
         dom.unbind("click");
         dom.find("#drop").click(function(){
-            $this_element.remove();
-            makeHTML().run();
+            // eliminando elemento luego de una confirmacion
+            confirm_delete(function(){
+                $this_element.remove();
+                makeHTML().run();
+            });
         });
     };
 
@@ -521,8 +527,11 @@ module.exports = function () {
 
         // borrar
         dom.find("#drop").click(function(){
-            $this_element.remove();
-            makeHTML().run();
+            // eliminando elemento luego de una confirmacion
+            confirm_delete(function(){
+                $this_element.remove();
+                makeHTML().run();
+            });
         });
 
         // align
@@ -875,8 +884,11 @@ module.exports = function () {
 
         // borrar
         dom.find("#drop").click(function(){
-            $this_element.remove();
-            makeHTML().run();
+            // eliminando elemento luego de una confirmacion
+            confirm_delete(function(){
+                $this_element.remove();
+                makeHTML().run();
+            });
         });
     };
 
@@ -1175,8 +1187,11 @@ module.exports = function () {
 
         // borrar
         dom.find("#drop").click(function(){
-            makeHTML().run();
-            $this_element.remove();
+            // eliminando elemento luego de una confirmacion
+            confirm_delete(function(){
+                $this_element.remove();
+                makeHTML().run();
+            });
         });
     };
 
@@ -1226,8 +1241,11 @@ module.exports = function () {
 
         // borrar
         dom.find("#drop").click(function(){
-            $this_element.remove();
-            makeHTML().run();
+            // eliminando elemento luego de una confirmacion
+            confirm_delete(function(){
+                $this_element.remove();
+                makeHTML().run();
+            });
         });
     };
 
@@ -1340,8 +1358,11 @@ module.exports = function () {
         }).val(params.colorLink);
 
         dom.find("#drop").click(function(){
-            $this_element.remove()
-            makeHTML().run();
+            // eliminando elemento luego de una confirmacion
+            confirm_delete(function(){
+                $this_element.remove();
+                makeHTML().run();
+            });
         });
     };
 
@@ -1498,8 +1519,11 @@ module.exports = function () {
 
         dom.unbind("click");
         dom.find("#drop").click(function(){
-            $this_element.remove();
-            makeHTML().run();
+            // eliminando elemento luego de una confirmacion
+            confirm_delete(function(){
+                $this_element.remove();
+                makeHTML().run();
+            });
         });
     };
 
@@ -1580,8 +1604,11 @@ module.exports = function () {
         dom.unbind("click");
 
         dom.find("#drop").click(function(){
-            $this_element.remove();
-            makeHTML().run();
+            // eliminando elemento luego de una confirmacion
+            confirm_delete(function(){
+                $this_element.remove();
+                makeHTML().run();
+            });
         });
     };
 
@@ -1669,8 +1696,11 @@ module.exports = function () {
 
         dom.unbind("click");
         dom.find("#drop").click(function(){
-            $this_element.remove();
-            makeHTML().run();
+            // eliminando elemento luego de una confirmacion
+            confirm_delete(function(){
+                $this_element.remove();
+                makeHTML().run();
+            });
         });
 
         $('select').material_select();
@@ -1823,8 +1853,23 @@ module.exports = function () {
 
         dom.unbind("click");
         dom.find("#drop").click(function(){
-            $this_element.remove();
-            makeHTML().run();
+            // eliminando elemento luego de una confirmacion
+            confirm_delete(function(){
+                $this_element.remove();
+                makeHTML().run();
+            });
+        });
+    };
+
+    var confirm_delete = function(_function){
+        var dialog_drop = $("#delete_element");
+        dialog_drop.modal('open');
+        dialog_drop.find(".cancel").click(function(){
+            dialog_drop.modal('close');
+        });
+        dialog_drop.find(".delete").click(function(){
+            _function();
+            dialog_drop.modal('close');
         });
     };
 

@@ -300,3 +300,9 @@ button:hover {
 a.edit_link, a.edit_link:hover {
     color: #484949;
 }
+
+/* fondo por defecto*/
+
+.container.background{
+    background-color: #ffffff;
+}
