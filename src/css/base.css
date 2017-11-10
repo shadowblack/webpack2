@@ -306,3 +306,7 @@ a.edit_link, a.edit_link:hover {
 .container.background{
     background-color: #ffffff;
 }
+
+input[type="color"]{
+    height:54px;
+}

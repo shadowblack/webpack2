@@ -71,6 +71,7 @@ module.exports = function () {
         dom.find("#block-color").change(function(){
             $this_element.css({"background-color":$(this).val()});
             $("#box-color > div").css({"background-color":$(this).val()});
+            $("#input-color").val($(this).val());
             params.backgroundColor = $(this).val();
             $this_element.attr("params",JSON.stringify(params));
             $this_element.find("#elementBody").attr("params",JSON.stringify(params));
@@ -149,16 +150,16 @@ module.exports = function () {
         var data_influence = '';
 
 
-        /*$.ajax({
+        $.ajax({
             url: host+"/influencer",
             method: "GET",
             dataType: "JSON",
             async : false
         }).done(function(data) {
             data_influence = JSON.stringify(data);
-        });*/
+        });
 
-        data_influence = '[{"id":80,"nombre":"Veratrends","nombreima":"http://wap.alamano.com/sbk/banners/categoria/veratrends_1458_Smart.png","textoinvitacion":null},{"id":72,"nombre":"Nancy Patiño","nombreima":"http://wap.alamano.com/sbk/banners/categoria/nancy patino_1365_Smart.png","textoinvitacion":null},{"id":27,"nombre":"Marcos Calderon","nombreima":"http://wap.alamano.com/sbk/banners/categoria/marcos1_926_Smart.png","textoinvitacion":"textoejemplo"},{"id":69,"nombre":"Lovelygourmet","nombreima":"http://wap.alamano.com/sbk/banners/categoria/lovely_1394_Smart_926_Smart.png","textoinvitacion":null},{"id":70,"nombre":"Tomas Drever","nombreima":"http://wap.alamano.com/sbk/banners/categoria/tomas_926_Smart.png","textoinvitacion":null},{"id":74,"nombre":"Daniel Brito","nombreima":"http://wap.alamano.com/sbk/banners/categoria/daniel_1353_Smart.png","textoinvitacion":null},{"id":76,"nombre":"Eliana Jimenez","nombreima":"http://wap.alamano.com/sbk/banners/categoria/eliana-jimenez (2)_1357_Smart_1359_Smart.png","textoinvitacion":null},{"id":75,"nombre":"Andrea Rivas","nombreima":"http://wap.alamano.com/sbk/banners/categoria/andrea-rivas-_1357_Smart_1359_Smart.png","textoinvitacion":null},{"id":77,"nombre":"Roberto Villarreal","nombreima":"http://wap.alamano.com/sbk/banners/categoria/roberto_1357_Smart_1359_Smart.png","textoinvitacion":null},{"id":73,"nombre":"Irina Rodriguez","nombreima":"http://wap.alamano.com/sbk/banners/categoria/irina-rodrigez_1357_Smart_1359_Smart.png","textoinvitacion":null},{"id":78,"nombre":"Jaime Cherigo","nombreima":"http://wap.alamano.com/sbk/banners/categoria/jaime_1151_Smart.png","textoinvitacion":null}]';
+        //data_influence = '[{"id":80,"nombre":"Veratrends","nombreima":"http://wap.alamano.com/sbk/banners/categoria/veratrends_1458_Smart.png","textoinvitacion":null},{"id":72,"nombre":"Nancy Patiño","nombreima":"http://wap.alamano.com/sbk/banners/categoria/nancy patino_1365_Smart.png","textoinvitacion":null},{"id":27,"nombre":"Marcos Calderon","nombreima":"http://wap.alamano.com/sbk/banners/categoria/marcos1_926_Smart.png","textoinvitacion":"textoejemplo"},{"id":69,"nombre":"Lovelygourmet","nombreima":"http://wap.alamano.com/sbk/banners/categoria/lovely_1394_Smart_926_Smart.png","textoinvitacion":null},{"id":70,"nombre":"Tomas Drever","nombreima":"http://wap.alamano.com/sbk/banners/categoria/tomas_926_Smart.png","textoinvitacion":null},{"id":74,"nombre":"Daniel Brito","nombreima":"http://wap.alamano.com/sbk/banners/categoria/daniel_1353_Smart.png","textoinvitacion":null},{"id":76,"nombre":"Eliana Jimenez","nombreima":"http://wap.alamano.com/sbk/banners/categoria/eliana-jimenez (2)_1357_Smart_1359_Smart.png","textoinvitacion":null},{"id":75,"nombre":"Andrea Rivas","nombreima":"http://wap.alamano.com/sbk/banners/categoria/andrea-rivas-_1357_Smart_1359_Smart.png","textoinvitacion":null},{"id":77,"nombre":"Roberto Villarreal","nombreima":"http://wap.alamano.com/sbk/banners/categoria/roberto_1357_Smart_1359_Smart.png","textoinvitacion":null},{"id":73,"nombre":"Irina Rodriguez","nombreima":"http://wap.alamano.com/sbk/banners/categoria/irina-rodrigez_1357_Smart_1359_Smart.png","textoinvitacion":null},{"id":78,"nombre":"Jaime Cherigo","nombreima":"http://wap.alamano.com/sbk/banners/categoria/jaime_1151_Smart.png","textoinvitacion":null}]';
 
         $("#influence").val(data_influence);
          $.each(JSON.parse(data_influence),function(i, object){
@@ -521,6 +522,7 @@ module.exports = function () {
         // color
         dom.find("#block-color").change(function(){
             $("#box-color > div").css({"background-color":$(this).val()});
+            $("#input-color").val($(this).val());
             $this_element.css({"background-color":$(this).val()});
             params.backgroundColor = $(this).val();
             $this_element.attr("params",JSON.stringify(params));
@@ -647,15 +649,28 @@ module.exports = function () {
         _html += elementForm().button('drop','Borrar','button');
         _html += elementForm().inputText('buttonCaption','Etiqueta','button',true);
         _html += elementForm().inputText('buttonName','#Nombre del Boton','text',true);
+
+        _html += elementForm().beginGroupElement();
         _html += elementForm().inputColor('buttonColor','Color de Fondo','button');
+        _html += elementForm().inputText('input-colorOne','Hexadecimal','text',true);
+        _html += elementForm().divSection('box-colorOne','text','<div style="text-align: center">color</div>');
+        _html += elementForm().endGroupElement();
+
         _html += elementForm().beginGroupElement();
         _html += elementForm().inputColor('buttonTextColor','Color de Texto','button');
         _html += elementForm().inputText('input-color','Hexadecimal','body',true);
         _html += elementForm().divSection('box-color','body','<div style="text-align: center">color</div>');
         _html += elementForm().endGroupElement();
-        _html += elementForm().inputRange('opacityRangeButton','Opacidad','button');
+
+        _html += elementForm().beginGroupElement();
         _html += elementForm().inputText('buttonBorder','Borde, ej. 10px, 2%, 1em','button',true);
         _html += elementForm().inputColor('buttonBorderColor','Border Color','button');
+        _html += elementForm().inputText('input-color3','Hexadecimal','body',true);
+        _html += elementForm().divSection('box-color3','body','<div style="text-align: center">color</div>');
+        _html += elementForm().endGroupElement();
+
+        _html += elementForm().inputRange('opacityRangeButton','Opacidad','button');
+
         var options = [];
 
         options.push({value : "none", text : "none", attributes:"selected='selected'" });
@@ -704,18 +719,6 @@ module.exports = function () {
             {value:"msisdn" , text: "MSISDN"},
             {value:"poll" , text: "Encuesta"}
         ];
-
-        dom.find("#input-color").keyup(function(){
-            params.isBackgroundColor = $("#isBackgroundColor").is(":checked");
-            params.backgroundColor = $(this).val();
-            $this_element.attr("params",JSON.stringify(params));
-            $("#box-color > div").css({"background-color":$(this).val()});
-
-            $this_element.css({"background-color":$(this).val()});
-
-                //params.backgroundColor = params.backgroundColor;
-
-        });
 
         $("#optionButtonAction")
             .empty()
@@ -773,8 +776,20 @@ module.exports = function () {
             $this_element.css({"background-color":$(this).val()});
             params.backgroundColor = $(this).val();
             $this_element.attr("params",JSON.stringify(params));
+            $("#box-colorOne > div").css({"background-color":$(this).val()});
+            $("#input-colorOne").val($(this).val());
             makeHTML().run();
         }).val(params.backgroundColor);
+
+        // color de fondo
+        dom.find("#input-colorOne").keyup(function(){
+            params.backgroundColor = $(this).val();
+            $this_element.parent().css({"color":$(this).val()});
+            $("#box-colorOne > div").css({"background-color":$(this).val()});
+            $("#input-colorOne").val($(this).val());
+            $this_element.css({"background-color":$(this).val()});
+            $this_element.attr("params",JSON.stringify(params));
+        });
 
         // color de texto
         dom.find("#buttonTextColor").change(function(){
@@ -785,6 +800,16 @@ module.exports = function () {
             $this_element.attr("params",JSON.stringify(params));
             makeHTML().run();
         }).val(params.color);
+
+        // color de fondo
+        dom.find("#input-color").keyup(function(){
+            params.color = $(this).val();
+            $this_element.parent().css({"color":$(this).val()});
+            $("#box-color > div").css({"background-color":$(this).val()});
+            $("#input-color").val($(this).val());
+            $this_element.css({"color":$(this).val()});
+            $this_element.attr("params",JSON.stringify(params));
+        });
 
         // borde
         dom.find("#buttonBorder").keyup(function(){
@@ -821,13 +846,27 @@ module.exports = function () {
 
         // borde color
         dom.find("#buttonBorderColor").change(function(){
+            alert($(this).val());
             $this_element.css({
-                "border-color":$(this).val()
+                "border":"solid "+$(this).val()
             });
+            $("#box-color3 > div").css({"background-color":$(this).val()});
+            $("#input-color3").val($(this).val());
             params.borderColor = $(this).val();
             $this_element.attr("params",JSON.stringify(params));
             makeHTML().run();
         }).val(params.borderColor);
+
+        // colocando colores para el borde, simulacion de colores
+        dom.find("#input-color3").keyup(function(){
+            $this_element.css({
+                "border":"solid "+$(this).val()
+            });
+            params.borderColor = $(this).val();
+            $("#box-color3 > div").css({"background-color":$(this).val()});
+            $("#input-color3").val($(this).val());
+            $this_element.attr("params",JSON.stringify(params));
+        });
 
         // border style
         dom.find("#buttonBorderStyle").change(function(){
@@ -954,6 +993,8 @@ module.exports = function () {
         _html += elementForm().inputText('buttonName','#Nombre del Boton','text',true);
         _html += elementForm().inputText('buttonCaption','Etiqueta','text',true);
         _html += elementForm().inputColor('buttonTextColor','Color de Texto','text');
+        _html += elementForm().inputText('input-color','Hexadecimal','text',true);
+        _html += elementForm().divSection('box-color','text','<div style="text-align: center">color</div>');
         var options = [];
         options.push({value : "none", text : "none", attributes:""});
         options.push({value : "uppercase", text : "uppercase", attributes:""});
@@ -983,6 +1024,8 @@ module.exports = function () {
         _html += elementForm().beginGroupElement();
         _html += elementForm().checkbox('link','Hipervinculo','text');
         _html += elementForm().inputColor('buttonTextColorLink','Color de Link','text');
+        _html += elementForm().inputText('input-color2','Hexadecimal','text',true);
+        _html += elementForm().divSection('box-color2','text','<div style="text-align: center">color</div>');
         _html += elementForm().inputText('linkHiper','Hipervinculo','text',true);
         _html += elementForm().endGroupElement();
 
@@ -1015,6 +1058,16 @@ module.exports = function () {
         _html += elementForm().endGroupElement();
 
         var dom = init().append(_html);
+
+        // color de fondo
+        dom.find("#input-color").keyup(function(){
+            //params.isBackgroundColor = $("#isBackgroundColor").is(":checked");
+            params.color = $(this).val();
+            $this_element.attr("params",JSON.stringify(params));
+            $("#box-color > div").css({"background-color":$(this).val()});
+            $this_element.css({"color":$(this).val()});
+            $this_element.attr("params",JSON.stringify(params));
+        });
 
         // eventos del numero de bloques
         dom.find("#poll").change(function(){
@@ -1096,6 +1149,8 @@ module.exports = function () {
         // color de texto
         dom.find("#buttonTextColor").change(function(){
             $this_element.css({"color":$(this).val()});
+            $("#box-color > div").css({"background-color":$(this).val()});
+            $("#input-color").val($(this).val());
             params.color = $(this).val();
             $this_element.attr("params",JSON.stringify(params));
             makeHTML().run();
@@ -1212,8 +1267,21 @@ module.exports = function () {
             $this_element.parent().css({"color":$(this).val()});
             params.colorLink = $(this).val();
             $this_element.parent().attr("params",JSON.stringify(params));
+            $("#input-color2").val($(this).val());
+            $("#box-color2 > div").css({"background-color":$(this).val()});
             makeHTML().run();
         }).val(params.colorLink);
+
+        // visualizacion del color de link
+        // color de fondo
+        dom.find("#input-color2").keyup(function(){
+            params.colorLink = $(this).val();
+            $this_element.parent().css({"color":$(this).val()});
+            $("#box-color2 > div").css({"background-color":$(this).val()});
+            $("#input-color2").val($(this).val());
+            $this_element.css({"color":$(this).val()});
+            $this_element.attr("params",JSON.stringify(params));
+        });
 
         // hipervinculo
         dom.find("#linkHiper").keyup(function(){
@@ -1317,11 +1385,21 @@ module.exports = function () {
         _html += elementForm().button('drop','Borrar','rrss');
         _html += elementForm().select('icon','Iconos','rrss',icons);
         _html += elementForm().inputText('textSize','Tamaño de Texto, ej. 10px, 2%, 1em','rrss',true);
+
+        // se comenta color de botones ya que a mi parecer estaban repetidas
+        /*_html += elementForm().beginGroupElement();
         _html += elementForm().inputColor('textColor','Color de Texto','rrss');
+        _html += elementForm().inputText('input-color','Hexadecimal','body',true);
+        _html += elementForm().divSection('box-color','body','<div style="text-align: center">color</div>');
+        _html += elementForm().endGroupElement();*/
+
         _html += elementForm().beginGroupElement();
         _html += elementForm().checkbox('link','Hipervinculo','rrss');
         _html += elementForm().inputText('linkHiper','Link','rrss',true);
         _html += elementForm().inputColor('buttonTextColorLink','Color de Link','text');
+
+        _html += elementForm().inputText('input-color2','Hexadecimal','body',true);
+        _html += elementForm().divSection('box-color2','body','<div style="text-align: center">color</div>');
         _html += elementForm().endGroupElement();
 
         var optionsArr = [
@@ -1357,9 +1435,21 @@ module.exports = function () {
         dom.find("#textColor").change(function(){
             $this_element.css({"color":$(this).val()});
             params.color = $(this).val();
+            $("#input-color").val($(this).val());
+            $("#box-color > div").css({"background-color":$(this).val()});
             $this_element.attr("params",JSON.stringify(params));
             makeHTML().run();
         }).val(params.color);
+
+        // color de fondo
+        dom.find("#input-color").keyup(function(){
+            params.color = $(this).val();
+            $this_element.parent().css({"color":$(this).val()});
+            $("#box-color > div").css({"background-color":$(this).val()});
+            $("#input-color").val($(this).val());
+            $this_element.css({"color":$(this).val()});
+            $this_element.attr("params",JSON.stringify(params));
+        });
 
         // text size
         dom.find("#textSize").keyup(function(){
@@ -1405,10 +1495,22 @@ module.exports = function () {
         // color de link
         dom.find("#buttonTextColorLink").change(function(){
             $this_element.parent().css({"color":$(this).val()});
+            $("#box-color2 > div").css({"background-color":$(this).val()});
+            $("#input-color2").val($(this).val());
             params.colorLink = $(this).val();
             $this_element.parent().attr("params",JSON.stringify(params));
             makeHTML().run();
         }).val(params.colorLink);
+
+        // color de fondo
+        dom.find("#input-color2").keyup(function(){
+            params.colorLink = $(this).val();
+            $this_element.parent().css({"color":$(this).val()});
+            $("#box-color2 > div").css({"background-color":$(this).val()});
+            $("#input-color2").val($(this).val());
+            $this_element.css({"color":$(this).val()});
+            $this_element.attr("params",JSON.stringify(params));
+        });
 
         dom.find("#drop").click(function(){
             // eliminando elemento luego de una confirmacion
