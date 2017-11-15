@@ -763,25 +763,39 @@ module.exports = function () {
         }).val(params.buttonName);
 
         // opacity
-        dom.find("#opacityRangeButton").change(function(){
+
+        var opacity = dom.find("#opacityRangeButton").change(function(){
+            var hex = (colorFunction().hexToRgbA($("#input-colorOne").val()));
             var value = ($(this).val()==="0" ? 0 : $(this).val() / 100);
-            $this_element.css({"opacity":value});
-            params.opacity = $(this).val();
+            var arr = hex.split(",");
+            arr[3] = String(value)+")";
+            hex = arr.join();
+            params.opacity = value;
+            $this_element.css({"background-color":hex});
+            params.backgroundColor = hex;
             $this_element.attr("params",JSON.stringify(params));
             makeHTML().run();
         }).val(params.opacity);
+        if (params.opacity !== undefined)
+            opacity.val(params.opacity * 100);
 
         // background color
-        dom.find("#buttonColor").change(function(){
+        var buttonColor = dom.find("#buttonColor").change(function(){
             $this_element.css({"background-color":$(this).val()});
             params.backgroundColor = $(this).val();
+            alert(params.backgroundColor);
             $this_element.attr("params",JSON.stringify(params));
             $("#box-colorOne > div").css({"background-color":$(this).val()});
             $("#input-colorOne").val($(this).val());
             makeHTML().run();
-        }).val(params.backgroundColor);
+        });
+        if(params.backgroundColor !== undefined)
+            buttonColor.val(params.backgroundColor);
+
 
         // color de fondo
+        $("#box-colorOne > div").css({"background-color":params.backgroundColor});
+        $("#input-colorOne").val(params.backgroundColor);
         dom.find("#input-colorOne").keyup(function(){
             params.backgroundColor = $(this).val();
             $this_element.parent().css({"color":$(this).val()});
@@ -792,14 +806,17 @@ module.exports = function () {
         });
 
         // color de texto
-        dom.find("#buttonTextColor").change(function(){
+        var buttonTextColor = dom.find("#buttonTextColor").change(function(){
             $("#box-color > div").css({"background-color":$(this).val()});
             $("#input-color").val($(this).val());
             $this_element.css({"color":$(this).val()});
             params.color = $(this).val();
             $this_element.attr("params",JSON.stringify(params));
             makeHTML().run();
-        }).val(params.color);
+        });
+
+        if (params.color !== undefined)
+            buttonTextColor.val(params.color)
 
         // color de fondo
         dom.find("#input-color").keyup(function(){
@@ -812,20 +829,24 @@ module.exports = function () {
         });
 
         // borde
-        dom.find("#buttonBorder").keyup(function(){
+        var buttonBorder = dom.find("#buttonBorder").keyup(function(){
             params.border = $(this).val();
             $this_element.attr("params",JSON.stringify(params));
             $this_element.css({"border-width":params.border});
             makeHTML().run();
         }).val(params.border);
 
+        if (buttonBorder !== undefined)
+            buttonBorder.val(params.border);
+
+
         // URL de la accion del formulario
-        /*dom.find("#action").keyup(function(){
+        dom.find("#action").keyup(function(){
 			debugger;
             params.action = $(this).val();
             $this_element.attr("params",JSON.stringify(params));
             makeHTML().run();
-        }).val(params.action);*/
+        }).val(params.action);
 
         // Nombres de los targets que estaran relacionados con el formulario
         dom.find("#elementForm").keyup(function(){
@@ -834,7 +855,7 @@ module.exports = function () {
             makeHTML().run();
         }).val(params.elementForm);
 
-        /*// URL de la accion del formulario
+        // URL de la accion del formulario
         dom.find("#action").keyup(function(){
 			debugger;
             params.action = $(this).val();
@@ -842,11 +863,11 @@ module.exports = function () {
             $this_element.css({"border-width":params.action});
 			$this_element.attr("action", $(this).val());
             makeHTML().run();
-        }).val(params.action);*/
+        }).val(params.action);
 
         // borde color
-        dom.find("#buttonBorderColor").change(function(){
-            alert($(this).val());
+
+        var buttonBorderColor = dom.find("#buttonBorderColor").change(function(){
             $this_element.css({
                 "border":"solid "+$(this).val()
             });
@@ -855,7 +876,10 @@ module.exports = function () {
             params.borderColor = $(this).val();
             $this_element.attr("params",JSON.stringify(params));
             makeHTML().run();
-        }).val(params.borderColor);
+        });
+        if (params.borderColor !== undefined){
+            buttonBorderColor.val(params.borderColor);
+        }
 
         // colocando colores para el borde, simulacion de colores
         dom.find("#input-color3").keyup(function(){
