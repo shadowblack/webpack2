@@ -135,9 +135,15 @@ var Index = (function($){
             var elementForms = [];
             var postParam=[{}];
 
-            alert(params.actionType);
             if (params.actionType !== undefined && params.actionType === "action"){
-                window.location.href = params.href;
+                // si estamos en el iframe
+                var insideIframe = window.top !== window.self;
+                if (insideIframe)
+                        Materialize.toast('Simulacion de redireccionamiento a: '+params.action, 4000)
+                else
+                    // si estamos en el jsp
+                    window.location.href = params.action;
+
             } else if (params.actionType !== undefined && params.actionType === "poll")  {
                 postParam=[{
                    subscriber   : subscriber,
@@ -160,8 +166,6 @@ var Index = (function($){
                     var input = $(this).find("select");
                     eval('postParam.'+ input.attr("name") +'="'+input.val()+'"');
                 });
-
-                console.log(postParam);
 
                 $.ajax({
                     url:host+"respuestasEncuesta"+"/",

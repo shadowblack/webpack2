@@ -121,8 +121,11 @@ module.exports = function () {
                     .append($("#content-center")
                         .html());
 
-
-                iframe[0].contentWindow.execute();
+                try {
+                    iframe[0].contentWindow.execute();
+                }  catch (e){
+                    console.log("El iframe esta redirecionado a otro site y ya el elemento es inaccesible");
+                }
             });
 
             html = $("#content-center").html();
@@ -133,7 +136,12 @@ module.exports = function () {
         modal.modal('open');
         modal.find(".modal-content");
         var iframe = modal.find("iframe");
-        iframe[0].contentWindow.destroy();
+        try{
+            iframe[0].contentWindow.destroy();
+        } catch (e){
+            console.log("El iframe esta redirecionado a otro site y ya el elemento es inaccesible");
+        }
+
     };
 
     var init = function(){
