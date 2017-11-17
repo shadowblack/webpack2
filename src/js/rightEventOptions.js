@@ -379,7 +379,7 @@ module.exports = function () {
         _html += elementForm().select('text_aligns','Alineacion de Texto','block',options);
         _html += elementForm().beginGroupElement();
         _html += elementForm().inputColor('block-color','Color de Fondo','block');
-        _html += elementForm().inputText('input-color','Hexadecimal','body',true);
+        _html += elementForm().inputText('input-color','Hexadecimal','block',true);
         _html += elementForm().divSection('box-color','body','<div style="text-align: center">color</div>');
         _html += elementForm().checkbox('fondo','Fondo?','block');
         _html += elementForm().inputFile('file-image','Imagen de Fondo','block');
@@ -468,7 +468,7 @@ module.exports = function () {
         }).attr("checked",params.isMSISDN === true);*/
 
         // color de fondo
-        dom.find("#input-color").keyup(function(){
+        var input_color = dom.find("#input-color").keyup(function(){
             params.isBackgroundColor = $("#fondo").is(":checked");
             params.backgroundColor = $(this).val();
             $this_element.attr("params",JSON.stringify(params));
@@ -481,17 +481,41 @@ module.exports = function () {
 
             }
         });
+        if (params.backgroundColor !== undefined){
+            $("#box-color > div").css({"background-color":params.backgroundColor});
+            input_color.val(params.backgroundColor);
+        }
 
         // slider
-        dom.unbind("click");
-        dom.unbind("change");
-        dom.find("#block-range").change(function(){
-            var value = ($(this).val()==="0" ? 0 : $(this).val() / 100);
-            $this_element.css({"opacity":value});
-            params.opacity = $(this).val();
-            $this_element.attr("params",JSON.stringify(params));
-            makeHTML().run();
+        var opacity = dom.find("#block-range").change(function(e){
+
+            if ($("#input-color").val() === ""){
+                Materialize.toast('Debes establecer primero un color de fondo al boton', 4000)
+                e.preventDefault();
+                return false;
+            } else {
+                var color_hex = $("#input-color").val();
+                var hex = "";
+                if (color_hex.length <= 7){
+                    hex = (colorFunction().hexToRgbA(color_hex));
+                } else {
+                    hex = color_hex;
+                }
+
+                var value = ($(this).val()==="0" ? 0 : $(this).val() / 100);
+                var arr = hex.split(",");
+                arr[3] = String(value)+")";
+                hex = arr.join();
+                params.opacity = value;
+                $this_element.css({"background-color":hex});
+                params.backgroundColor = hex;
+                $this_element.attr("params",JSON.stringify(params));
+                makeHTML().run();
+            }
         }).val(params.opacity);
+        if (params.opacity !== undefined){
+            opacity.val(params.opacity * 100);
+        }
 
         // color de fondo?
         dom.find("#fondo").click(function(){
@@ -706,7 +730,7 @@ module.exports = function () {
         options.push({value : "Trebuchet MS", text : "Trebuchet MS", attributes:""});
         options.push({value : "Verdana", text : "Verdana", attributes:""});
         options.push({value : "Roboto", text : "Roboto", attributes:""});
-        _html += elementForm().select('buttonFontFamily','Formato','button',options);
+        _html += elementForm().select('buttonFontFamily','tipografia','button',options);
         _html += elementForm().inputText('action','URL Action Form or HREF','button',true);
         _html += elementForm().divSection('optionButtonAction','checkbox','button');
 
@@ -764,26 +788,41 @@ module.exports = function () {
 
         // opacity
 
-        var opacity = dom.find("#opacityRangeButton").change(function(){
-            var hex = (colorFunction().hexToRgbA($("#input-colorOne").val()));
-            var value = ($(this).val()==="0" ? 0 : $(this).val() / 100);
-            var arr = hex.split(",");
-            arr[3] = String(value)+")";
-            hex = arr.join();
-            params.opacity = value;
-            $this_element.css({"background-color":hex});
-            params.backgroundColor = hex;
-            $this_element.attr("params",JSON.stringify(params));
-            makeHTML().run();
+        var opacity = dom.find("#opacityRangeButton").change(function(e){
+
+            if ($("#input-colorOne").val() === ""){
+                Materialize.toast('Debes establecer primero un color de fondo al boton', 4000)
+                e.preventDefault();
+                return false;
+            } else {
+                var color_hex = $("#input-colorOne").val();
+                hex = "";
+                if (color_hex.length <= 7){
+                    hex = (colorFunction().hexToRgbA(color_hex));
+                } else {
+                    hex = color_hex;
+                }
+
+                var value = ($(this).val()==="0" ? 0 : $(this).val() / 100);
+                var arr = hex.split(",");
+                arr[3] = String(value)+")";
+                hex = arr.join();
+                params.opacity = value;
+                $this_element.css({"background-color":hex});
+                params.backgroundColor = hex;
+                $this_element.attr("params",JSON.stringify(params));
+                makeHTML().run();
+            }
         }).val(params.opacity);
-        if (params.opacity !== undefined)
+        if (params.opacity !== undefined){
             opacity.val(params.opacity * 100);
+        }
+
 
         // background color
         var buttonColor = dom.find("#buttonColor").change(function(){
             $this_element.css({"background-color":$(this).val()});
             params.backgroundColor = $(this).val();
-            alert(params.backgroundColor);
             $this_element.attr("params",JSON.stringify(params));
             $("#box-colorOne > div").css({"background-color":$(this).val()});
             $("#input-colorOne").val($(this).val());
@@ -815,8 +854,11 @@ module.exports = function () {
             makeHTML().run();
         });
 
-        if (params.color !== undefined)
-            buttonTextColor.val(params.color)
+        if (params.color !== undefined){
+            buttonTextColor.val(params.color);
+            $("#box-color > div").css({"background-color":params.color});
+            $("#input-color").val(params.color);
+        }
 
         // color de fondo
         dom.find("#input-color").keyup(function(){
@@ -879,6 +921,8 @@ module.exports = function () {
         });
         if (params.borderColor !== undefined){
             buttonBorderColor.val(params.borderColor);
+            $("#box-color3 > div").css({"background-color":params.borderColor});
+            $("#input-color3").val(params.borderColor);
         }
 
         // colocando colores para el borde, simulacion de colores
@@ -1034,7 +1078,7 @@ module.exports = function () {
         options.push({value : "Trebuchet MS", text : "Trebuchet MS", attributes:""});
         options.push({value : "Verdana", text : "Verdana", attributes:""});
         options.push({value : "Roboto", text : "Roboto", attributes:""});
-        _html += elementForm().select('buttonFontFamily','Formato','button',options);
+        _html += elementForm().select('buttonFontFamily','Tipografia','button',options);
         _html += elementForm().beginGroupElement();
         _html += elementForm().checkbox('bold','Negrita','text');
         _html += elementForm().checkbox('italic','Italica','text');
